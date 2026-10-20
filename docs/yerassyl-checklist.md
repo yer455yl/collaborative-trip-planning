@@ -46,7 +46,8 @@ Based on the Work Plan until 20 October 2026. Dates below are the original deadl
 - [ ] Help distribute the survey and conduct interviews.
 - [ ] Review the complete README, documents, YouTrack link and contributions from every member.
 - [ ] Create and close the relevant YouTrack tasks when the project is available.
-- [ ] Complete Pull Request review before merging the working branch into main.
+- [x] Open Pull Request #1 and request review from Zukhra2409 and shauzatov.
+- [ ] Address review feedback and obtain teammate review before merging the working branch into main.
 - [ ] Prepare the pre-defense-1 tag with the team after final review.
 
 Each member commits from their own account. Include the real YouTrack task ID in future branch names and commit messages when available. Yerassyl authorized the initial work without IDs while YouTrack is unavailable. Submit changes through Pull Requests and obtain another member's review before merging. Do not commit secrets or respondents' personal data.

@@ -23,6 +23,10 @@ Prepared by Aman Yerassyl for Zukhra and Sayakhat. This package contains propose
 5. Select maps and AI providers and agree on request/response contracts and cost assumptions.
 6. Agree on measurable latency and generation-time targets before running benchmarks.
 
+## Pull Request
+
+[PR #1 — Add backend research, architecture and verification plan](https://github.com/yer455yl/collaborative-trip-planning/pull/1) is open. Reviews were requested from Zukhra2409 and shauzatov. Their approval and integration remain pending.
+
 ## Review and release process
 
 Review the literature-review branch through a Pull Request into main. Another team member must review before merging, as required by the work plan. Do not create the pre-defense-1 tag until the team's complete package is checked. Supervisor access and YouTrack task mapping remain separate team actions.
