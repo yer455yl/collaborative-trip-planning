@@ -1,39 +1,39 @@
-# Источники и предварительный обзор Ерасыла
+# Yerassyl's Sources and Preliminary Literature Review
 
-Дата проверки: 20 октября 2026. Тема: оптимизация туристических маршрутов и серверная поддержка совместного мобильного приложения.
+Sources checked on 20 October 2026. Focus: tourist itinerary optimization and backend support for a collaborative mobile application.
 
-Подобраны пять источников: три научные публикации и два официальных технических руководства. Документация не засчитывается как научная публикация. Для общего требования команды «не менее 8 научных публикаций» нужно объединить список с материалами Зухры и Саяхата и убрать дубликаты. Клиентские фреймворки остаются предметом отдельного сравнения Саяхата.
+Five sources have been selected: three scientific publications and two official technical guides. Technical documentation does not count as a scientific publication. To meet the team's requirement of at least eight scientific publications, combine this list with Zukhra's and Sayakhat's sources and remove duplicates. Client frameworks remain part of Sayakhat's separate technology comparison.
 
-## Научные публикации
+## Scientific publications
 
-| Автор и год | Источник | Подход | Результат по доступному материалу | Ограничения и применимость |
+| Authors and year | Source | Approach | Findings from the available material | Limitations and relevance |
 |---|---|---|---|---|
-| José Ruiz-Meza, Jairo R. Montoya-Torres, 2022 | [A systematic literature review for the tourist trip design problem: Extensions, solution techniques and future research lines](https://doi.org/10.1016/j.orp.2022.100228). Operations Research Perspectives, 9, 100228 | Систематизация моделей TTDP, целей, ограничений и методов решения | Обзор охватывает 102 работы; распространены модели на основе Orienteering Problem и эвристические методы | Поиск литературы ограничен февралем 2021 года. Для нашего проекта: обосновать выбор и порядок посещения мест при ограниченных ресурсах. Проверены индексированные фрагменты издателя, включая методологию и заключение; прямой доступ к странице заблокирован, полный текст следует дочитать |
-| Tommaso Adamo, Lucio Colizzi, Giovanni Dimauro, Gianpaolo Ghiani, Emanuela Guerriero. Препринт 2022; журнальная публикация 2024 | [A multimodal tourist trip planner integrating road and pedestrian networks](https://arxiv.org/abs/2207.00097). Expert Systems with Applications; [журнальный DOI](https://doi.org/10.1016/j.eswa.2023.121457) | Iterated local search для автомобильных маршрутов с пешеходными подмаршрутами и временными окнами | Авторы сообщают решение реалистичных экземпляров до 3643 мест на горизонте семи дней за несколько секунд | Эти результаты относятся к условиям эксперимента авторов. Для Астаны потребуются собственные данные и измерения. Полезно учитывать время переходов, длительность визита и часы работы. Открыты аннотация и полный HTML препринта; детальная проверка экспериментов ещё нужна |
-| Yue Hu, Zhixiang Fang, Xinyan Zou, Haoyu Zhong, Lubin Wang, 2023 | [Two-Stage Tour Route Recommendation Approach by Integrating Crowd Dynamics Derived from Mobile Tracking Data](https://doi.org/10.3390/app13010596). Applied Sciences, 13(1), 596 | Глобальная многоцелевая оптимизация маршрута с последующей локальной корректировкой; улучшенный NSGA-II | В аннотации авторы сообщают среднее снижение загруженности на 7% в исследовании Даляня | Результат не переносится автоматически на Астану; нужны данные о потоках посетителей. Для проекта полезна идея локального пересчёта плана. Проверены индексированные аннотация и введение издателя; полный текст пока не прочитан |
+| José Ruiz-Meza and Jairo R. Montoya-Torres, 2022 | [A systematic literature review for the tourist trip design problem: Extensions, solution techniques and future research lines](https://doi.org/10.1016/j.orp.2022.100228). Operations Research Perspectives, 9, 100228 | Classification of TTDP models, objectives, constraints and solution methods | The review covers 102 studies; Orienteering Problem formulations and heuristic methods are widely used | The literature search ends in February 2021. Relevant to selecting and ordering visits under resource constraints. Indexed publisher excerpts, including methodology and conclusions, were checked; direct page access was blocked and full-text reading remains necessary |
+| Tommaso Adamo, Lucio Colizzi, Giovanni Dimauro, Gianpaolo Ghiani and Emanuela Guerriero. Preprint 2022; journal publication 2024 | [A multimodal tourist trip planner integrating road and pedestrian networks](https://arxiv.org/abs/2207.00097). Expert Systems with Applications; [journal DOI](https://doi.org/10.1016/j.eswa.2023.121457) | Iterated local search for vehicle tours with pedestrian subtours and time windows | The authors report solving realistic instances with up to 3643 points of interest over seven days in a few seconds | Performance applies to the authors' experimental conditions; Astana requires its own data and measurements. Relevant to travel times, visit durations and opening hours. The abstract and full HTML preprint were opened; detailed evaluation of the experiments is still needed |
+| Yue Hu, Zhixiang Fang, Xinyan Zou, Haoyu Zhong and Lubin Wang, 2023 | [Two-Stage Tour Route Recommendation Approach by Integrating Crowd Dynamics Derived from Mobile Tracking Data](https://doi.org/10.3390/app13010596). Applied Sciences, 13(1), 596 | Global multi-objective route optimization followed by local updates; improved NSGA-II | The abstract reports an average 7% reduction in crowding in a Dalian case study | This finding does not automatically transfer to Astana; visitor-flow data would be required. Local itinerary updates are relevant to our design. Indexed publisher abstract and introduction were checked; the full text has not yet been read |
 
-## Технические источники
+## Technical sources
 
-| Организация | Источник | Что подтверждает | Ограничения | Применимость |
+| Organization | Source | Documented mechanism | Limitations | Relevance |
 |---|---|---|---|---|
-| Supabase | [Realtime Architecture](https://supabase.com/docs/guides/realtime/architecture), дата обращения 20.10.2026 | Доставка событий через WebSocket, подписка на изменения PostgreSQL, Broadcast и Presence | Руководство производителя, без независимого сравнения с альтернативами. Цена, квоты и задержки в нашем приложении здесь не проверены | Основа для оценки синхронизации голосов, сообщений и изменений плана. Страница открыта и прочитана |
-| Google Firebase | [Get realtime updates with Cloud Firestore](https://firebase.google.com/docs/firestore/query-data/listen), дата обращения 20.10.2026 | Механизм подписок на обновления данных в Firestore | Руководство производителя, а не научная оценка. Нужна отдельная проверка модели данных, стоимости чтений и правил доступа | Альтернативный подход к обновлению данных на мобильных клиентах. Страница открыта; примеры для выбранной мобильной платформы нужно разобрать после выбора стека |
+| Supabase | [Realtime Architecture](https://supabase.com/docs/guides/realtime/architecture), accessed 20 October 2026 | WebSocket event delivery, PostgreSQL change subscriptions, Broadcast and Presence | Vendor documentation without an independent comparison. Pricing, quotas and application latency have not been evaluated here | Supports evaluation of vote, message and itinerary synchronization. The page was opened and read |
+| Google Firebase | [Get realtime updates with Cloud Firestore](https://firebase.google.com/docs/firestore/query-data/listen), accessed 20 October 2026 | Subscriptions to Firestore data updates | Vendor documentation rather than scientific evaluation. The data model, read costs and access rules require separate assessment | An alternative for delivering updates to mobile clients. The page was opened; platform-specific examples should be examined after the mobile stack is selected |
 
-## Предварительный текст для объединения с обзором команды
+## Preliminary review for integration with the team's document
 
-Проектирование туристического маршрута включает выбор мест и порядка посещения с учётом ограничений. Обзор Ruiz-Meza и Montoya-Torres (2022) рассматривает эту задачу как Tourist Trip Design Problem и систематизирует используемые модели и методы. Для нашего приложения это даёт основание отдельно описать ограничения по времени, бюджету и предпочтениям, а затем проверять допустимость предложенного плана.
+Tourist itinerary design involves selecting places and ordering visits under constraints. Ruiz-Meza and Montoya-Torres (2022) examine this as the Tourist Trip Design Problem and classify relevant models and methods. For our application, this supports explicitly defining time, budget and preference constraints and validating proposed plans against them.
 
-Adamo и соавторы рассматривают совместное использование автомобильной и пешеходной сети. Для проектирования нашего приложения полезно учитывать время перемещения, продолжительность посещения и часы работы. Наличие результатов на данных авторов не доказывает аналогичную скорость на данных Астаны: её необходимо измерить отдельно.
+Adamo and colleagues consider combined road and pedestrian networks. Their work supports considering travel times, visit durations and opening hours in our design. Performance on their datasets does not establish equivalent performance in Astana; this must be measured separately.
 
-Hu и соавторы предлагают первоначально оптимизировать маршрут, а затем локально обновлять его при изменении условий. Наша проектная интерпретация этой идеи — пересчитывать затронутую часть плана после изменения пользователем. Учёт загруженности мест возможен только при наличии достоверных данных и пока не является подтверждённой возможностью нашего приложения.
+Hu and colleagues propose optimizing an initial route and updating it locally when conditions change. Our proposed application of this idea is to recalculate the affected part of an itinerary after a user modification. Crowd-aware planning requires reliable data and is not yet an established capability of our application.
 
-Для совместного редактирования требуется доставка обновлений участникам поездки. Официальные руководства Supabase и Firebase описывают соответствующие механизмы. Эти источники помогают определить варианты реализации, но не доказывают превосходство одной платформы. Окончательный выбор следует сделать в отдельной таблице по требованиям, сложности реализации и эксплуатации.
+Collaborative editing requires delivering updates to trip participants. Official Supabase and Firebase documentation describes mechanisms for this purpose. These sources establish implementation options rather than the superiority of either platform. The final choice should be justified separately against requirements, implementation effort and operational needs.
 
-## Что нужно завершить перед сдачей обзора
+## Work remaining before submission
 
-- Дочитать научные работы, особенно методологию и эксперименты; уточнить выводы и ограничения с указанием разделов.
-- Проверить библиографическое оформление по требованиям университета; не считать препринт и журнальную версию Adamo двумя разными работами.
-- Объединить с источниками команды и проверить общий минимум научных публикаций.
-- Согласовать с Зухрой англоязычную версию общего обзора, если документ сдаётся на английском.
+- Complete reading of the scientific papers, especially methodology and experiments; refine findings and limitations with section references.
+- Check bibliography formatting against university requirements. Do not count Adamo's preprint and journal version as separate works.
+- Combine sources with the team's list and verify the overall scientific-publication requirement.
+- Agree on the final English wording with Zukhra before integrating the review.
 
-Это предварительный обзор, а не отметка о выполненном чтении всех публикаций. Отозванная работа arXiv:2304.08495 в основной список не включена.
+This is a preliminary review and does not indicate that every publication has been fully read. Withdrawn paper arXiv:2304.08495 is excluded from the selected sources.
