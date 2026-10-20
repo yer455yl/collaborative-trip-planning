@@ -1,0 +1,25 @@
+# Local configuration and secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# Dependencies and generated output
+node_modules/
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+dist/
+build/
+coverage/
+*.log
+
+# Editor and operating system files
+.DS_Store
+.idea/
+.vscode/
+
+# Keep identifiable survey and interview data out of Git
+docs/research/private/
