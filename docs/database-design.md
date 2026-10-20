@@ -10,7 +10,7 @@ The editable source is [database-er.drawio](../diagrams/database-er.drawio). It 
 - [Itinerary and voting](../diagrams/er-itinerary-voting.png)
 - [Communication and community](../diagrams/er-communication-community.png)
 
-PK means primary key, FK means foreign key, and UQ means unique constraint. A parent has zero or more child records; each child has one parent unless its reference is marked nullable. Lines summarize table relationships; FK fields show the complete key mapping. The draw.io source uses editable table text and relationship lines. The PNGs use the same schema definitions, but were generated separately rather than exported by the draw.io application; editor rendering still needs checking.
+PK means primary key, FK means foreign key, and UQ means unique constraint. A parent has zero or more child records; each child has one parent unless its reference is marked nullable. Lines summarize table relationships; FK fields show the complete key mapping. The draw.io source uses editable table text and relationship lines. The PNGs use the same schema definitions, but were generated separately rather than exported by the draw.io application; all three ER pages were opened and visually checked in draw.io on 20 October 2026.
 
 ## Tables and relationships
 

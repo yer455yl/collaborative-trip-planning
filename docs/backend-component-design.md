@@ -6,7 +6,7 @@ This proposed design describes Yerassyl's backend and database contribution. It 
 
 ![Backend components](../diagrams/backend-components.png)
 
-[Editable draw.io source](../diagrams/backend-components.drawio). The source XML has been parsed and the PNG visually checked. The PNG was generated from the same definitions rather than exported through draw.io; editor rendering still needs verification. This is a component-oriented backend view, not a complete deployment diagram or the final whole-system Component Diagram.
+[Editable draw.io source](../diagrams/backend-components.drawio). The source XML has been parsed and the PNG visually checked. The PNG was generated from the same definitions rather than exported through draw.io; the source was also opened and visually checked in draw.io on 20 October 2026. This is a component-oriented backend view, not a complete deployment diagram or the final whole-system Component Diagram.
 
 ## Responsibilities
 

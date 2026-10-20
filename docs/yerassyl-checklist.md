@@ -7,7 +7,8 @@ Based on the Work Plan until 20 October 2026. Dates below are the original deadl
 - [x] Prepare src, docs, diagrams, tests, config and .gitignore locally.
 - [x] Create the GitHub repository and upload the initial structure.
 - [x] Verify that the structure is present on GitHub.
-- [ ] Grant access to all team members and the supervisor, then verify their access. Deferred at Yerassyl's request.
+- [x] Verify accepted collaborator access for shauzatov and Zukhra2409 in GitHub settings.
+- [ ] Grant and verify supervisor access.
 
 ## Literature — deadlines 15 and 17 October
 
@@ -25,7 +26,8 @@ Based on the Work Plan until 20 October 2026. Dates below are the original deadl
 - [x] Document the rationale for the proposed technology choices in backend-technology-comparison.md.
 - [ ] Agree on the choices with the team and perform the proposed proof of concept.
 - [x] Prepare the System Context Diagram as editable draw.io source and PNG in diagrams/.
-- [ ] Open the source in draw.io to verify editor rendering and review the diagram against final requirements.
+- [x] Open the System Context source and visually verify its rendering in draw.io.
+- [ ] Review the diagram against the final team requirements.
 
 ## Architecture and database — deadline 19 October
 
@@ -34,7 +36,8 @@ Based on the Work Plan until 20 October 2026. Dates below are the original deadl
 - [ ] Check consistency between all diagrams and the final requirements.
 - [x] Prepare the initial ER model: users, trips, participants, plan items, votes, comments, chat messages, posts, expenses and places; add expense_splits for individual shares.
 - [x] Save editable ER source and three PNG domain views in diagrams/; document constraints and assumptions in database-design.md.
-- [ ] Verify ER source rendering in draw.io and review the model with the team. No database has been deployed or tested.
+- [x] Open and visually verify all three ER pages and the backend component page in draw.io.
+- [ ] Review the ER model with the team. No database has been deployed or tested.
 - [x] Prepare the server-testing contribution with test cases, expected outcomes, measurement procedures and evidence requirements in server-testing-plan.md. Tests have not been executed.
 - [ ] Review permissions and metric targets with the team and help Zukhra integrate server checks into the final verification and evaluation plan.
 

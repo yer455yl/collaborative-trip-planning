@@ -4,7 +4,7 @@
 
 ![System Context Diagram](system-context.png)
 
-Open `system-context.drawio` in diagrams.net using **File → Open From → Device** to edit the diagram. `system-context.png` is the matching preview generated from the same node and relationship definitions. The source XML has been parsed successfully and the PNG visually inspected; rendering in the draw.io editor has not yet been verified.
+Open `system-context.drawio` in diagrams.net using **File → Open From → Device** to edit the diagram. `system-context.png` is the matching preview generated from the same node and relationship definitions. The source XML has been parsed successfully and the PNG visually inspected; all five pages across the three source files were opened and visually checked in the draw.io editor on 20 October 2026.
 
 The diagram describes the proposed system, not a deployed implementation. The organizer creates trips and manages members; participants contribute according to their assigned permissions. The web client, mobile client, shared backend, database and identity functions are inside one logical software-system boundary. Internal components will be detailed separately in the Component Diagram.
 
