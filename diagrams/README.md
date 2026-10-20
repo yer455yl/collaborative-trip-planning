@@ -13,3 +13,13 @@ The external AI service returns draft plans or suggested changes. The applicatio
 Supabase is a proposed implementation platform within the system boundary, so it is not shown as a separate user-facing external system. Weather, events and other integrations will be added only when requirements and providers are confirmed. Wanderlog is a product reference, not an API dependency.
 
 The diagram follows the supplied work plan and the team's confirmation that both web and mobile clients are in scope. Check it against the final requirements with Zukhra and Sayakhat before marking architecture review complete.
+
+## Database ER Diagram
+
+Open [database-er.drawio](database-er.drawio) for three editable domain pages. PNG previews:
+
+- [Membership and expenses](er-membership-expenses.png)
+- [Itinerary and voting](er-itinerary-voting.png)
+- [Communication and community](er-communication-community.png)
+
+See [database design](../docs/database-design.md) for keys, constraints, access rules and assumptions. This is a proposed schema; no database has been deployed. PNGs and editable pages share schema definitions but PNGs were generated separately, not exported through draw.io.
