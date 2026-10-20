@@ -23,3 +23,11 @@ Open [database-er.drawio](database-er.drawio) for three editable domain pages. P
 - [Communication and community](er-communication-community.png)
 
 See [database design](../docs/database-design.md) for keys, constraints, access rules and assumptions. This is a proposed schema; no database has been deployed. PNGs and editable pages share schema definitions but PNGs were generated separately, not exported through draw.io.
+
+## Backend Component Diagram
+
+- [PNG preview](backend-components.png)
+- [Editable draw.io source](backend-components.drawio)
+- [Responsibilities and workflows](../docs/backend-component-design.md)
+
+This is the backend/database contribution for the team's combined Component Diagram. Client internals and the map integration still need team integration. No deployment or runtime validation is implied.

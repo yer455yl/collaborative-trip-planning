@@ -29,7 +29,8 @@ Based on the Work Plan until 20 October 2026. Dates below are the original deadl
 
 ## Architecture and database — deadline 19 October
 
-- [ ] Prepare the Component Diagram with Zukhra, covering backend, database and integration.
+- [x] Prepare the backend/database component contribution as draw.io source, PNG and a workflow document (backend-component-design.md).
+- [ ] Integrate the contribution with Zukhra's overall Component Diagram and confirm client/map/AI interfaces with Sayakhat.
 - [ ] Check consistency between all diagrams and the final requirements.
 - [x] Prepare the initial ER model: users, trips, participants, plan items, votes, comments, chat messages, posts, expenses and places; add expense_splits for individual shares.
 - [x] Save editable ER source and three PNG domain views in diagrams/; document constraints and assumptions in database-design.md.
