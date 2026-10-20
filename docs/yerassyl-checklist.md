@@ -35,7 +35,8 @@ Based on the Work Plan until 20 October 2026. Dates below are the original deadl
 - [x] Prepare the initial ER model: users, trips, participants, plan items, votes, comments, chat messages, posts, expenses and places; add expense_splits for individual shares.
 - [x] Save editable ER source and three PNG domain views in diagrams/; document constraints and assumptions in database-design.md.
 - [ ] Verify ER source rendering in draw.io and review the model with the team. No database has been deployed or tested.
-- [ ] Help Zukhra integrate server checks into the verification and evaluation plan. Candidate checks exist in the backend and database documents but are not yet the team's final test plan.
+- [x] Prepare the server-testing contribution with test cases, expected outcomes, measurement procedures and evidence requirements in server-testing-plan.md. Tests have not been executed.
+- [ ] Review permissions and metric targets with the team and help Zukhra integrate server checks into the final verification and evaluation plan.
 
 ## Shared responsibilities
 
