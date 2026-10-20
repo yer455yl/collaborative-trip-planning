@@ -1,6 +1,21 @@
 # Yerassyl's Sources and Preliminary Literature Review
 
-Sources checked on 20 October 2026. Focus: tourist itinerary optimization and backend support for a collaborative mobile application.
+Sources checked on 20 October 2026. Focus: tourist itinerary optimization and backend support for collaborative web and mobile applications. The team confirmed both delivery platforms; the original work plan specifies a mobile application, so the proposal and requirements should be reconciled with this expanded scope.
+
+## Relationship to Wanderlog and the project scope
+
+The team identified Wanderlog as a product reference. Its [official website](https://wanderlog.com/) and [help center](https://help.wanderlog.com/hc/en-us), checked on 20 October 2026, describe itinerary and map views, collaboration, budgeting and expense splitting. These pages provide evidence for an existing-system comparison; they are not scientific publications and do not reveal Wanderlog's internal architecture or algorithms.
+
+The selected literature does not need to mention Wanderlog. It should support the problems and methods addressed by our own system.
+
+| Project concern | Relevant source | What the source supports |
+|---|---|---|
+| Selecting places and ordering visits within constraints | Ruiz-Meza and Montoya-Torres | Problem formulation and classification of optimization methods |
+| Feasible schedules and travel between places | Adamo et al. | Travel times, visit durations and opening-hour constraints |
+| Updating an existing itinerary | Hu et al. | A two-stage optimization concept; adaptation to user edits is our design interpretation |
+| Sharing trip updates between web and mobile clients | Supabase and Firebase documentation | Candidate synchronization mechanisms, without a final technology choice |
+
+The current sources do not establish usability benefits of a Wanderlog-like interface, the effectiveness of expense splitting, group consensus or AI assistance. Those topics need the team's other sources and user research. Crowd-aware optimization is optional research context unless suitable local data and a requirement are established. No claim is made that Wanderlog uses the cited methods, Supabase or Firebase.
 
 Five sources have been selected: three scientific publications and two official technical guides. Technical documentation does not count as a scientific publication. To meet the team's requirement of at least eight scientific publications, combine this list with Zukhra's and Sayakhat's sources and remove duplicates. Client frameworks remain part of Sayakhat's separate technology comparison.
 
