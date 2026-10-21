@@ -5,7 +5,7 @@
 **First pre-defense:** 24 October 2026  
 **Status updated:** 20 October 2026
 
-A proposed cross-platform mobile application that helps travelers create a personalized, budget-aware, day-by-day itinerary and plan a trip together. The initial destination is **Astana, Kazakhstan**. The intended product combines an itinerary and map, group decisions, optional expense splitting, and an AI assistant that proposes changes for user confirmation.
+A proposed cross-platform mobile application (Android and iOS) with a web version built from the same codebase that helps travelers create a personalized, budget-aware, day-by-day itinerary and plan a trip together. The initial destination is **Astana, Kazakhstan**. The intended product combines an itinerary and map, group decisions, optional expense splitting, and an AI assistant that proposes changes for user confirmation.
 
 **Current stage: analysis and design.** This repository contains project documents, preliminary research, architecture diagrams and a proposed server test plan. It does not yet contain a runnable application, a deployed backend or executed application test results. Features below describe intended functionality.
 
@@ -27,9 +27,9 @@ Research is planned around a Russian- and Kazakh-language survey of Astana resid
 
 ## Aim and Expected Outcomes
 
-The aim is to design, implement and evaluate a mobile application that generates a personalized itinerary for Astana and supports collaborative planning within a defined budget.
+The aim is to design, implement and evaluate a mobile application with a web version that generates a personalized itinerary for Astana and supports collaborative planning within a defined budget.
 
-Expected deliverables are an Android/iOS test application with a backend, a curated Astana places catalog, the implemented planning and collaboration workflows, and evaluation results supported by test evidence. Requirements, architecture, research and technical documentation form part of the diploma deliverables.
+Expected deliverables are an Android/iOS test application and a web version with a shared backend, a curated Astana places catalog, the implemented planning and collaboration workflows, and evaluation results supported by test evidence. Requirements, architecture, research and technical documentation form part of the diploma deliverables.
 
 ### Planned Features
 
@@ -52,7 +52,7 @@ These features require prioritization and acceptance criteria in the final requi
 ### Diploma Product
 
 - Astana as the initial destination, with curated places and local recommendations.
-- One mobile codebase targeting Android and iOS, distributed as test builds.
+- One Flutter codebase targeting Android, iOS and the web; mobile builds distributed as test builds and the web version deployed to a test address.
 - Itinerary generation, editing, budget estimates, map and collaborative planning.
 - AI assistance, optional expense splitting, community content, weather/events and offline access, delivered in stages according to agreed priorities.
 - Intended interface languages: English, Russian and Kazakh.
@@ -63,7 +63,7 @@ These features require prioritization and acceptance criteria in the final requi
 - In-app booking, payments, flights and intercity transport planning.
 - Publication in the App Store or Google Play.
 
-**Platform decision to reconcile:** the [project proposal](project-proposal.docx) explicitly excludes a web version, while the backend documents and diagrams assume both web and mobile clients. Android/iOS are the proposal baseline; web delivery remains an unresolved scope inconsistency until the team updates the proposal, requirements and diagrams together.
+**Platform decision:** the team confirmed a mobile application (Android and iOS) as the primary client and a web version built from the same Flutter codebase and sharing the same backend. The [project proposal](docs/project-proposal.docx), [topic report](docs/topic-report.docx), [client technology comparison](docs/technology-comparison-client-ai.docx) and [UX descriptions](docs/ux-screen-descriptions.docx) were updated accordingly; the requirements specification must also cover both clients.
 
 The first pre-defense concerns analysis, design and planning. A complete application is not required at this stage.
 
@@ -83,11 +83,11 @@ Integration, testing, review and bug fixing are shared responsibilities. These r
 
 ### Selected in the Client/AI Design
 
-The [client, AI and maps comparison](technology-comparison-client-ai.docx) records these choices for implementation. They have not yet been validated in a working application.
+The [client, AI and maps comparison](docs/technology-comparison-client-ai.docx) records these choices for implementation. They have not yet been validated in a working application.
 
 | Area | Documented choice | Validation still needed |
 | --- | --- | --- |
-| Mobile client | **Flutter / Dart** | Create the application and verify required packages and Android/iOS builds. |
+| Mobile and web clients | **Flutter / Dart** | Create the application and verify required packages and Android, iOS and web builds. |
 | AI approach | **Cloud LLM API + curated places + budget, route and validation code** | Select a provider/model and evaluate quality, latency and cost. |
 | Map and routing | **Google Maps Platform** | Verify API access, Astana coverage, required data, quotas and cost. |
 
@@ -99,7 +99,7 @@ The [backend comparison](docs/backend-technology-comparison.md) recommends **Sup
 
 | Area | Alternatives or unresolved choice |
 | --- | --- |
-| Mobile framework | React Native; native Kotlin and Swift, compared with Flutter. |
+| Client framework | React Native; native Kotlin and Swift, compared with Flutter. |
 | Backend | Firebase Authentication/Firestore; a custom Node.js API with PostgreSQL, compared with Supabase. |
 | Communication | Managed listeners, REST and custom WebSocket delivery; a custom WebSocket service is deferred in the proposed architecture. |
 | AI | Self-hosted open-source models and a rule-based approach; the cloud provider/model remains undecided. |
@@ -107,11 +107,11 @@ The [backend comparison](docs/backend-technology-comparison.md) recommends **Sup
 | Weather and events | Providers, reliable Astana coverage and collection/update methods remain to be agreed. |
 | Offline storage | Hive or SQLite are examples in the topic report; no library or synchronization implementation has been selected. |
 
-Git/GitHub are used for version control and pull requests; diagrams.net/draw.io files hold editable diagrams. YouTrack is the designated task tracker. Figma and Google Forms are planned design/research tools; the repository does not yet publish a Figma prototype link or completed survey evidence.
+Git/GitHub are used for version control and pull requests; diagrams.net/draw.io files hold editable diagrams. YouTrack is the designated task tracker. Wireframe mockups are published as PNG files in `docs/ux/`; a clickable Figma prototype and completed survey evidence are not yet published.
 
 ## Proposed Architecture
 
-The intended system consists of a mobile client, shared backend/database, trusted AI operations and external map, weather and event integrations.
+The intended system consists of mobile and web clients built from one codebase, shared backend/database, trusted AI operations and external map, weather and event integrations.
 
 The AI design uses stored place candidates rather than accepting arbitrary model-generated places. Code is responsible for checking estimated costs, opening hours and schedule feasibility. AI output is a draft; the backend must validate it and obtain user confirmation before applying changes to the saved itinerary. Provider credentials remain server-side.
 
@@ -125,14 +125,14 @@ Status below reflects the checked `main` branch on **20 October 2026**. A docume
 
 | Deliverable | Repository evidence and remaining work |
 | --- | --- |
-| Proposal and topic report | Present as root-level Word documents; reconcile platform scope and final requirements. |
-| Existing-system comparison | Five systems and eight criteria documented; further evidence collection is explicitly pending. |
+| Proposal and topic report | Present in `docs/`; platform scope confirmed (mobile and web); final requirements pending. |
+| Existing-system comparison | Five systems and eight criteria documented; first screenshots of similar AI planners are in [docs/evidence/](docs/evidence/); screenshots of generated plans for Astana are still pending. |
 | Technology comparisons | Client/AI/maps and backend comparisons present; backend confirmation, API coverage and proof of concept remain open. |
-| Literature | Yerassyl's preliminary review is in `docs/`; Sayakhat's contribution is inside `DIP-upload.zip`. A consolidated review meeting the 12-source/8-scientific-publication requirement is not yet published as a standalone deliverable. |
+| Literature | Yerassyl's and Sayakhat's contributions are in `docs/`. A consolidated review meeting the 12-source/8-scientific-publication requirement is not yet published as a standalone deliverable. |
 | User research | `docs/research/` contains only a placeholder; survey analysis and anonymized interview findings are not published there. |
 | Requirements | The topic report lists initial functional/non-functional requirements; a complete prioritized specification with acceptance criteria is not yet present. |
 | Architecture | Editable system context, backend component and three-page ER sources with PNG previews are present. A Use Case Diagram and integrated whole-system Component Diagram remain outstanding. |
-| UX/prototype | Screen/scenario descriptions exist inside `DIP-upload.zip`; no Figma link or screen PNG exports are published separately. Descriptions are not a clickable prototype. |
+| UX/prototype | Screen/scenario descriptions are in [docs/ux-screen-descriptions.docx](docs/ux-screen-descriptions.docx); black-and-white wireframes of 13 mobile screens and 3 web screens are in [docs/ux/](docs/ux/) (overview: [ux-overview-mobile.png](docs/ux/ux-overview-mobile.png)). The wireframes are static, not a clickable prototype. |
 | Verification | A proposed server plan with 25 cases is present. The overall evaluation plan still needs integration; no application tests have been run. |
 | Management and supervision | Roles, milestones and risks are documented. Supervisor feedback and a comment-to-action record are not published in the repository. |
 | Implementation | `src/`, `tests/` and `config/` contain placeholders only. No runnable project, dependency manifest, database migrations or CI workflow is present. |
@@ -142,26 +142,27 @@ Some contribution checklists and handoff notes still describe earlier branch/PR 
 
 ## Documentation
 
-Links below resolve from this README at the repository root. Several Word documents currently live at the root, rather than in `docs/`.
+Links below resolve from this README at the repository root.
 
 | Document | Location |
 | --- | --- |
-| Project proposal and scope | [project-proposal.docx](project-proposal.docx) |
-| Project topic report and initial requirements | [topic-report.docx](topic-report.docx) |
-| Existing-system comparison | [existing-system-comparison.docx](existing-system-comparison.docx) |
-| Client, AI and maps technology comparison | [technology-comparison-client-ai.docx](technology-comparison-client-ai.docx) |
+| Project proposal and scope | [project-proposal.docx](docs/project-proposal.docx) |
+| Project topic report and initial requirements | [topic-report.docx](docs/topic-report.docx) |
+| Existing-system comparison | [existing-system-comparison.docx](docs/existing-system-comparison.docx) |
+| Client, AI and maps technology comparison | [technology-comparison-client-ai.docx](docs/technology-comparison-client-ai.docx) |
 | Backend and communication technology comparison | [backend-technology-comparison.md](docs/backend-technology-comparison.md) |
 | Preliminary literature contribution — Yerassyl | [yerassyl-literature-review.md](docs/yerassyl-literature-review.md) |
-| AI module design | [ai-module-design.docx](ai-module-design.docx) |
+| AI module design | [ai-module-design.docx](docs/ai-module-design.docx) |
 | Database design | [database-design.md](docs/database-design.md) |
 | Backend component responsibilities and workflows | [backend-component-design.md](docs/backend-component-design.md) |
 | Proposed server verification and evaluation plan | [server-testing-plan.md](docs/server-testing-plan.md) |
-| Project management, milestones and risks | [project-management-and-risks.docx](project-management-and-risks.docx) |
+| Project management, milestones and risks | [project-management-and-risks.docx](docs/project-management-and-risks.docx) |
 | Diagram sources and previews | [diagrams/README.md](diagrams/README.md) |
 | Backend handoff and remaining contribution tasks | [team-handoff.md](docs/team-handoff.md) · [yerassyl-checklist.md](docs/yerassyl-checklist.md) |
-| Uploaded document bundle | [DIP-upload.zip](DIP-upload.zip) |
-
-The ZIP contains `DIP-upload/docs/literature/literature-review-sayakhat.docx` and `DIP-upload/docs/ux/ux-screen-descriptions.docx`, alongside copies of other documents. These two files must be extracted to read them; their archive paths are not standalone repository links.
+| Literature contribution — Sayakhat (LLMs for travel planning, AI acceptance) | [literature-review-sayakhat.docx](docs/literature-review-sayakhat.docx) |
+| UX key screens and scenarios | [ux-screen-descriptions.docx](docs/ux-screen-descriptions.docx) |
+| UX wireframes (13 mobile + 3 web screens) | [docs/ux/](docs/ux/) · [overview](docs/ux/ux-overview-mobile.png) |
+| Evidence: screenshots of similar applications | [docs/evidence/](docs/evidence/) |
 
 ## Repository Structure
 
@@ -173,6 +174,14 @@ The ZIP contains `DIP-upload/docs/literature/literature-review-sayakhat.docx` an
 ├── tests/                                # Automated-test placeholder
 ├── config/                               # Configuration placeholder
 ├── docs/
+│   ├── project-proposal.docx
+│   ├── topic-report.docx
+│   ├── existing-system-comparison.docx
+│   ├── technology-comparison-client-ai.docx
+│   ├── ai-module-design.docx
+│   ├── project-management-and-risks.docx
+│   ├── literature-review-sayakhat.docx
+│   ├── ux-screen-descriptions.docx
 │   ├── backend-component-design.md
 │   ├── backend-technology-comparison.md
 │   ├── database-design.md
@@ -181,23 +190,16 @@ The ZIP contains `DIP-upload/docs/literature/literature-review-sayakhat.docx` an
 │   ├── yerassyl-checklist.md
 │   ├── yerassyl-literature-review.md
 │   └── research/                         # Research-results placeholder
-├── diagrams/
-│   ├── README.md
-│   ├── system-context.drawio
-│   ├── system-context.png
-│   ├── backend-components.drawio
-│   ├── backend-components.png
-│   ├── database-er.drawio                # Three editable pages
-│   ├── er-membership-expenses.png
-│   ├── er-itinerary-voting.png
-│   └── er-communication-community.png
-├── project-proposal.docx
-├── topic-report.docx
-├── existing-system-comparison.docx
-├── technology-comparison-client-ai.docx
-├── ai-module-design.docx
-├── project-management-and-risks.docx
-└── DIP-upload.zip
+└── diagrams/
+    ├── README.md
+    ├── system-context.drawio
+    ├── system-context.png
+    ├── backend-components.drawio
+    ├── backend-components.png
+    ├── database-er.drawio                # Three editable pages
+    ├── er-membership-expenses.png
+    ├── er-itinerary-voting.png
+    └── er-communication-community.png
 ```
 
 Placeholder directories are retained with `.gitkeep` files.
