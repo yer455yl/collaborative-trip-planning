@@ -28,7 +28,7 @@ Both clients are required to implement trip creation, list/map views, voting, co
 | Data API and access policies | Membership-scoped ordinary reads and permitted writes. | REST/HTTPS, explicit grants and Supabase/PostgreSQL RLS. Protected invariants cannot be bypassed through direct table writes. |
 | Trusted operations | Trip/membership commands, itinerary confirmation, expenses and AI requests. | Authorize actor/action, validate inputs, call providers and commit multi-record updates atomically. Recheck business rules even with privileged database access. |
 | Planning pipeline | Candidate filtering, LLM request, budget calculation, route ordering and validation. | Returns a typed draft or structured failure; never trusts model text as a catalog, price list or authorization decision. |
-| Database | Authoritative shared state, constraints and history. | Start from the existing 11-table logical model. Add reviewed invitation/draft/report/media models as needed; no migrations currently exist. |
+| Database | Authoritative shared state, constraints and history. | The revised 15-table logical model adds invitations, AI proposals, events and post reports, plus catalog/feed fields. See schema-alignment.md; no migrations currently exist. |
 | Realtime | Notify authorized clients of committed changes. | Not durable history. Refresh authoritative state after reconnect or membership changes; deduplicate by ID/version. |
 | Maps/route adapter | Map rendering and route/travel-time integration. | Google Maps is the client comparison's choice pending API/coverage checks. Protect restricted credentials; disclose missing routes. |
 | LLM provider adapter | Structured planning/assistant responses. | Server-held secret, bounded request, controlled error/timeout, no direct database access. Provider/model not yet selected. |
@@ -89,6 +89,6 @@ The use-case diagram summarizes goals. It deliberately omits automatic “includ
 
 - Review the resolved scope/selection records D-01/D-05 and agree the remaining D-02/03/04/06/07/08 policies; update affected AI/backend/UX materials together.
 - Map every Must requirement to an acceptance case and component; preserve IDs during revision.
-- Agree invitation, moderation, catalog freshness, expense and AI draft schema extensions.
+- Review the schema-alignment.md contracts for invitations, moderation, catalog freshness, expenses and versioned AI drafts.
 - Verify selected Supabase authorization, transaction, live-update and reconnect behavior in a proof of concept.
 - Record actual reviewer/supervisor comments and resulting changes; do not describe this draft as approved.

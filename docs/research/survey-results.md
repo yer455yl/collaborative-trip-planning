@@ -6,7 +6,7 @@
 
 ## 1. Purpose and Method
 
-The Russian/Kazakh questionnaire collects residents' place suggestions, travel-planning practices, reported group-planning difficulties and perceived usefulness of proposed features. Its title is “Астана тұрғындарының пікірі / Мнение жителей Астаны”. The visible summary showed 15 responses when inspected on 22 October 2026. This is a snapshot, not a claim that collection has closed. Actual launch/closing dates and recruitment reach have not been established from the summary.
+The Russian/Kazakh questionnaire collects residents' place suggestions, travel-planning practices, reported group-planning difficulties and perceived usefulness of proposed features. The form title is translated here as “Opinions of Astana Residents”. The aggregate JSON uses English translations of the original questionnaire labels; counts are unchanged. The visible summary showed 15 responses when inspected on 22 October 2026. This is a snapshot, not a claim that collection has closed. Actual launch/closing dates and recruitment reach have not been established from the summary.
 
 Counts were transcribed from the visible chart data tables and cross-checked for totals. Public evidence contains only aggregated counts and a normalized candidate-place list. Names, contacts, individual timestamps, account details, response-sheet links and participant-level answers are not included. The [aggregate data file](survey-aggregate-data.json) supports checking the calculations. Interviews are not used in this report.
 

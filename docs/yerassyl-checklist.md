@@ -1,53 +1,43 @@
-# Yerassyl's Tasks by 20 October 2026
+# Yerassyl's Contribution Checklist
 
-Based on the Work Plan until 20 October 2026. Dates below are the original deadlines, not claims that tasks were completed on time. Status reflects the artifacts currently available in the literature-review branch. Prepared designs still require team review; unchecked items remain incomplete or unverified.
+Updated 22 October 2026 against current repository artifacts. Original work-plan deadlines were 15–20 October; this checklist does not claim on-time delivery. Checked items mean a deliverable exists, not that it is approved, implemented or tested.
 
-## Repository — deadline 15 October
+## Repository and Collaboration
 
-- [x] Prepare src, docs, diagrams, tests, config and .gitignore locally.
-- [x] Create the GitHub repository and upload the initial structure.
-- [x] Verify that the structure is present on GitHub.
-- [x] Verify accepted collaborator access for shauzatov and Zukhra2409 in GitHub settings.
-- [ ] Grant and verify supervisor access.
+- [x] Create repository and initial src/docs/diagrams/tests/config structure.
+- [x] Verify accepted collaborator access for shauzatov and Zukhra2409 during the 20 October session.
+- [x] Submit initial backend/research contribution through PR #1; it is merged.
+- [ ] Verify supervisor access and actual review feedback.
+- [ ] Obtain another member's review of the current schema-alignment PR before merging.
+- [ ] Link accepted evidence to relevant YouTrack tasks and mark Fixed only where criteria are met.
 
-## Literature — deadlines 15 and 17 October
+## Literature and Technology
 
-- [x] Select five initial sources: three scientific publications on itinerary optimization and two official backend technical guides. See yerassyl-literature-review.md.
-- [ ] Confirm source coverage with the team, including any additional mobile-technology research. The combined list must contain at least 12 sources, including eight scientific publications.
-- [x] Prepare a preliminary review and publication-analysis table with authors, year, approach, findings, limitations and project relevance.
-- [ ] Complete full-text reading and verify findings and limitations. Some entries currently rely on abstracts or indexed excerpts.
-- [x] Save the preliminary materials in docs/.
-- [ ] Deliver the reviewed contribution to Zukhra for integration and remove duplicate references across the team.
+- [x] Prepare five initial sources (three scientific publications and two official technical guides) with analysis and limitations.
+- [x] Integrate the contribution by reference in the common literature review; the common review is present in main.
+- [ ] Complete and personally verify outstanding full-text reading; prepare to explain each cited source.
+- [x] Compare Firebase, Supabase, Node.js/PostgreSQL and REST/Realtime/WebSocket.
+- [x] Record the confirmed selection: Supabase shared by Flutter mobile and web.
+- [ ] Run the authorization/transaction/reconnect proof of concept.
 
-## Technology and system context — deadline 17 October
+## Architecture, Data and Verification
 
-- [x] Compare Firebase, Supabase and Node.js with PostgreSQL.
-- [x] Compare managed real-time listeners, REST API and WebSocket.
-- [x] Document the rationale for the proposed technology choices in backend-technology-comparison.md.
-- [ ] Agree on the choices with the team and perform the proposed proof of concept.
-- [x] Prepare the System Context Diagram as editable draw.io source and PNG in diagrams/.
-- [x] Open the System Context source and visually verify its rendering in draw.io.
-- [ ] Review the diagram against the final team requirements.
+- [x] Provide editable System Context and backend Component diagrams with PNGs.
+- [x] Integrate backend boundaries by reference in the overall Component/Use Case document now present in main.
+- [x] Prepare the initial ER model and its domain views.
+- [x] Revise the logical model with traveler count/type/interests, preferred language, catalog fields, item type, events, AI proposals, invitations and place-linked posts/reports.
+- [x] Align database/UI roles: owner = Organizer, editor = Participant; viewer deferred.
+- [x] Provide a reproducible field inventory and four-page editable ER source with PNG previews.
+- [x] Map server verification cases to FR/NFR IDs; extend 25 initial cases to 32 for the revised schema.
+- [x] Connect server checks to the overall evaluation plan, including client generation timing, budget, SUS and manual comparison protocols.
+- [ ] Obtain team review of detailed schema, media/moderation/freshness policies, AI/UX confirmation flow and metric targets.
+- [ ] Implement migrations, RLS, trusted commands and clients; execute the planned tests. No implementation is claimed here.
 
-## Architecture and database — deadline 19 October
+## Shared Readiness
 
-- [x] Prepare the backend/database component contribution as draw.io source, PNG and a workflow document (backend-component-design.md).
-- [ ] Integrate the contribution with Zukhra's overall Component Diagram and confirm client/map/AI interfaces with Sayakhat.
-- [ ] Check consistency between all diagrams and the final requirements.
-- [x] Prepare the initial ER model: users, trips, participants, plan items, votes, comments, chat messages, posts, expenses and places; add expense_splits for individual shares.
-- [x] Save editable ER source and three PNG domain views in diagrams/; document constraints and assumptions in database-design.md.
-- [x] Open and visually verify all three ER pages and the backend component page in draw.io.
-- [ ] Review the ER model with the team. No database has been deployed or tested.
-- [x] Prepare the server-testing contribution with test cases, expected outcomes, measurement procedures and evidence requirements in server-testing-plan.md. Tests have not been executed.
-- [ ] Review permissions and metric targets with the team and help Zukhra integrate server checks into the final verification and evaluation plan.
+- [x] Locate requirements, Use Case/overall Component sources, survey aggregates and combined literature in the current repository.
+- [ ] Complete comparable Astana competitor-output evidence and verify remaining team deliverables against the work plan.
+- [ ] Verify actual supervisor review and release readiness. Existing tag prob-period-1 is not evidence that all checks passed.
+- [ ] Record personal research participation accurately. Existing survey results do not prove my involvement; interviews are not used in the current submission.
 
-## Shared responsibilities
-
-- [ ] Help distribute the survey and conduct interviews.
-- [ ] Review the complete README, documents, YouTrack link and contributions from every member.
-- [ ] Create and close the relevant YouTrack tasks when the project is available.
-- [x] Open Pull Request #1 and request review from Zukhra2409 and shauzatov.
-- [ ] Address review feedback and obtain teammate review before merging the working branch into main.
-- [ ] Prepare the pre-defense-1 tag with the team after final review.
-
-Each member commits from their own account. Include the real YouTrack task ID in future branch names and commit messages when available. Yerassyl authorized the initial work without IDs while YouTrack is unavailable. Submit changes through Pull Requests and obtain another member's review before merging. Do not commit secrets or respondents' personal data.
+All project documentation is maintained in English. Each member must use their own account and record their actual contribution. Do not manufacture authorship, reviews, research responses, reading completion or passing test results.

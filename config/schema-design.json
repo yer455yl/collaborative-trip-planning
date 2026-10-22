@@ -1,0 +1,292 @@
+{
+  "status": "Proposed logical design; not a migration or deployed database",
+  "tables": {
+    "users": [
+      "PK id: uuid (Supabase Auth ID)",
+      "display_name: text",
+      "preferred_language: en | ru | kk",
+      "created_at: timestamptz"
+    ],
+    "trips": [
+      "PK id: uuid",
+      "title: text; destination: text",
+      "start_date: date; end_date: date",
+      "travelers_count: integer (> 0)",
+      "trip_type: text; trip_interests: text[]",
+      "budget: numeric(12,2); currency: char(3)",
+      "expenses_enabled: boolean",
+      "time_zone: text (IANA)",
+      "version: integer; created_at: timestamptz"
+    ],
+    "participants": [
+      "PK (trip_id, user_id)",
+      "FK trip_id -> trips.id",
+      "FK user_id -> users.id",
+      "role: owner | editor",
+      "UI: Organizer | Participant",
+      "joined_at: timestamptz; left_at: timestamptz?"
+    ],
+    "places": [
+      "PK id: uuid",
+      "name: text; category: text",
+      "latitude: numeric; longitude: numeric",
+      "address: text; description: text?",
+      "is_indoor: boolean?; child_friendly: boolean?",
+      "opening_hours: jsonb; time_zone: text",
+      "estimated_cost: numeric(12,2)?",
+      "currency: char(3); cost_unit: text",
+      "duration_minutes: integer?",
+      "capacity_basis: integer?; cost_category: text",
+      "source_url: text; checked_at: timestamptz?",
+      "booking_url: text?; map_url: text?",
+      "is_active: boolean"
+    ],
+    "events": [
+      "PK id: uuid",
+      "FK place_id -> places.id",
+      "title: text; description: text?",
+      "starts_at: timestamptz; ends_at: timestamptz",
+      "estimated_cost: numeric(12,2)?",
+      "currency: char(3); cost_unit: text",
+      "source_url: text; checked_at: timestamptz?",
+      "status: scheduled | canceled | unverified"
+    ],
+    "plan_items": [
+      "PK id: uuid; UQ (trip_id, id)",
+      "FK trip_id -> trips.id",
+      "FK place_id -> places.id (nullable)",
+      "FK event_id -> events.id (nullable)",
+      "FK (trip_id, added_by) -> participants",
+      "item_type: place | event | custom",
+      "day_date: date; position: integer",
+      "title: text; starts_at: timestamptz?",
+      "duration_minutes: integer",
+      "estimated_cost: numeric(12,2)",
+      "cost_category: text; estimate_basis: jsonb",
+      "version: integer"
+    ],
+    "votes": [
+      "PK (plan_item_id, user_id)",
+      "FK (trip_id, plan_item_id) -> plan_items",
+      "FK (trip_id, user_id) -> participants",
+      "value: -1 | 1; created_at: timestamptz"
+    ],
+    "comments": [
+      "PK id: uuid",
+      "FK (trip_id, plan_item_id) -> plan_items",
+      "FK (trip_id, author_id) -> participants",
+      "body: text; created_at: timestamptz"
+    ],
+    "chat_messages": [
+      "PK id: uuid",
+      "FK trip_id -> trips.id",
+      "FK (trip_id, sender_id) -> participants",
+      "client_message_id: uuid",
+      "UQ (trip_id, sender_id, client_message_id)",
+      "body: text; created_at: timestamptz"
+    ],
+    "posts": [
+      "PK id: uuid",
+      "FK author_id -> users.id",
+      "FK place_id -> places.id",
+      "FK trip_id -> trips.id (nullable)",
+      "title: text; body: text",
+      "media_url: text?; media_alt: text?",
+      "estimated_cost: numeric(12,2)?; currency: char(3)?",
+      "best_time_to_visit: text?",
+      "status: draft | published | removed",
+      "visibility: private | public",
+      "created_at: timestamptz",
+      "updated_at: timestamptz; published_at: timestamptz?"
+    ],
+    "post_reports": [
+      "PK id: uuid; FK post_id -> posts.id",
+      "FK reporter_id -> users.id",
+      "UQ (post_id, reporter_id)",
+      "reason: text; status: open | resolved | dismissed",
+      "FK reviewed_by -> users.id (nullable)",
+      "resolution: text?; reviewed_at: timestamptz?",
+      "created_at: timestamptz"
+    ],
+    "expenses": [
+      "PK id: uuid; UQ (trip_id, id)",
+      "FK trip_id -> trips.id",
+      "FK (trip_id, paid_by) -> participants",
+      "FK (trip_id, created_by) -> participants",
+      "title: text; amount: numeric(12,2)",
+      "incurred_at: timestamptz; version: integer"
+    ],
+    "expense_splits": [
+      "PK (expense_id, user_id)",
+      "FK (trip_id, expense_id) -> expenses",
+      "FK (trip_id, user_id) -> participants",
+      "share: numeric(12,2)"
+    ],
+    "invitations": [
+      "PK id: uuid; FK trip_id -> trips.id",
+      "FK (trip_id, created_by) -> participants",
+      "token_hash: text (unique; no raw token)",
+      "role: editor",
+      "expires_at: timestamptz; revoked_at: timestamptz?",
+      "FK accepted_by -> users.id (nullable)",
+      "accepted_at: timestamptz?; created_at: timestamptz"
+    ],
+    "ai_proposals": [
+      "PK id: uuid; FK trip_id -> trips.id",
+      "FK (trip_id, requested_by) -> participants",
+      "base_version: integer; request_key: uuid",
+      "UQ (trip_id, requested_by, request_key)",
+      "proposed_items: jsonb; cost_breakdown: jsonb",
+      "validation_errors: jsonb",
+      "status: pending | ready | invalid | failed",
+      "        | confirmed | rejected | expired",
+      "expires_at: timestamptz; created_at: timestamptz",
+      "FK (trip_id, confirmed_by) -> participants?",
+      "confirmed_at: timestamptz?; applied_version: integer?"
+    ]
+  },
+  "pages": [
+    {
+      "name": "Membership and Expenses",
+      "file": "er-membership-expenses",
+      "tables": [
+        "users",
+        "trips",
+        "participants",
+        "invitations",
+        "expenses",
+        "expense_splits"
+      ],
+      "links": [
+        [
+          "users",
+          "participants"
+        ],
+        [
+          "trips",
+          "participants"
+        ],
+        [
+          "participants",
+          "invitations"
+        ],
+        [
+          "participants",
+          "expenses"
+        ],
+        [
+          "expenses",
+          "expense_splits"
+        ],
+        [
+          "participants",
+          "expense_splits"
+        ]
+      ]
+    },
+    {
+      "name": "Itinerary and Voting",
+      "file": "er-itinerary-voting",
+      "tables": [
+        "places",
+        "events",
+        "trips",
+        "plan_items",
+        "participants",
+        "votes"
+      ],
+      "links": [
+        [
+          "places",
+          "events"
+        ],
+        [
+          "places",
+          "plan_items"
+        ],
+        [
+          "events",
+          "plan_items"
+        ],
+        [
+          "trips",
+          "plan_items"
+        ],
+        [
+          "participants",
+          "plan_items"
+        ],
+        [
+          "plan_items",
+          "votes"
+        ],
+        [
+          "participants",
+          "votes"
+        ]
+      ]
+    },
+    {
+      "name": "Communication and Community",
+      "file": "er-communication-community",
+      "tables": [
+        "users",
+        "posts",
+        "post_reports",
+        "participants",
+        "chat_messages",
+        "comments"
+      ],
+      "links": [
+        [
+          "users",
+          "posts"
+        ],
+        [
+          "posts",
+          "post_reports"
+        ],
+        [
+          "users",
+          "post_reports"
+        ],
+        [
+          "participants",
+          "chat_messages"
+        ],
+        [
+          "participants",
+          "comments"
+        ]
+      ]
+    },
+    {
+      "name": "AI Proposals",
+      "file": "er-ai-proposals",
+      "tables": [
+        "trips",
+        "participants",
+        "ai_proposals",
+        "plan_items"
+      ],
+      "links": [
+        [
+          "trips",
+          "participants"
+        ],
+        [
+          "trips",
+          "ai_proposals"
+        ],
+        [
+          "participants",
+          "ai_proposals"
+        ],
+        [
+          "trips",
+          "plan_items"
+        ]
+      ]
+    }
+  ]
+}

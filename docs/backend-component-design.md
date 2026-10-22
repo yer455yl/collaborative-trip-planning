@@ -1,6 +1,6 @@
 # Backend Component Design
 
-This proposed design describes Yerassyl's backend and database contribution. It is intended for integration with Zukhra's overall architecture and Sayakhat's client and AI workflows. Supabase remains the recommended platform pending team review and the proof of concept described in the technology comparison. No services have been deployed.
+This proposed design describes Yerassyl's backend and database contribution. It is intended for integration with Zukhra's overall architecture and Sayakhat's client and AI workflows. Supabase is the selected shared backend for Flutter mobile and web. Authorization, transactions and reconnect recovery still require the proof of concept described in the technology comparison. No services have been deployed.
 
 ## Diagram
 
@@ -16,7 +16,7 @@ This proposed design describes Yerassyl's backend and database contribution. It 
 | Authentication | Managed sign-in and token issuance. Application profile IDs correspond to identity records; authentication does not automatically grant trip membership |
 | Data API | Policy-protected ordinary reads and writes through REST. Exposed tables require RLS and explicit grants. Complex operations must not be bypassed by direct table writes |
 | Trusted operations | Server functions authorize membership changes, expense updates, itinerary edits and AI requests. They invoke transactional database functions where multiple records must change atomically |
-| PostgreSQL | Stores the 11 application tables in the ER model and managed identity records separately. Enforces keys, constraints and policies; database functions implement atomic multi-record operations |
+| PostgreSQL | Stores the 15 application tables in the ER model and managed identity records separately. Enforces keys, constraints and policies; database functions implement atomic multi-record operations |
 | Realtime delivery | Sends permitted change notifications to subscribed clients after persistence. The database remains authoritative; subscriptions are not durable message history |
 | External AI provider | Receives a controlled planning request and returns untrusted draft content. Credentials stay in server configuration; the provider has no direct database access |
 
@@ -34,7 +34,7 @@ An active member sends a message with a stable client_message_id. The authorized
 
 ### Generating and confirming an AI plan
 
-The server checks the requester and trip, loads relevant places and constraints, and calls the AI provider. It validates the draft's place references, schedule and budget before returning it for preview. The existing saved itinerary remains unchanged. When the user confirms, the server rechecks permission and the current itinerary version and saves the valid changes atomically. Reject stale or invalid proposals. AI conversation and draft persistence are not part of the current ER schema and require an explicit extension if needed.
+The server checks the requester and trip, loads relevant places and constraints, and calls the AI provider. It validates the draft's place references, schedule and budget before returning it for preview. The existing saved itinerary remains unchanged. When the user confirms, the server rechecks permission and the current itinerary version and saves the valid changes atomically. Reject stale or invalid proposals. The revised ai_proposals table stores private structured drafts and confirmation outcomes. Confirmation and the itinerary version update occur in one trusted transaction; full conversation history remains outside this model.
 
 ### Membership and expenses
 
@@ -44,7 +44,7 @@ A protected operation handles accepted membership and ownership changes. Histori
 
 The System Context Diagram includes clients and backend inside one logical system boundary. This view expands only the backend part. The ER model supplies the application tables used by PostgreSQL. The technology comparison supplies the rationale for REST, managed subscriptions and PostgreSQL.
 
-The context diagram's maps/places provider is omitted here because this contribution does not finalize client map rendering or the provider integration. The team must add the chosen map integration to the combined component view; any private provider credentials and quotas require server-controlled access as appropriate. Wanderlog remains a product reference, not an integrated dependency.
+The context diagram's maps/places provider is omitted here because this contribution does not finalize client map rendering or the provider integration. The [overall component view](architecture-and-use-cases.md) now includes the map integration; any private provider credentials and quotas require server-controlled access as appropriate. Wanderlog remains a product reference, not an integrated dependency.
 
 ## Review and verification still required
 

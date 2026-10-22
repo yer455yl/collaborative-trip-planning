@@ -7,7 +7,7 @@ The [survey report](survey-results.md) explains the sample and limitations. The 
 
 ## Normalization Rules
 
-Merge obvious spelling/transliteration variants only: Baiterek/Bәйтерек/Байтерек; Khan Shatyr/Ханшатыр/Хан Шатыр; Botanical Garden/Бот сад/Ботаникалық бақ; Tary/Тары; Bahandi/Баханди; Kausar/Каусар/Кәусар; Ailand/Айлэнд. Preserve uncertain names rather than silently resolving a business or branch. Do not assume two similarly named parks or the EXPO area/museum are one identical venue.
+Merge only obvious spelling/transliteration variants of Baiterek, Khan Shatyr, Botanical Garden, Tary, Bahandi, Kausar and Ailand. Published labels use English transliteration. Preserve uncertain names rather than silently resolving a business or branch. Do not assume two similarly named parks or the EXPO area/museum are one identical venue.
 
 Suggestions are not proof that a place is open, affordable, child-friendly or suitable in bad weather. Validate the exact establishment/branch, address, coordinates, category, opening schedule, visit duration, cost unit/currency and source/check date before including a record in generation. For provider data, check usage/storage permissions before import. Do not copy a surveyed price range into every cafe's price field.
 

@@ -19,17 +19,20 @@ The diagram describes the proposed system, not a deployed implementation. The or
 
 The external AI service returns draft plans or suggested changes. The application must validate proposals and obtain user confirmation before saving them. The external maps and places service supplies map, place and routing information; specific providers and API coverage remain to be selected and checked. Bidirectional arrows summarize requests and responses rather than individual endpoints.
 
-Supabase is a proposed implementation platform within the system boundary, so it is not shown as a separate user-facing external system. Weather, events and other integrations will be added only when requirements and providers are confirmed. Wanderlog is a product reference, not an API dependency.
+Supabase is the selected implementation platform within the system boundary, so it is not shown as a separate user-facing external system. Weather, events and other integrations will be added only when requirements and providers are confirmed. Wanderlog is a product reference, not an API dependency.
 
 The diagram follows the supplied work plan and the team's confirmation that both web and mobile clients are in scope. Check it against the final requirements with Zukhra and Sayakhat before marking architecture review complete.
 
 ## Database ER Diagram
 
-Open [database-er.drawio](database-er.drawio) for three editable domain pages. PNG previews:
+Open [database-er.drawio](database-er.drawio) for four editable domain pages. PNG previews:
 
 - [Membership and expenses](er-membership-expenses.png)
 - [Itinerary and voting](er-itinerary-voting.png)
 - [Communication and community](er-communication-community.png)
+- [AI proposals](er-ai-proposals.png)
+
+The revised 15-table model is generated from [schema-design.json](../config/schema-design.json) using [render_schema_design.py](../scripts/render_schema_design.py). See [schema alignment](../docs/schema-alignment.md) for role, invitation, event, feed and confirmation contracts.
 
 See [database design](../docs/database-design.md) for keys, constraints, access rules and assumptions. This is a proposed schema; no database has been deployed. PNGs and editable pages share schema definitions but PNGs were generated separately, not exported through draw.io.
 
@@ -39,4 +42,4 @@ See [database design](../docs/database-design.md) for keys, constraints, access 
 - [Editable draw.io source](backend-components.drawio)
 - [Responsibilities and workflows](../docs/backend-component-design.md)
 
-This is the backend/database contribution for the team's combined Component Diagram. Client internals and the map integration still need team integration. No deployment or runtime validation is implied.
+This is the backend/database contribution for the team's combined Component Diagram. Client internals and the map integration are included in the overall Component view; interface review and implementation remain pending. No deployment or runtime validation is implied.

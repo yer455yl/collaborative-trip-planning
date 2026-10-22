@@ -1,10 +1,10 @@
 # Server Verification and Evaluation Plan
 
-Prepared contribution: Aman Yerassyl. Status: proposed test plan for integration into Zukhra's team evaluation document. No cases below have been executed; the backend is not yet implemented. Case IDs are local planning labels, not YouTrack IDs or finalized requirement IDs.
+Prepared contribution: Aman Yerassyl. Status: proposed server plan integrated by reference in the [team evaluation plan](verification-and-evaluation-plan.md). No cases below have been executed; the backend is not yet implemented. Case IDs are stable verification labels; the traceability table below maps them to requirement IDs.
 
 ## Purpose and scope
 
-Verify that the shared backend preserves private trip access, voting consistency, durable chat, balanced expenses and validated itinerary changes across web and mobile clients. The expected behavior follows the proposed [database design](database-design.md) and [backend component design](backend-component-design.md). Review role rules, voting semantics and evaluation thresholds with the team before execution; map each case to the final requirement ID.
+Verify that the shared backend preserves private trip access, voting consistency, durable chat, balanced expenses and validated itinerary changes across web and mobile clients. The expected behavior follows the proposed [database design](database-design.md) and [backend component design](backend-component-design.md). Review role rules, voting semantics and evaluation thresholds with the team before execution; review the requirement mappings below.
 
 Usability (SUS) and comparison with manual planning belong to the team's broader evaluation. This contribution defines server checks and measurements and does not replace those studies.
 
@@ -12,9 +12,9 @@ Usability (SUS) and comparison with manual planning belong to the team's broader
 
 Use an isolated test project with the same migrations, access policies and server-function versions as the release candidate. Record the Git commit, schema version, service configuration, client versions, test date, region, network conditions and workload. Use synthetic users and places; keep service credentials outside the repository. An administrative connection may inspect outcomes but must not be used to simulate an ordinary client.
 
-Create users O (owner), E (editor), V (viewer), X (outsider) and L (former member). Trip A includes O, E and V as active members; L has a historical membership with left_at set. Trip B belongs to X. Give both trips itinerary items, votes, comments, saved messages and expenses. Use a KZT budget of 30,000.00 for Trip A, known place IDs, known visit durations and opening hours, and a fixed trip time zone. AI tests use controlled provider responses by default; use a separate opt-in run for a real provider.
+Create users O (owner/Organizer), E and P (editors/Participants), X (outsider) and L (former member). Trip A includes O, E and P as active members; L has a historical membership with left_at set. Trip B belongs to X. Give both trips itinerary items, votes, comments, saved messages and expenses. Use a KZT budget of 30,000.00 for Trip A, known place IDs, known visit durations and opening hours, and a fixed trip time zone. AI tests use controlled provider responses by default; use a separate opt-in run for a real provider.
 
-Proposed permission baseline: owners manage membership and ownership; owners and editors change itinerary and financial records; all active members may read private trip data. Chat, comments and votes are enabled for active owners/editors, while viewers are read-only. The team must confirm or revise this baseline before tests can be judged. Platform-specific table privileges must match the approved policy.
+Proposed permission baseline: owners manage membership and ownership; owners and editors change itinerary and financial records; all active members may read private trip data. Chat, comments and votes are enabled for active owners/editors. The viewer role is deferred; attempts to create it must fail validation. The team must confirm or revise this baseline before tests can be judged. Platform-specific table privileges must match the approved policy.
 
 Run unauthorized operations through every exposed path that can perform them: Data API, database RPC, server command and Realtime where applicable. Changing only the interface is not sufficient verification.
 
@@ -22,8 +22,8 @@ Run unauthorized operations through every exposed path that can perform them: Da
 
 | ID | Setup and action | Expected result |
 |---|---|---|
-| ACC-01 | O, E and V read Trip A; X, L and a signed-out client request the same records | Active members receive permitted data. Others receive no private rows or payloads; the API may return denial or an empty policy-filtered result according to the agreed contract |
-| ACC-02 | V attempts itinerary, vote, comment, message and expense writes; E attempts ownership/member administration | All disallowed writes fail, with no database changes. O can perform approved administration; E can perform approved editing |
+| ACC-01 | O, E and P read Trip A; X, L and a signed-out client request the same records | Active members receive permitted data. Others receive no private rows or payloads; the API may return denial or an empty policy-filtered result according to the agreed contract |
+| ACC-02 | X and L attempt itinerary, vote, comment, message and expense writes; E attempts ownership/member administration and attempts to issue a viewer invitation | All disallowed writes fail, with no database changes. O can perform approved administration; E can perform approved editing |
 | ACC-03 | E submits X's author/sender identity or Trip B's item ID in a Trip A command | Impersonation and cross-trip references are rejected. Legitimate actions record the authorized actor |
 | ACC-04 | E opens a subscription; O removes E, then E requests data, writes and receives a new test event | After the removal transaction completes, new requests and events reveal no private data. Server/subscription authorization must enforce revocation; client sign-out alone is insufficient |
 | ACC-05 | O attempts to remove or demote the last owner; concurrently transfer ownership in two requests | No committed state has zero or multiple active owners. Valid transfer is atomic; conflicting requests fail safely |
@@ -35,7 +35,7 @@ Run unauthorized operations through every exposed path that can perform them: Da
 |---|---|---|
 | VOT-01 | E upvotes an item, repeats the request, then changes to a downvote | At most one current vote exists for that user/item. Retrying has the documented idempotent or conflict behavior; tally matches stored votes |
 | VOT-02 | Submit two conflicting votes concurrently for the same user/item | Uniqueness is preserved. Final value follows the documented concurrency contract; no double counting |
-| VOT-03 | Submit a vote as X, L or V, reference Trip B, or send value 0 or 2 | Invalid actor, relationship or value is rejected; existing votes remain unchanged |
+| VOT-03 | Submit a vote as X or L, reference Trip B, or send value 0 or 2 | Invalid actor, relationship or value is rejected; existing votes remain unchanged |
 | ITN-01 | Two editors load version N and both update/reorder the itinerary | One valid update commits; a stale conflicting update is explicitly rejected or safely serialized under the agreed version contract. No changes are silently lost |
 | ITN-02 | Reorder entries; insert a duplicate position, negative duration or date outside the trip; shorten trip dates | Valid reordering succeeds atomically. Invalid states are rejected or handled through an explicit validated adjustment, never left partially committed |
 
@@ -68,7 +68,36 @@ Run unauthorized operations through every exposed path that can perform them: Da
 | AI-04 | Simulate provider timeout, service error and invalid output | The command reports a controlled failure, preserves existing data and does not expose credentials or provider internals |
 | AI-05 | Call AI commands as X or submit excessive/invalid request fields | Reject unauthorized/invalid requests before a provider call. Validate configured request limits and verify secrets do not appear in client responses |
 
-A budget check must use a documented estimate model: included cost categories, currency, missing costs, transport assumptions and per-person versus whole-trip amounts. If required cost or scheduling data is missing, mark the draft incomplete and prevent a false “valid within budget” result. The 30,000.00 boundary tests use complete synthetic inputs. Weather and event checks are excluded until those integrations are approved.
+A budget check must use a documented estimate model: included cost categories, currency, missing costs, transport assumptions and per-person versus whole-trip amounts. If required cost or scheduling data is missing, mark the draft incomplete and prevent a false “valid within budget” result. The 30,000.00 boundary tests use complete synthetic inputs. Weather and event provider integrations remain staged. The new catalog/event cases below use synthetic inputs and do not imply a live provider.
+
+## Schema Revision Cases
+
+All additional cases are **Not run**, like the original 25. The revised plan has **32 cases**.
+
+| ID | Setup and action | Expected result | Requirements |
+| --- | --- | --- | --- |
+| INV-01 | Accept valid, expired and revoked invitations; race two different recipients for one token; retry the successful acceptance | Exactly one valid recipient obtains one active editor membership. Expired/revoked tokens and another recipient's replay fail; no raw token is stored/logged | FR-08, NFR-03/04/06 |
+| INV-02 | Editor/outsider issues or revokes an invite; owner attempts an unsupported role; restore a former member through valid acceptance | Administration is owner-only; viewer is rejected; reactivation preserves required historical references without duplicate membership | FR-08, NFR-03/04 |
+| CAT-01 | Enter zero traveler count, invalid language, unknown cost unit, missing source/price or insufficient accommodation capacity data | Invalid trip/profile data is rejected; incomplete catalog inputs cannot produce a valid-budget label; known fixture totals correctly reflect party size and nights | FR-02/04/06, NFR-08/09/11 |
+| EVT-01 | Propose an overlapping valid event, canceled event, out-of-trip event and event linked to a different place | Only eligible dated events are accepted; discriminator/references and time-zone checks reject conflicts without changing the saved plan | FR-05/17, NFR-04/09 |
+| AIP-01 | Retry a generation request key; confirm twice; cancel/expire a draft; force failure during itinerary/confirmation save | One proposal per request key; one atomic applied version; retry returns the prior outcome. Rejected/expired/failed drafts never alter the itinerary; rollback includes proposal status | FR-03/05/12, NFR-04/10 |
+| FED-01 | Publish place-linked content, submit arbitrary private trip fields and publish unapproved/private media URLs | Published payload follows the public allowlist; private trip data and unapproved media are not exposed; invalid place/reference is rejected | FR-14, NFR-03/06 |
+| MOD-01 | Report one post twice, impersonate another reporter and attempt moderation as an ordinary user; resolve using a provisioned reviewer | One report per reporter/post; identity is server-derived; ordinary users cannot set reviewer/disposition or inspect others' private reports; authorized resolution records actor/time | FR-15, NFR-03/04 |
+
+## Requirement Traceability
+
+| Cases | Requirements |
+| --- | --- |
+| ACC-01–05 | FR-01/02/08, NFR-03/04/06 |
+| ACC-06 | FR-14, NFR-03/06 |
+| VOT-01–03 | FR-09, NFR-03/04 |
+| ITN-01–02 | FR-05/06, NFR-04/10 |
+| CHT-01–04 | FR-11, NFR-02/03/04/10 |
+| EXP-01–05 | FR-13, NFR-03/04/11 |
+| AI-01–05 | FR-03/04/05/06/12, NFR-01/03/04/06/09/10/11 |
+| INV/CAT/EVT/AIP/FED/MOD | Per-case references in the revision table above |
+
+FR-10 comment integrity is exercised by ACC-02/03; add client comment-flow evidence under UAT-04. FR-07/16/18/19, SUS, layout, multilingual UI and cross-platform acceptance require the overall UAT/platform protocols. This server plan alone does not claim complete product acceptance coverage.
 
 ## Measurement protocol
 
@@ -76,8 +105,8 @@ A budget check must use a documented estimate model: included cost categories, c
 |---|---|---|
 | Authorization correctness | Count denied unauthorized attempts and successful permitted controls; inspect actual rows and received event payloads | Every defined unauthorized case denies access; every permitted control works |
 | Integrity correctness | Count duplicate votes/messages, cross-trip links, unbalanced expenses and partially saved commands after completed tests | Zero invalid committed states in the executed test set |
-| Collaborative update delay | Start timer before the sender's write and stop when the receiver observes the matching saved record; use one coordinated test clock or instrumented harness | Record p50/p95 and failures; team must set the target before execution |
-| Plan generation time | Server elapsed time from accepted request to validated draft or terminal failure; include provider call and server validation | Report median/p95 for successful runs, plus timeout/error rate; target not yet agreed |
+| Collaborative update delay | Start timer before the sender's write and stop when the receiver observes the matching saved record; use one coordinated test clock or instrumented harness | Record p50/p95 and failures; proposed NFR-02 target is p95 ≤3 seconds over 30 updates (at least 29/30 within target), subject to team review |
+| Plan generation time | Server elapsed time from accepted request to validated draft or terminal failure; include provider call and server validation | Report server median/p95 and timeout/error rate separately. NFR-01 measures client submit to usable rendered draft: under 30 seconds in at least 9/10 live-provider runs; server timing alone does not satisfy it |
 | Budget-compliant draft rate | Valid drafts with complete estimates at or below budget / all drafts returned as valid; report missing-cost, rejected and failed requests separately | Every draft labeled valid must pass the server's budget check; this does not establish real-world price accuracy |
 | Generation success rate | Requests producing a validated draft / all authorized, well-formed generation requests | Report separately so a system that rejects every request cannot appear effective; target to be agreed |
 | Reconnect recovery | Compare the complete committed message-ID set with the recovered set after reconnect | No missing or duplicate rendered messages after refresh/deduplication |
