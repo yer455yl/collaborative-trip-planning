@@ -3,7 +3,7 @@
 **Diploma project:** Development of a Mobile Application for Collaborative Trip Planning  
 **University:** Astana IT University · Software Engineering  
 **First pre-defense:** 24 October 2026  
-**Status updated:** 20 October 2026
+**Status updated:** 22 October 2026
 
 A proposed cross-platform mobile application (Android and iOS) with a web version built from the same codebase that helps travelers create a personalized, budget-aware, day-by-day itinerary and plan a trip together. The initial destination is **Astana, Kazakhstan**. The intended product combines an itinerary and map, group decisions, optional expense splitting, and an AI assistant that proposes changes for user confirmation.
 
@@ -23,7 +23,7 @@ The project aims to bring these activities into one workflow using locally relev
 - Students and other travelers with limited budgets.
 - Business travelers with limited time for local activities.
 
-Research is planned around a Russian- and Kazakh-language survey of Astana residents and 3–5 interviews with potential users. Aggregated findings should inform requirements and the initial places catalog; completed research results are not yet published in `docs/research/`.
+A Russian/Kazakh survey snapshot contains 15 submitted responses, inspected on 22 October 2026. The [survey report](docs/research/survey-results.md) separates observed counts from assumptions and provides [resident-suggested place leads](docs/research/resident-place-candidates.md). These are preliminary self-reports from a small sample, not representative population findings or a verified places database. Interviews are not used as evidence in this submission.
 
 ## Aim and Expected Outcomes
 
@@ -45,7 +45,7 @@ Expected deliverables are an Android/iOS test application and a web version with
 | Community | Publish place-related posts and reviews, view others' experiences and report inappropriate content. |
 | Context and offline access | Consider weather and local events; open external booking/map links; view a saved itinerary offline. |
 
-These features require prioritization and acceptance criteria in the final requirements specification. Optional expense splitting and later integrations must not be treated as completed implementation.
+The [requirements specification](docs/requirements-specification.md) assigns priorities and acceptance criteria to these features; team review remains pending. Optional expense splitting and later integrations must not be treated as completed implementation.
 
 ## Scope
 
@@ -63,7 +63,7 @@ These features require prioritization and acceptance criteria in the final requi
 - In-app booking, payments, flights and intercity transport planning.
 - Publication in the App Store or Google Play.
 
-**Platform decision:** the team confirmed a mobile application (Android and iOS) as the primary client and a web version built from the same Flutter codebase and sharing the same backend. The [project proposal](docs/project-proposal.docx), [topic report](docs/topic-report.docx), [client technology comparison](docs/technology-comparison-client-ai.docx) and [UX descriptions](docs/ux-screen-descriptions.docx) were updated accordingly; the requirements specification must also cover both clients.
+**Platform decision:** the team confirmed a mobile application (Android and iOS) as the primary client and a web version built from the same Flutter codebase and sharing the same backend. The [project proposal](docs/project-proposal.docx), [topic report](docs/topic-report.docx), [client technology comparison](docs/technology-comparison-client-ai.docx) and [UX descriptions](docs/ux-screen-descriptions.docx) were updated accordingly; the [requirements specification](docs/requirements-specification.md) covers both clients.
 
 The first pre-defense concerns analysis, design and planning. A complete application is not required at this stage.
 
@@ -91,9 +91,9 @@ The [client, AI and maps comparison](docs/technology-comparison-client-ai.docx) 
 | AI approach | **Cloud LLM API + curated places + budget, route and validation code** | Select a provider/model and evaluate quality, latency and cost. |
 | Map and routing | **Google Maps Platform** | Verify API access, Astana coverage, required data, quotas and cost. |
 
-### Recommended Backend, Pending Confirmation
+### Selected Backend, Implementation Verification Pending
 
-The [backend comparison](docs/backend-technology-comparison.md) recommends **Supabase with PostgreSQL, Auth, Row Level Security, REST over HTTPS and managed Realtime subscriptions**, with trusted server functions for AI calls and operations requiring transactional validation. That document requires team review and a proof of concept before final approval. Although the client comparison calls Supabase selected, no deployment or proof-of-concept results are present in the repository.
+The team confirmed **Supabase with PostgreSQL, Auth, Row Level Security, REST over HTTPS and managed Realtime subscriptions** as the selected design baseline on 22 October 2026. The [backend comparison](docs/backend-technology-comparison.md) records the rationale and earlier recommendation. Trusted operations handle AI credentials and transactional validation. Selection does not establish implementation: no deployment or proof-of-concept results are present, and authorization/reconnect/transaction checks remain required.
 
 ### Alternatives and Open Decisions
 
@@ -107,7 +107,7 @@ The [backend comparison](docs/backend-technology-comparison.md) recommends **Sup
 | Weather and events | Providers, reliable Astana coverage and collection/update methods remain to be agreed. |
 | Offline storage | Hive or SQLite are examples in the topic report; no library or synchronization implementation has been selected. |
 
-Git/GitHub are used for version control and pull requests; diagrams.net/draw.io files hold editable diagrams. YouTrack is the designated task tracker. Wireframe mockups are published as PNG files in `docs/ux/`; a clickable Figma prototype and completed survey evidence are not yet published.
+Git/GitHub are used for version control and pull requests; diagrams.net/draw.io files hold editable diagrams. YouTrack is the designated task tracker. Wireframe mockups are published as PNG files in `docs/ux/`; a clickable Figma prototype is not yet published; aggregated survey evidence is available in `docs/research/`.
 
 ## Proposed Architecture
 
@@ -117,26 +117,26 @@ The AI design uses stored place candidates rather than accepting arbitrary model
 
 The initial relational model contains 11 application tables: `users`, `trips`, `participants`, `places`, `plan_items`, `votes`, `comments`, `chat_messages`, `posts`, `expenses` and `expense_splits`. It is a proposed logical model, without SQL migrations or deployed access policies. Invitation storage and AI history/draft persistence still require design decisions.
 
-See the [diagram index](diagrams/README.md), [database design](docs/database-design.md) and [backend component design](docs/backend-component-design.md). The component view covers the backend contribution; the overall system view still needs integration and scope reconciliation.
+See the [diagram index](diagrams/README.md), [database design](docs/database-design.md) and [backend component design](docs/backend-component-design.md). The component view covers the backend contribution; the [overall component view and use cases](docs/architecture-and-use-cases.md) integrate both clients, the backend contribution and providers. Detailed role, draft lifecycle and schema-extension policies remain under review.
 
 ## Current Status and First Pre-defense Readiness
 
-Status below reflects the checked `main` branch on **20 October 2026**. A document's presence does not mean that its acceptance criteria or review requirements have been satisfied.
+Status below reflects `main` at `fcd1ec2` on **22 October 2026** plus the documentation in this submission. A document's presence does not mean that its acceptance criteria or review requirements have been satisfied.
 
 | Deliverable | Repository evidence and remaining work |
 | --- | --- |
-| Proposal and topic report | Present in `docs/`; platform scope confirmed (mobile and web); final requirements pending. |
+| Proposal and topic report | Present in `docs/`; platform scope confirmed (mobile and web); requirements prepared for review. |
 | Existing-system comparison | Five systems and eight criteria documented; first screenshots of similar AI planners are in [docs/evidence/](docs/evidence/); screenshots of generated plans for Astana are still pending. |
-| Technology comparisons | Client/AI/maps and backend comparisons present; backend confirmation, API coverage and proof of concept remain open. |
-| Literature | Yerassyl's and Sayakhat's contributions are in `docs/`. A consolidated review meeting the 12-source/8-scientific-publication requirement is not yet published as a standalone deliverable. |
-| User research | `docs/research/` contains only a placeholder; survey analysis and anonymized interview findings are not published there. |
-| Requirements | The topic report lists initial functional/non-functional requirements; a complete prioritized specification with acceptance criteria is not yet present. |
-| Architecture | Editable system context, backend component and three-page ER sources with PNG previews are present. A Use Case Diagram and integrated whole-system Component Diagram remain outstanding. |
+| Technology comparisons | Client/AI/maps and backend comparisons present; selected Supabase still requires implementation proof of concept; API coverage remains to be checked. |
+| Literature | [Integrated review](docs/literature-review.md) combines all three contributions: 13 scientific publications and two technical sources. Source-access/reading limits and remaining substantive review are explicit; a bibliography count is not approval. |
+| User research | [Survey results](docs/research/survey-results.md), aggregate counts, feature-rating figure and candidate-place list cover a 15-response snapshot. No interviews or synthetic responses are used as research evidence. Place details remain to be verified. |
+| Requirements | [Specification](docs/requirements-specification.md) provides 19 functional and 12 non-functional requirements, priorities, acceptance criteria, cross-client coverage and a decision register. Detailed policies remain subject to review. |
+| Architecture | Existing context/backend/ER views are complemented by editable [Use Case](diagrams/use-case.drawio) and [overall Component](diagrams/overall-components.drawio) sources and PNG previews. They cover mobile + web, selected Supabase, chat/feed, AI and provider boundaries. Team review remains pending. |
 | UX/prototype | Screen/scenario descriptions are in [docs/ux-screen-descriptions.docx](docs/ux-screen-descriptions.docx); black-and-white wireframes of 13 mobile screens and 3 web screens are in [docs/ux/](docs/ux/) (overview: [ux-overview-mobile.png](docs/ux/ux-overview-mobile.png)). The wireframes are static, not a clickable prototype. |
-| Verification | A proposed server plan with 25 cases is present. The overall evaluation plan still needs integration; no application tests have been run. |
+| Verification | [Overall plan](docs/verification-and-evaluation-plan.md) incorporates 25 server cases and ten end-to-end scenarios, cross-client checks, generation/budget/SUS targets, measurement conditions and a manual baseline. No application tests or SUS study have been run. |
 | Management and supervision | Roles, milestones and risks are documented. Supervisor feedback and a comment-to-action record are not published in the repository. |
 | Implementation | `src/`, `tests/` and `config/` contain placeholders only. No runnable project, dependency manifest, database migrations or CI workflow is present. |
-| Submission | PRs [#1](https://github.com/yer455yl/collaborative-trip-planning/pull/1) and [#2](https://github.com/yer455yl/collaborative-trip-planning/pull/2) are merged into `main`. No `pre-defense-1` tag exists at this status date. |
+| Submission | Contributions remain traceable through task branches, commits and pull requests. The submission tag follows the complete team review; this documentation update does not approve a release or close unrelated tasks. |
 
 Some contribution checklists and handoff notes still describe earlier branch/PR states. Use the current Git history for merge status and update those notes during the final team review.
 
@@ -152,6 +152,13 @@ Links below resolve from this README at the repository root.
 | Client, AI and maps technology comparison | [technology-comparison-client-ai.docx](docs/technology-comparison-client-ai.docx) |
 | Backend and communication technology comparison | [backend-technology-comparison.md](docs/backend-technology-comparison.md) |
 | Preliminary literature contribution — Yerassyl | [yerassyl-literature-review.md](docs/yerassyl-literature-review.md) |
+| Requirements and acceptance criteria | [requirements-specification.md](docs/requirements-specification.md) |
+| Integrated literature review | [literature-review.md](docs/literature-review.md) |
+| Literature contribution — Zukhra | [zukhra-literature-review.md](docs/literature/zukhra-literature-review.md) |
+| Overall architecture and use cases | [architecture-and-use-cases.md](docs/architecture-and-use-cases.md) |
+| Overall verification and evaluation | [verification-and-evaluation-plan.md](docs/verification-and-evaluation-plan.md) |
+| Resident survey and candidate places | [survey-results.md](docs/research/survey-results.md) · [candidate list](docs/research/resident-place-candidates.md) |
+| Zukhra submission/task index | [zukhra-pre-defense-submission.md](docs/zukhra-pre-defense-submission.md) |
 | AI module design | [ai-module-design.docx](docs/ai-module-design.docx) |
 | Database design | [database-design.md](docs/database-design.md) |
 | Backend component responsibilities and workflows | [backend-component-design.md](docs/backend-component-design.md) |
@@ -174,6 +181,13 @@ Links below resolve from this README at the repository root.
 ├── tests/                                # Automated-test placeholder
 ├── config/                               # Configuration placeholder
 ├── docs/
+│   ├── requirements-specification.md
+│   ├── architecture-and-use-cases.md
+│   ├── verification-and-evaluation-plan.md
+│   ├── literature-review.md
+│   ├── literature/                         # Individual scientific contributions
+│   ├── ux/                                 # Mobile/web wireframe PNGs
+│   ├── evidence/                           # Existing-system evidence
 │   ├── project-proposal.docx
 │   ├── topic-report.docx
 │   ├── existing-system-comparison.docx
@@ -189,9 +203,15 @@ Links below resolve from this README at the repository root.
 │   ├── team-handoff.md
 │   ├── yerassyl-checklist.md
 │   ├── yerassyl-literature-review.md
-│   └── research/                         # Research-results placeholder
+│   └── research/                           # Aggregated survey findings and place candidates
 └── diagrams/
     ├── README.md
+    ├── use-case.drawio                     # Two editable use-case pages
+    ├── use-case.png
+    ├── use-case-core.png
+    ├── use-case-collaboration.png
+    ├── overall-components.drawio
+    ├── overall-components.png
     ├── system-context.drawio
     ├── system-context.png
     ├── backend-components.drawio
@@ -206,7 +226,7 @@ Placeholder directories are retained with `.gitkeep` files.
 
 ## Verification and Evaluation
 
-The [server testing plan](docs/server-testing-plan.md) proposes checks for authorization, membership, voting, concurrent itinerary edits, chat persistence/recovery, expense integrity and validated AI changes. Its cases are **not run**.
+The [overall evaluation plan](docs/verification-and-evaluation-plan.md) incorporates the [server testing plan](docs/server-testing-plan.md), which proposes checks for authorization, membership, voting, concurrent itinerary edits, chat persistence/recovery, expense integrity and validated AI changes. Its cases are **not run**.
 
 The intended overall evaluation includes:
 

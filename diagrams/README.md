@@ -1,5 +1,14 @@
 # Architecture Diagrams
 
+## Integrated Views Added 22 October 2026
+
+- [Use Case source — two editable pages](use-case.drawio): [core PNG](use-case-core.png), [collaboration/community PNG](use-case-collaboration.png), [combined PNG](use-case.png).
+- [Overall Component source](overall-components.drawio) and [PNG](overall-components.png).
+- [Overall architecture](../docs/architecture-and-use-cases.md), [requirements](../docs/requirements-specification.md) and [whole-team verification plan](../docs/verification-and-evaluation-plan.md).
+
+The integrated views cover Android/iOS plus web from one Flutter codebase, selected Supabase and the existing backend/database contribution. Chat and the post feed are in scope; optional expenses/offline viewing and later weather/event integrations are labeled. PNGs are generated readable previews from the same definitions; editable sources are retained. No deployed services or executed test results are implied. The earlier backend contribution below retains its authorship and historical verification notes.
+
+
 ## System Context
 
 ![System Context Diagram](system-context.png)
