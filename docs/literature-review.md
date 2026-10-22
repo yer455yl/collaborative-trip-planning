@@ -7,7 +7,7 @@
 
 ## 1. Purpose, Selection and Provenance
 
-This review connects three questions: how to form a group-relevant itinerary, how to enforce travel constraints, and how to combine AI assistance with user control and shared state. It integrates [Zukhra's four-source contribution](literature/zukhra-literature-review.md), [Yerassyl's existing contribution](literature/yerassyl-literature-review.md) and [Sayakhat's existing contribution](literature-review-sayakhat.docx). The existing teammate files remain unchanged and retain their authorship; Zukhra's contribution is the group-planning analysis and the cross-topic integration. The former ZIP layout is not used for links.
+This review connects three questions: how to form a group-relevant itinerary, how to enforce travel constraints, and how to combine AI assistance with user control and shared state. It integrates [Zukhra's four-source contribution](literature/zukhra-literature-review.md), [Yerassyl's existing contribution](literature/yerassyl-literature-review.md) and [Sayakhat's existing contribution](literature-review-sayakhat.docx). The teammate files retain their authorship and may receive separately documented source-verification updates; Zukhra's contribution is the group-planning analysis and the cross-topic integration. The former ZIP layout is not used for links.
 
 The corpus comprises **13 distinct scientific publications (L-01–13) and two technical sources (T-01–02)**. Twelve scientific publications date from 2021–2025; the 2020 RAG paper is retained as a foundational work. Preprints and journal versions of the same work are counted once. Technical vendor documentation is not counted as a scientific publication. The withdrawn arXiv:2304.08495 is excluded, following the existing contribution's exclusion.
 
@@ -72,7 +72,7 @@ This mapping expresses our engineering interpretation, not the original authors'
 3. **L-03.** Sarkar, J. L., & Majumder, A. (2022). gTour: Multiple itinerary recommendation engine for group of tourists. *Expert Systems with Applications, 191*, 116190. [DOI](https://doi.org/10.1016/j.eswa.2021.116190).
 4. **L-04.** Alatiyyah, M. (2025). A novel group tour trip recommender model for personalized travel systems. *PeerJ Computer Science, 11*, e2589. [DOI](https://doi.org/10.7717/peerj-cs.2589).
 5. **L-05.** Ruiz-Meza, J., & Montoya-Torres, J. R. (2022). A systematic literature review for the tourist trip design problem: Extensions, solution techniques and future research lines. *Operations Research Perspectives, 9*, 100228. [DOI](https://doi.org/10.1016/j.orp.2022.100228).
-6. **L-06.** Adamo, T., Colizzi, L., Dimauro, G., Ghiani, G., & Guerriero, E. (2024). A multimodal tourist trip planner integrating road and pedestrian networks. *Expert Systems with Applications*, 121457. [Journal DOI](https://doi.org/10.1016/j.eswa.2023.121457); [author preprint, 2022](https://arxiv.org/abs/2207.00097). Counted once.
+6. **L-06.** Adamo, T., Colizzi, L., Dimauro, G., Ghiani, G., & Guerriero, E. (2024). A multimodal tourist trip planner integrating road and pedestrian networks. *Expert Systems with Applications, 237*, Part B, 121457. [Journal DOI](https://doi.org/10.1016/j.eswa.2023.121457); [author preprint, 2022](https://arxiv.org/abs/2207.00097). Counted once.
 7. **L-07.** Hu, Y., Fang, Z., Zou, X., Zhong, H., & Wang, L. (2023). Two-Stage Tour Route Recommendation Approach by Integrating Crowd Dynamics Derived from Mobile Tracking Data. *Applied Sciences, 13*(1), 596. [DOI](https://doi.org/10.3390/app13010596).
 8. **L-08.** Xie, J., Zhang, K., Chen, J., Zhu, T., Lou, R., Tian, Y., Xiao, Y., & Su, Y. (2024). TravelPlanner: A Benchmark for Real-World Planning with Language Agents. *Proceedings of ICML, PMLR 235*, 54590–54613. [Proceedings](https://proceedings.mlr.press/v235/xie24j.html).
 9. **L-09.** Tang, Y., et al. (2024). ItiNera: Integrating Spatial Optimization with Large Language Models for Open-domain Urban Itinerary Planning. *EMNLP 2024: Industry Track*, 1413–1432. [Proceedings/DOI](https://aclanthology.org/2024.emnlp-industry.104/). Full author list is available in the proceedings record.
@@ -90,16 +90,18 @@ This mapping expresses our engineering interpretation, not the original authors'
 | L-01 | Publisher metadata/abstract and selected methodology, consumer-fairness and conclusion text | Full cited-study audit not claimed |
 | L-02/03 | Publisher-indexed abstract/highlights; publication metadata | Read full methods/experiments through legitimate access before detailed algorithm/performance claims |
 | L-04 | Publisher-indexed PDF abstract and method/conclusion excerpts | Full algorithm/data/reproduction review not claimed |
-| L-05 | Publisher/repository excerpts and Yerassyl's section-level reading notes | Verify remaining detailed model comparisons if used |
-| L-06 | Author preprint landing record and existing contribution's section notes | Journal/preprint differences and experiment details need final author review |
-| L-07 | Publisher-indexed abstract/method/conclusion text | No complete dataset/algorithm audit claimed |
+| L-05 | Publisher material and author-hosted full-text search/taxonomy sections checked on 22 October; see Yerassyl's source-verification guide | Personal reading confirmation and any stronger model comparisons remain separate |
+| L-06 | Full author preprint v2 methods/update/experiment sections, including Table 7; journal identity checked | Numerical claims are preprint-specific; no complete journal-version comparison or reproduction claimed |
+| L-07 | Publisher-provided full text on ResearchGate: method/adjustment, Table 6 and conclusion; direct publisher host rate-limited | Selected claims verified; personal reading and independent reproduction are not asserted |
 | L-08/09 | Official proceedings metadata and abstracts | Review full benchmark configurations and algorithms before stronger claims |
 | L-10/11 | Publisher/author abstract and source records; existing teammate contribution | Full taxonomy/methodology verification remains; avoid absolute reliability claims |
 | L-12 | Publisher abstract and Crossref metadata | Full experimental designs/effects not independently checked |
 | L-13 | Publisher/institutional abstract and indexed study excerpts | Full methods and effect interpretation need final team reading |
-| T-01/02 | Existing backend contribution and cited official documentation | Recheck implementation details against selected SDKs/version |
+| T-01/02 | Official architecture/listener pages rechecked on 22 October 2026 | Verify selected SDK configuration and actual implementation separately |
 
 The source-count requirement is covered by the proposed corpus, but this draft does not assert that all full papers have been read or that the review is supervisor-approved. Authors should review their contributions, resolve the listed limits, align bibliography style and record substantive feedback. Do not mark a reading/review task complete solely because this file exists.
+
+Yerassyl's claim-level access record and personal reading questions are in [the source-verification guide](literature/yerassyl-source-verification.md). Contributor reading remains pending confirmation.
 
 ## 7. Connection to the Current Project Baseline
 
