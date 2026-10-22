@@ -115,7 +115,7 @@ The intended system consists of mobile and web clients built from one codebase, 
 
 The AI design uses stored place candidates rather than accepting arbitrary model-generated places. Code is responsible for checking estimated costs, opening hours and schedule feasibility. AI output is a draft; the backend must validate it and obtain user confirmation before applying changes to the saved itinerary. Provider credentials remain server-side.
 
-The initial relational model contains 11 application tables: `users`, `trips`, `participants`, `places`, `plan_items`, `votes`, `comments`, `chat_messages`, `posts`, `expenses` and `expense_splits`. It is a proposed logical model, without SQL migrations or deployed access policies. Invitation storage and AI history/draft persistence still require design decisions.
+The initial relational model contains 15 application tables: `users`, `trips`, `participants`, `places`, `plan_items`, `votes`, `comments`, `chat_messages`, `posts`, `expenses`, `expense_splits`, `events`, `invitations`, `ai_proposals` and `post_reports`. It is a proposed logical model, without SQL migrations or deployed access policies. See [schema alignment](docs/schema-alignment.md) for draft/invitation lifecycle, public-content rules and review limits. Full AI conversation history remains deferred.
 
 See the [diagram index](diagrams/README.md), [database design](docs/database-design.md) and [backend component design](docs/backend-component-design.md). The component view covers the backend contribution; the [overall component view and use cases](docs/architecture-and-use-cases.md) integrate both clients, the backend contribution and providers. Detailed role, draft lifecycle and schema-extension policies remain under review.
 
@@ -131,14 +131,16 @@ Status below reflects `main` at `fcd1ec2` on **22 October 2026** plus the docume
 | Literature | [Integrated review](docs/literature-review.md) combines all three contributions: 13 scientific publications and two technical sources. Source-access/reading limits and remaining substantive review are explicit; a bibliography count is not approval. |
 | User research | [Survey results](docs/research/survey-results.md), aggregate counts, feature-rating figure and candidate-place list cover a 15-response snapshot. No interviews or synthetic responses are used as research evidence. Place details remain to be verified. |
 | Requirements | [Specification](docs/requirements-specification.md) provides 19 functional and 12 non-functional requirements, priorities, acceptance criteria, cross-client coverage and a decision register. Detailed policies remain subject to review. |
-| Architecture | Existing context/backend/ER views are complemented by editable [Use Case](diagrams/use-case.drawio) and [overall Component](diagrams/overall-components.drawio) sources and PNG previews. They cover mobile + web, selected Supabase, chat/feed, AI and provider boundaries. Team review remains pending. |
+| Architecture | The ER revision models 15 application tables with trip preferences, events, invitations, AI proposals and place-linked feed/reporting. Existing context/backend/ER views are complemented by editable [Use Case](diagrams/use-case.drawio) and [overall Component](diagrams/overall-components.drawio) sources and PNG previews. They cover mobile + web, selected Supabase, chat/feed, AI and provider boundaries. Team review remains pending. |
 | UX/prototype | Screen/scenario descriptions are in [docs/ux-screen-descriptions.docx](docs/ux-screen-descriptions.docx); black-and-white wireframes of 13 mobile screens and 3 web screens are in [docs/ux/](docs/ux/) (overview: [ux-overview-mobile.png](docs/ux/ux-overview-mobile.png)). The wireframes are static, not a clickable prototype. |
-| Verification | [Overall plan](docs/verification-and-evaluation-plan.md) incorporates 25 server cases and ten end-to-end scenarios, cross-client checks, generation/budget/SUS targets, measurement conditions and a manual baseline. No application tests or SUS study have been run. |
+| Verification | [Overall plan](docs/verification-and-evaluation-plan.md) incorporates 32 server cases and ten end-to-end scenarios, cross-client checks, generation/budget/SUS targets, measurement conditions and a manual baseline. No application tests or SUS study have been run. |
 | Management and supervision | Roles, milestones and risks are documented. Supervisor feedback and a comment-to-action record are not published in the repository. |
-| Implementation | `src/`, `tests/` and `config/` contain placeholders only. No runnable project, dependency manifest, database migrations or CI workflow is present. |
+| Implementation | `src/` and `tests/` contain placeholders; `config/` includes the logical schema inventory. No runnable project, dependency manifest, database migrations or CI workflow is present. |
 | Submission | Contributions remain traceable through task branches, commits and pull requests. The submission tag follows the complete team review; this documentation update does not approve a release or close unrelated tasks. |
 
-Some contribution checklists and handoff notes still describe earlier branch/PR states. Use the current Git history for merge status and update those notes during the final team review.
+The backend handoff and personal checklist were refreshed for the schema revision. Use Git history for merge status; checked design deliverables do not mean implemented or tested behavior.
+
+See the [22 October readiness review](docs/readiness-review-22-october.md) for verified artifacts, corrections and remaining submission evidence.
 
 ## Documentation
 

@@ -1,2 +1,301 @@
 <?xml version='1.0' encoding='utf-8'?>
-<mxfile host="app.diagrams.net"><diagram name="Membership and Expenses" id="er-membership-expenses"><mxGraphModel page="1" pageWidth="1660" pageHeight="1760"><root><mxCell id="0" /><mxCell id="1" parent="0" /><mxCell id="title" value="Database ER Diagram — Membership and Expenses" style="text;html=0;fontSize=32;align=left;" vertex="1" parent="1"><mxGeometry as="geometry" x="60" y="25" width="1540" height="60" /></mxCell><mxCell id="legend" value="Crow’s foot = many | Circle = optional | Bar = one | PK / FK / UQ = keys" style="text;html=0;fontSize=21;align=left;" vertex="1" parent="1"><mxGeometry as="geometry" x="60" y="90" width="1540" height="45" /></mxCell><mxCell id="e0" source="users" target="participants" edge="1" parent="1" style="edgeStyle=none;startArrow=ERone;endArrow=ERzeroToMany;strokeColor=#8898ad;strokeWidth=2;"><mxGeometry as="geometry" relative="1"><Array as="points"><mxPoint x="560" y="250" /><mxPoint x="560" y="680" /></Array></mxGeometry></mxCell><mxCell id="e1" source="trips" target="participants" edge="1" parent="1" style="edgeStyle=none;startArrow=ERone;endArrow=ERzeroToMany;strokeColor=#8898ad;strokeWidth=2;"><mxGeometry as="geometry" relative="1"><Array as="points"><mxPoint x="1070" y="300" /><mxPoint x="1080" y="300" /><mxPoint x="1080" y="680" /></Array></mxGeometry></mxCell><mxCell id="e2" source="trips" target="expenses" edge="1" parent="1" style="edgeStyle=none;startArrow=ERone;endArrow=ERzeroToMany;strokeColor=#8898ad;strokeWidth=2;"><mxGeometry as="geometry" relative="1"><Array as="points" /></mxGeometry></mxCell><mxCell id="e3" source="participants" target="expenses" edge="1" parent="1" style="edgeStyle=none;startArrow=ERone;endArrow=ERzeroToMany;strokeColor=#8898ad;strokeWidth=2;"><mxGeometry as="geometry" relative="1"><Array as="points"><mxPoint x="1070" y="680" /><mxPoint x="1070" y="1220" /></Array></mxGeometry></mxCell><mxCell id="e4" source="expenses" target="expense_splits" edge="1" parent="1" style="edgeStyle=none;startArrow=ERone;endArrow=ERzeroToMany;strokeColor=#8898ad;strokeWidth=2;"><mxGeometry as="geometry" relative="1"><Array as="points"><mxPoint x="1070" y="1220" /><mxPoint x="570" y="1220" /><mxPoint x="570" y="1200" /></Array></mxGeometry></mxCell><mxCell id="e5" source="participants" target="expense_splits" edge="1" parent="1" style="edgeStyle=none;startArrow=ERone;endArrow=ERzeroToMany;strokeColor=#8898ad;strokeWidth=2;"><mxGeometry as="geometry" relative="1"><Array as="points"><mxPoint x="570" y="680" /><mxPoint x="570" y="1200" /></Array></mxGeometry></mxCell><mxCell id="users" value="users&#10;&#10;PK id: uuid (Auth user ID)&#10;display_name: text&#10;created_at: timestamptz" style="rounded=0;whiteSpace=wrap;html=0;fillColor=#f4f7fb;strokeColor=#879bb5;fontColor=#243449;fontSize=18;align=left;verticalAlign=top;spacing=12;" vertex="1" parent="1"><mxGeometry as="geometry" x="80" y="170" width="460" height="160" /></mxCell><mxCell id="trips" value="trips&#10;&#10;PK id: uuid&#10;title: text; destination: text&#10;start_date: date; end_date: date&#10;budget: numeric(12,2); currency: char(3)&#10;time_zone: text (IANA identifier)&#10;version: integer; created_at: timestamptz" style="rounded=0;whiteSpace=wrap;html=0;fillColor=#f4f7fb;strokeColor=#879bb5;fontColor=#243449;fontSize=18;align=left;verticalAlign=top;spacing=12;" vertex="1" parent="1"><mxGeometry as="geometry" x="1100" y="170" width="460" height="250" /></mxCell><mxCell id="participants" value="participants&#10;&#10;PK (trip_id, user_id)&#10;FK trip_id → trips.id&#10;FK user_id → users.id&#10;role: owner | editor | viewer&#10;joined_at: timestamptz; left_at: timestamptz?" style="rounded=0;whiteSpace=wrap;html=0;fillColor=#f4f7fb;strokeColor=#879bb5;fontColor=#243449;fontSize=18;align=left;verticalAlign=top;spacing=12;" vertex="1" parent="1"><mxGeometry as="geometry" x="590" y="570" width="460" height="220" /></mxCell><mxCell id="expense_splits" value="expense_splits&#10;&#10;PK (expense_id, user_id)&#10;FK (trip_id, expense_id) → expenses&#10;FK (trip_id, user_id) → participants&#10;share_amount: numeric(12,2)" style="rounded=0;whiteSpace=wrap;html=0;fillColor=#f4f7fb;strokeColor=#879bb5;fontColor=#243449;fontSize=18;align=left;verticalAlign=top;spacing=12;" vertex="1" parent="1"><mxGeometry as="geometry" x="80" y="1100" width="460" height="190" /></mxCell><mxCell id="expenses" value="expenses&#10;&#10;PK id: uuid; UQ (trip_id, id)&#10;FK trip_id → trips.id&#10;FK (trip_id, paid_by) → participants&#10;FK (trip_id, created_by) → participants&#10;title: text; amount: numeric(12,2)&#10;incurred_at: timestamptz" style="rounded=0;whiteSpace=wrap;html=0;fillColor=#f4f7fb;strokeColor=#879bb5;fontColor=#243449;fontSize=18;align=left;verticalAlign=top;spacing=12;" vertex="1" parent="1"><mxGeometry as="geometry" x="1100" y="1100" width="460" height="250" /></mxCell><mxCell id="note" value="Domain views share the same tables. FK fields define the complete relationships.&#10;Nullable references are marked; role, currency and access rules are explained in docs/database-design.md." style="text;html=0;whiteSpace=wrap;fontSize=20;align=left;" vertex="1" parent="1"><mxGeometry as="geometry" x="60" y="1640" width="1540" height="90" /></mxCell></root></mxGraphModel></diagram><diagram name="Itinerary and Voting" id="er-itinerary-voting"><mxGraphModel page="1" pageWidth="1660" pageHeight="1760"><root><mxCell id="0" /><mxCell id="1" parent="0" /><mxCell id="title" value="Database ER Diagram — Itinerary and Voting" style="text;html=0;fontSize=32;align=left;" vertex="1" parent="1"><mxGeometry as="geometry" x="60" y="25" width="1540" height="60" /></mxCell><mxCell id="legend" value="Crow’s foot = many | Circle = optional | Bar = one | PK / FK / UQ = keys" style="text;html=0;fontSize=21;align=left;" vertex="1" parent="1"><mxGeometry as="geometry" x="60" y="90" width="1540" height="45" /></mxCell><mxCell id="e0" source="trips" target="participants" edge="1" parent="1" style="edgeStyle=none;startArrow=ERone;endArrow=ERzeroToMany;strokeColor=#8898ad;strokeWidth=2;"><mxGeometry as="geometry" relative="1"><Array as="points"><mxPoint x="570" y="300" /><mxPoint x="1070" y="300" /><mxPoint x="1070" y="280" /></Array></mxGeometry></mxCell><mxCell id="e1" source="trips" target="plan_items" edge="1" parent="1" style="edgeStyle=none;startArrow=ERone;endArrow=ERzeroToMany;strokeColor=#8898ad;strokeWidth=2;"><mxGeometry as="geometry" relative="1"><Array as="points"><mxPoint x="570" y="300" /><mxPoint x="560" y="300" /><mxPoint x="560" y="890" /></Array></mxGeometry></mxCell><mxCell id="e2" source="participants" target="plan_items" edge="1" parent="1" style="edgeStyle=none;startArrow=ERone;endArrow=ERzeroToMany;strokeColor=#8898ad;strokeWidth=2;"><mxGeometry as="geometry" relative="1"><Array as="points"><mxPoint x="1080" y="280" /><mxPoint x="1080" y="890" /></Array></mxGeometry></mxCell><mxCell id="e3" source="places" target="plan_items" edge="1" parent="1" style="edgeStyle=none;startArrow=ERzeroToOne;endArrow=ERzeroToMany;strokeColor=#8898ad;strokeWidth=2;"><mxGeometry as="geometry" relative="1"><Array as="points"><mxPoint x="570" y="840" /><mxPoint x="560" y="840" /><mxPoint x="560" y="890" /></Array></mxGeometry></mxCell><mxCell id="e4" source="plan_items" target="votes" edge="1" parent="1" style="edgeStyle=none;startArrow=ERone;endArrow=ERzeroToMany;strokeColor=#8898ad;strokeWidth=2;"><mxGeometry as="geometry" relative="1"><Array as="points"><mxPoint x="1070" y="890" /><mxPoint x="1070" y="1340" /></Array></mxGeometry></mxCell><mxCell id="e5" source="participants" target="votes" edge="1" parent="1" style="edgeStyle=none;startArrow=ERone;endArrow=ERzeroToMany;strokeColor=#8898ad;strokeWidth=2;"><mxGeometry as="geometry" relative="1"><Array as="points" /></mxGeometry></mxCell><mxCell id="trips" value="trips&#10;&#10;PK id: uuid&#10;title: text; destination: text&#10;start_date: date; end_date: date&#10;budget: numeric(12,2); currency: char(3)&#10;time_zone: text (IANA identifier)&#10;version: integer; created_at: timestamptz" style="rounded=0;whiteSpace=wrap;html=0;fillColor=#f4f7fb;strokeColor=#879bb5;fontColor=#243449;fontSize=18;align=left;verticalAlign=top;spacing=12;" vertex="1" parent="1"><mxGeometry as="geometry" x="80" y="170" width="460" height="250" /></mxCell><mxCell id="participants" value="participants&#10;&#10;PK (trip_id, user_id)&#10;FK trip_id → trips.id&#10;FK user_id → users.id&#10;role: owner | editor | viewer&#10;joined_at: timestamptz; left_at: timestamptz?" style="rounded=0;whiteSpace=wrap;html=0;fillColor=#f4f7fb;strokeColor=#879bb5;fontColor=#243449;fontSize=18;align=left;verticalAlign=top;spacing=12;" vertex="1" parent="1"><mxGeometry as="geometry" x="1100" y="170" width="460" height="220" /></mxCell><mxCell id="places" value="places&#10;&#10;PK id: uuid&#10;name: text; category: text&#10;latitude: numeric; longitude: numeric&#10;address: text; opening_hours: jsonb&#10;estimated_cost: numeric(12,2)&#10;currency: char(3); source: text" style="rounded=0;whiteSpace=wrap;html=0;fillColor=#f4f7fb;strokeColor=#879bb5;fontColor=#243449;fontSize=18;align=left;verticalAlign=top;spacing=12;" vertex="1" parent="1"><mxGeometry as="geometry" x="80" y="720" width="460" height="250" /></mxCell><mxCell id="plan_items" value="plan_items&#10;&#10;PK id: uuid; UQ (trip_id, id)&#10;FK trip_id → trips.id&#10;FK place_id → places.id (nullable)&#10;FK (trip_id, added_by) → participants&#10;day_date: date; position: integer&#10;title: text; starts_at: timestamptz?&#10;duration_minutes: integer&#10;estimated_cost: numeric(12,2)&#10;version: integer" style="rounded=0;whiteSpace=wrap;html=0;fillColor=#f4f7fb;strokeColor=#879bb5;fontColor=#243449;fontSize=18;align=left;verticalAlign=top;spacing=12;" vertex="1" parent="1"><mxGeometry as="geometry" x="590" y="720" width="460" height="340" /></mxCell><mxCell id="votes" value="votes&#10;&#10;PK (plan_item_id, user_id)&#10;FK (trip_id, plan_item_id) → plan_items&#10;FK (trip_id, user_id) → participants&#10;value: -1 | 1; created_at: timestamptz" style="rounded=0;whiteSpace=wrap;html=0;fillColor=#f4f7fb;strokeColor=#879bb5;fontColor=#243449;fontSize=18;align=left;verticalAlign=top;spacing=12;" vertex="1" parent="1"><mxGeometry as="geometry" x="1100" y="1250" width="460" height="190" /></mxCell><mxCell id="note" value="Domain views share the same tables. FK fields define the complete relationships.&#10;Nullable references are marked; role, currency and access rules are explained in docs/database-design.md." style="text;html=0;whiteSpace=wrap;fontSize=20;align=left;" vertex="1" parent="1"><mxGeometry as="geometry" x="60" y="1640" width="1540" height="90" /></mxCell></root></mxGraphModel></diagram><diagram name="Communication and Community" id="er-communication-community"><mxGraphModel page="1" pageWidth="1660" pageHeight="1760"><root><mxCell id="0" /><mxCell id="1" parent="0" /><mxCell id="title" value="Database ER Diagram — Communication and Community" style="text;html=0;fontSize=32;align=left;" vertex="1" parent="1"><mxGeometry as="geometry" x="60" y="25" width="1540" height="60" /></mxCell><mxCell id="legend" value="Crow’s foot = many | Circle = optional | Bar = one | PK / FK / UQ = keys" style="text;html=0;fontSize=21;align=left;" vertex="1" parent="1"><mxGeometry as="geometry" x="60" y="90" width="1540" height="45" /></mxCell><mxCell id="e0" source="users" target="posts" edge="1" parent="1" style="edgeStyle=none;startArrow=ERone;endArrow=ERzeroToMany;strokeColor=#8898ad;strokeWidth=2;"><mxGeometry as="geometry" relative="1"><Array as="points"><mxPoint x="50" y="250" /><mxPoint x="50" y="1320" /></Array></mxGeometry></mxCell><mxCell id="e1" source="trips" target="posts" edge="1" parent="1" style="edgeStyle=none;startArrow=ERzeroToOne;endArrow=ERzeroToMany;strokeColor=#8898ad;strokeWidth=2;"><mxGeometry as="geometry" relative="1"><Array as="points"><mxPoint x="1070" y="300" /><mxPoint x="570" y="300" /><mxPoint x="570" y="1320" /></Array></mxGeometry></mxCell><mxCell id="e2" source="trips" target="participants" edge="1" parent="1" style="edgeStyle=none;startArrow=ERone;endArrow=ERzeroToMany;strokeColor=#8898ad;strokeWidth=2;"><mxGeometry as="geometry" relative="1"><Array as="points" /></mxGeometry></mxCell><mxCell id="e3" source="trips" target="plan_items" edge="1" parent="1" style="edgeStyle=none;startArrow=ERone;endArrow=ERzeroToMany;strokeColor=#8898ad;strokeWidth=2;"><mxGeometry as="geometry" relative="1"><Array as="points"><mxPoint x="1070" y="300" /><mxPoint x="570" y="300" /><mxPoint x="570" y="820" /></Array></mxGeometry></mxCell><mxCell id="e4" source="participants" target="plan_items" edge="1" parent="1" style="edgeStyle=none;startArrow=ERone;endArrow=ERzeroToMany;strokeColor=#8898ad;strokeWidth=2;"><mxGeometry as="geometry" relative="1"><Array as="points"><mxPoint x="570" y="760" /><mxPoint x="570" y="820" /></Array></mxGeometry></mxCell><mxCell id="e5" source="plan_items" target="comments" edge="1" parent="1" style="edgeStyle=none;startArrow=ERone;endArrow=ERzeroToMany;strokeColor=#8898ad;strokeWidth=2;"><mxGeometry as="geometry" relative="1"><Array as="points"><mxPoint x="560" y="820" /><mxPoint x="560" y="1280" /></Array></mxGeometry></mxCell><mxCell id="e6" source="participants" target="comments" edge="1" parent="1" style="edgeStyle=none;startArrow=ERone;endArrow=ERzeroToMany;strokeColor=#8898ad;strokeWidth=2;"><mxGeometry as="geometry" relative="1"><Array as="points"><mxPoint x="1080" y="760" /><mxPoint x="1080" y="1280" /></Array></mxGeometry></mxCell><mxCell id="e7" source="participants" target="chat_messages" edge="1" parent="1" style="edgeStyle=none;startArrow=ERone;endArrow=ERzeroToMany;strokeColor=#8898ad;strokeWidth=2;"><mxGeometry as="geometry" relative="1"><Array as="points" /></mxGeometry></mxCell><mxCell id="users" value="users&#10;&#10;PK id: uuid (Auth user ID)&#10;display_name: text&#10;created_at: timestamptz" style="rounded=0;whiteSpace=wrap;html=0;fillColor=#f4f7fb;strokeColor=#879bb5;fontColor=#243449;fontSize=18;align=left;verticalAlign=top;spacing=12;" vertex="1" parent="1"><mxGeometry as="geometry" x="80" y="170" width="460" height="160" /></mxCell><mxCell id="trips" value="trips&#10;&#10;PK id: uuid&#10;title: text; destination: text&#10;start_date: date; end_date: date&#10;budget: numeric(12,2); currency: char(3)&#10;time_zone: text (IANA identifier)&#10;version: integer; created_at: timestamptz" style="rounded=0;whiteSpace=wrap;html=0;fillColor=#f4f7fb;strokeColor=#879bb5;fontColor=#243449;fontSize=18;align=left;verticalAlign=top;spacing=12;" vertex="1" parent="1"><mxGeometry as="geometry" x="1100" y="170" width="460" height="250" /></mxCell><mxCell id="participants" value="participants&#10;&#10;PK (trip_id, user_id)&#10;FK trip_id → trips.id&#10;FK user_id → users.id&#10;role: owner | editor | viewer&#10;joined_at: timestamptz; left_at: timestamptz?" style="rounded=0;whiteSpace=wrap;html=0;fillColor=#f4f7fb;strokeColor=#879bb5;fontColor=#243449;fontSize=18;align=left;verticalAlign=top;spacing=12;" vertex="1" parent="1"><mxGeometry as="geometry" x="1100" y="650" width="460" height="220" /></mxCell><mxCell id="plan_items" value="plan_items&#10;&#10;PK id: uuid; UQ (trip_id, id)&#10;FK trip_id → trips.id&#10;FK place_id → places.id (nullable)&#10;FK (trip_id, added_by) → participants&#10;day_date: date; position: integer&#10;title: text; starts_at: timestamptz?&#10;duration_minutes: integer&#10;estimated_cost: numeric(12,2)&#10;version: integer" style="rounded=0;whiteSpace=wrap;html=0;fillColor=#f4f7fb;strokeColor=#879bb5;fontColor=#243449;fontSize=18;align=left;verticalAlign=top;spacing=12;" vertex="1" parent="1"><mxGeometry as="geometry" x="80" y="650" width="460" height="340" /></mxCell><mxCell id="posts" value="posts&#10;&#10;PK id: uuid&#10;FK author_id → users.id&#10;FK trip_id → trips.id (nullable)&#10;title: text; body: text&#10;visibility: private | public&#10;created_at: timestamptz" style="rounded=0;whiteSpace=wrap;html=0;fillColor=#f4f7fb;strokeColor=#879bb5;fontColor=#243449;fontSize=18;align=left;verticalAlign=top;spacing=12;" vertex="1" parent="1"><mxGeometry as="geometry" x="80" y="1190" width="460" height="250" /></mxCell><mxCell id="comments" value="comments&#10;&#10;PK id: uuid&#10;FK (trip_id, plan_item_id) → plan_items&#10;FK (trip_id, author_id) → participants&#10;body: text; created_at: timestamptz" style="rounded=0;whiteSpace=wrap;html=0;fillColor=#f4f7fb;strokeColor=#879bb5;fontColor=#243449;fontSize=18;align=left;verticalAlign=top;spacing=12;" vertex="1" parent="1"><mxGeometry as="geometry" x="590" y="1190" width="460" height="190" /></mxCell><mxCell id="chat_messages" value="chat_messages&#10;&#10;PK id: uuid&#10;FK trip_id → trips.id&#10;FK (trip_id, sender_id) → participants&#10;client_message_id: uuid&#10;UQ (trip_id, sender_id, client_message_id)&#10;body: text; created_at: timestamptz" style="rounded=0;whiteSpace=wrap;html=0;fillColor=#f4f7fb;strokeColor=#879bb5;fontColor=#243449;fontSize=18;align=left;verticalAlign=top;spacing=12;" vertex="1" parent="1"><mxGeometry as="geometry" x="1100" y="1190" width="460" height="250" /></mxCell><mxCell id="note" value="Domain views share the same tables. FK fields define the complete relationships.&#10;Nullable references are marked; role, currency and access rules are explained in docs/database-design.md." style="text;html=0;whiteSpace=wrap;fontSize=20;align=left;" vertex="1" parent="1"><mxGeometry as="geometry" x="60" y="1640" width="1540" height="90" /></mxCell></root></mxGraphModel></diagram></mxfile>
+<mxfile host="app.diagrams.net">
+  <diagram name="Membership and Expenses" id="er-membership-expenses">
+    <mxGraphModel page="1" pageWidth="2020" pageHeight="1730">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="title" value="Database ER Diagram: Membership and Expenses" style="text;html=0;fontSize=32;align=left;" vertex="1" parent="1">
+          <mxGeometry x="60" y="30" width="1900" height="55" as="geometry" />
+        </mxCell>
+        <mxCell id="edge-0" source="users" target="participants" edge="1" parent="1" style="edgeStyle=none;startArrow=ERone;endArrow=ERzeroToMany;strokeColor=#8294aa;exitX=0.5;exitY=1;entryX=0.5;entryY=1;">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="350" y="715" />
+              <mxPoint x="1670" y="715" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge-1" source="trips" target="participants" edge="1" parent="1" style="edgeStyle=none;startArrow=ERone;endArrow=ERzeroToMany;strokeColor=#8294aa;exitX=0.5;exitY=1;entryX=0.5;entryY=1;">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1010" y="727" />
+              <mxPoint x="1670" y="727" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge-2" source="participants" target="invitations" edge="1" parent="1" style="edgeStyle=none;startArrow=ERone;endArrow=ERzeroToMany;strokeColor=#8294aa;exitX=0.5;exitY=1;entryX=0.5;entryY=0;">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1670" y="739" />
+              <mxPoint x="350" y="739" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge-3" source="participants" target="expenses" edge="1" parent="1" style="edgeStyle=none;startArrow=ERone;endArrow=ERzeroToMany;strokeColor=#8294aa;exitX=0.5;exitY=1;entryX=0.5;entryY=0;">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1670" y="751" />
+              <mxPoint x="1010" y="751" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge-4" source="expenses" target="expense_splits" edge="1" parent="1" style="edgeStyle=none;startArrow=ERone;endArrow=ERzeroToMany;strokeColor=#8294aa;exitX=0.5;exitY=1;entryX=0.5;entryY=1;">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1010" y="1513" />
+              <mxPoint x="1670" y="1513" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge-5" source="participants" target="expense_splits" edge="1" parent="1" style="edgeStyle=none;startArrow=ERone;endArrow=ERzeroToMany;strokeColor=#8294aa;exitX=0.5;exitY=1;entryX=0.5;entryY=0;">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1670" y="775" />
+              <mxPoint x="1670" y="775" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="users" value="users&#10;&#10;PK id: uuid (Supabase Auth ID)&#10;display_name: text&#10;preferred_language: en | ru | kk&#10;created_at: timestamptz" style="rounded=0;whiteSpace=wrap;html=0;fillColor=#f4f7fb;strokeColor=#879bb5;fontColor=#243449;fontSize=18;align=left;verticalAlign=top;spacing=14;" vertex="1" parent="1">
+          <mxGeometry x="60" y="140" width="580" height="550" as="geometry" />
+        </mxCell>
+        <mxCell id="trips" value="trips&#10;&#10;PK id: uuid&#10;title: text; destination: text&#10;start_date: date; end_date: date&#10;travelers_count: integer (&gt; 0)&#10;trip_type: text; trip_interests: text[]&#10;budget: numeric(12,2); currency: char(3)&#10;expenses_enabled: boolean&#10;time_zone: text (IANA)&#10;version: integer; created_at: timestamptz" style="rounded=0;whiteSpace=wrap;html=0;fillColor=#f4f7fb;strokeColor=#879bb5;fontColor=#243449;fontSize=18;align=left;verticalAlign=top;spacing=14;" vertex="1" parent="1">
+          <mxGeometry x="720" y="140" width="580" height="550" as="geometry" />
+        </mxCell>
+        <mxCell id="participants" value="participants&#10;&#10;PK (trip_id, user_id)&#10;FK trip_id -&gt; trips.id&#10;FK user_id -&gt; users.id&#10;role: owner | editor&#10;UI: Organizer | Participant&#10;joined_at: timestamptz; left_at: timestamptz?" style="rounded=0;whiteSpace=wrap;html=0;fillColor=#f4f7fb;strokeColor=#879bb5;fontColor=#243449;fontSize=18;align=left;verticalAlign=top;spacing=14;" vertex="1" parent="1">
+          <mxGeometry x="1380" y="140" width="580" height="550" as="geometry" />
+        </mxCell>
+        <mxCell id="invitations" value="invitations&#10;&#10;PK id: uuid; FK trip_id -&gt; trips.id&#10;FK (trip_id, created_by) -&gt; participants&#10;token_hash: text (unique; no raw token)&#10;role: editor&#10;expires_at: timestamptz; revoked_at: timestamptz?&#10;FK accepted_by -&gt; users.id (nullable)&#10;accepted_at: timestamptz?; created_at: timestamptz" style="rounded=0;whiteSpace=wrap;html=0;fillColor=#f4f7fb;strokeColor=#879bb5;fontColor=#243449;fontSize=18;align=left;verticalAlign=top;spacing=14;" vertex="1" parent="1">
+          <mxGeometry x="60" y="890" width="580" height="550" as="geometry" />
+        </mxCell>
+        <mxCell id="expenses" value="expenses&#10;&#10;PK id: uuid; UQ (trip_id, id)&#10;FK trip_id -&gt; trips.id&#10;FK (trip_id, paid_by) -&gt; participants&#10;FK (trip_id, created_by) -&gt; participants&#10;title: text; amount: numeric(12,2)&#10;incurred_at: timestamptz; version: integer" style="rounded=0;whiteSpace=wrap;html=0;fillColor=#f4f7fb;strokeColor=#879bb5;fontColor=#243449;fontSize=18;align=left;verticalAlign=top;spacing=14;" vertex="1" parent="1">
+          <mxGeometry x="720" y="890" width="580" height="550" as="geometry" />
+        </mxCell>
+        <mxCell id="expense_splits" value="expense_splits&#10;&#10;PK (expense_id, user_id)&#10;FK (trip_id, expense_id) -&gt; expenses&#10;FK (trip_id, user_id) -&gt; participants&#10;share: numeric(12,2)" style="rounded=0;whiteSpace=wrap;html=0;fillColor=#f4f7fb;strokeColor=#879bb5;fontColor=#243449;fontSize=18;align=left;verticalAlign=top;spacing=14;" vertex="1" parent="1">
+          <mxGeometry x="1380" y="890" width="580" height="550" as="geometry" />
+        </mxCell>
+        <mxCell id="note" value="Repeated tables are references to one shared schema. FK fields define all relationships.&#10;PK: primary key; UQ: unique; ?: nullable. Proposed design; see docs/database-design.md for rules." style="text;html=0;fontSize=18;align=left;" vertex="1" parent="1">
+          <mxGeometry x="60" y="1570" width="1880" height="100" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram name="Itinerary and Voting" id="er-itinerary-voting">
+    <mxGraphModel page="1" pageWidth="2020" pageHeight="1730">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="title" value="Database ER Diagram: Itinerary and Voting" style="text;html=0;fontSize=32;align=left;" vertex="1" parent="1">
+          <mxGeometry x="60" y="30" width="1900" height="55" as="geometry" />
+        </mxCell>
+        <mxCell id="edge-0" source="places" target="events" edge="1" parent="1" style="edgeStyle=none;startArrow=ERone;endArrow=ERzeroToMany;strokeColor=#8294aa;exitX=0.5;exitY=1;entryX=0.5;entryY=1;">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="350" y="715" />
+              <mxPoint x="1010" y="715" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge-1" source="places" target="plan_items" edge="1" parent="1" style="edgeStyle=none;startArrow=ERone;endArrow=ERzeroToMany;strokeColor=#8294aa;exitX=0.5;exitY=1;entryX=0.5;entryY=0;">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="350" y="727" />
+              <mxPoint x="350" y="727" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge-2" source="events" target="plan_items" edge="1" parent="1" style="edgeStyle=none;startArrow=ERone;endArrow=ERzeroToMany;strokeColor=#8294aa;exitX=0.5;exitY=1;entryX=0.5;entryY=0;">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1010" y="739" />
+              <mxPoint x="350" y="739" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge-3" source="trips" target="plan_items" edge="1" parent="1" style="edgeStyle=none;startArrow=ERone;endArrow=ERzeroToMany;strokeColor=#8294aa;exitX=0.5;exitY=1;entryX=0.5;entryY=0;">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1670" y="751" />
+              <mxPoint x="350" y="751" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge-4" source="participants" target="plan_items" edge="1" parent="1" style="edgeStyle=none;startArrow=ERone;endArrow=ERzeroToMany;strokeColor=#8294aa;exitX=0.5;exitY=1;entryX=0.5;entryY=1;">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1010" y="1513" />
+              <mxPoint x="350" y="1513" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge-5" source="plan_items" target="votes" edge="1" parent="1" style="edgeStyle=none;startArrow=ERone;endArrow=ERzeroToMany;strokeColor=#8294aa;exitX=0.5;exitY=1;entryX=0.5;entryY=1;">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="350" y="1525" />
+              <mxPoint x="1670" y="1525" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge-6" source="participants" target="votes" edge="1" parent="1" style="edgeStyle=none;startArrow=ERone;endArrow=ERzeroToMany;strokeColor=#8294aa;exitX=0.5;exitY=1;entryX=0.5;entryY=1;">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1010" y="1537" />
+              <mxPoint x="1670" y="1537" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="places" value="places&#10;&#10;PK id: uuid&#10;name: text; category: text&#10;latitude: numeric; longitude: numeric&#10;address: text; description: text?&#10;is_indoor: boolean?; child_friendly: boolean?&#10;opening_hours: jsonb; time_zone: text&#10;estimated_cost: numeric(12,2)?&#10;currency: char(3); cost_unit: text&#10;duration_minutes: integer?&#10;capacity_basis: integer?; cost_category: text&#10;source_url: text; checked_at: timestamptz?&#10;booking_url: text?; map_url: text?&#10;is_active: boolean" style="rounded=0;whiteSpace=wrap;html=0;fillColor=#f4f7fb;strokeColor=#879bb5;fontColor=#243449;fontSize=18;align=left;verticalAlign=top;spacing=14;" vertex="1" parent="1">
+          <mxGeometry x="60" y="140" width="580" height="550" as="geometry" />
+        </mxCell>
+        <mxCell id="events" value="events&#10;&#10;PK id: uuid&#10;FK place_id -&gt; places.id&#10;title: text; description: text?&#10;starts_at: timestamptz; ends_at: timestamptz&#10;estimated_cost: numeric(12,2)?&#10;currency: char(3); cost_unit: text&#10;source_url: text; checked_at: timestamptz?&#10;status: scheduled | canceled | unverified" style="rounded=0;whiteSpace=wrap;html=0;fillColor=#f4f7fb;strokeColor=#879bb5;fontColor=#243449;fontSize=18;align=left;verticalAlign=top;spacing=14;" vertex="1" parent="1">
+          <mxGeometry x="720" y="140" width="580" height="550" as="geometry" />
+        </mxCell>
+        <mxCell id="trips" value="trips&#10;&#10;PK id: uuid&#10;title: text; destination: text&#10;start_date: date; end_date: date&#10;travelers_count: integer (&gt; 0)&#10;trip_type: text; trip_interests: text[]&#10;budget: numeric(12,2); currency: char(3)&#10;expenses_enabled: boolean&#10;time_zone: text (IANA)&#10;version: integer; created_at: timestamptz" style="rounded=0;whiteSpace=wrap;html=0;fillColor=#f4f7fb;strokeColor=#879bb5;fontColor=#243449;fontSize=18;align=left;verticalAlign=top;spacing=14;" vertex="1" parent="1">
+          <mxGeometry x="1380" y="140" width="580" height="550" as="geometry" />
+        </mxCell>
+        <mxCell id="plan_items" value="plan_items&#10;&#10;PK id: uuid; UQ (trip_id, id)&#10;FK trip_id -&gt; trips.id&#10;FK place_id -&gt; places.id (nullable)&#10;FK event_id -&gt; events.id (nullable)&#10;FK (trip_id, added_by) -&gt; participants&#10;item_type: place | event | custom&#10;day_date: date; position: integer&#10;title: text; starts_at: timestamptz?&#10;duration_minutes: integer&#10;estimated_cost: numeric(12,2)&#10;cost_category: text; estimate_basis: jsonb&#10;version: integer" style="rounded=0;whiteSpace=wrap;html=0;fillColor=#f4f7fb;strokeColor=#879bb5;fontColor=#243449;fontSize=18;align=left;verticalAlign=top;spacing=14;" vertex="1" parent="1">
+          <mxGeometry x="60" y="890" width="580" height="550" as="geometry" />
+        </mxCell>
+        <mxCell id="participants" value="participants&#10;&#10;PK (trip_id, user_id)&#10;FK trip_id -&gt; trips.id&#10;FK user_id -&gt; users.id&#10;role: owner | editor&#10;UI: Organizer | Participant&#10;joined_at: timestamptz; left_at: timestamptz?" style="rounded=0;whiteSpace=wrap;html=0;fillColor=#f4f7fb;strokeColor=#879bb5;fontColor=#243449;fontSize=18;align=left;verticalAlign=top;spacing=14;" vertex="1" parent="1">
+          <mxGeometry x="720" y="890" width="580" height="550" as="geometry" />
+        </mxCell>
+        <mxCell id="votes" value="votes&#10;&#10;PK (plan_item_id, user_id)&#10;FK (trip_id, plan_item_id) -&gt; plan_items&#10;FK (trip_id, user_id) -&gt; participants&#10;value: -1 | 1; created_at: timestamptz" style="rounded=0;whiteSpace=wrap;html=0;fillColor=#f4f7fb;strokeColor=#879bb5;fontColor=#243449;fontSize=18;align=left;verticalAlign=top;spacing=14;" vertex="1" parent="1">
+          <mxGeometry x="1380" y="890" width="580" height="550" as="geometry" />
+        </mxCell>
+        <mxCell id="note" value="Repeated tables are references to one shared schema. FK fields define all relationships.&#10;PK: primary key; UQ: unique; ?: nullable. Proposed design; see docs/database-design.md for rules." style="text;html=0;fontSize=18;align=left;" vertex="1" parent="1">
+          <mxGeometry x="60" y="1570" width="1880" height="100" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram name="Communication and Community" id="er-communication-community">
+    <mxGraphModel page="1" pageWidth="2020" pageHeight="1730">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="title" value="Database ER Diagram: Communication and Community" style="text;html=0;fontSize=32;align=left;" vertex="1" parent="1">
+          <mxGeometry x="60" y="30" width="1900" height="55" as="geometry" />
+        </mxCell>
+        <mxCell id="edge-0" source="users" target="posts" edge="1" parent="1" style="edgeStyle=none;startArrow=ERone;endArrow=ERzeroToMany;strokeColor=#8294aa;exitX=0.5;exitY=1;entryX=0.5;entryY=1;">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="350" y="715" />
+              <mxPoint x="1010" y="715" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge-1" source="posts" target="post_reports" edge="1" parent="1" style="edgeStyle=none;startArrow=ERone;endArrow=ERzeroToMany;strokeColor=#8294aa;exitX=0.5;exitY=1;entryX=0.5;entryY=1;">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1010" y="727" />
+              <mxPoint x="1670" y="727" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge-2" source="users" target="post_reports" edge="1" parent="1" style="edgeStyle=none;startArrow=ERone;endArrow=ERzeroToMany;strokeColor=#8294aa;exitX=0.5;exitY=1;entryX=0.5;entryY=1;">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="350" y="739" />
+              <mxPoint x="1670" y="739" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge-3" source="participants" target="chat_messages" edge="1" parent="1" style="edgeStyle=none;startArrow=ERone;endArrow=ERzeroToMany;strokeColor=#8294aa;exitX=0.5;exitY=1;entryX=0.5;entryY=1;">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="350" y="1501" />
+              <mxPoint x="1010" y="1501" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge-4" source="participants" target="comments" edge="1" parent="1" style="edgeStyle=none;startArrow=ERone;endArrow=ERzeroToMany;strokeColor=#8294aa;exitX=0.5;exitY=1;entryX=0.5;entryY=1;">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="350" y="1513" />
+              <mxPoint x="1670" y="1513" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="users" value="users&#10;&#10;PK id: uuid (Supabase Auth ID)&#10;display_name: text&#10;preferred_language: en | ru | kk&#10;created_at: timestamptz" style="rounded=0;whiteSpace=wrap;html=0;fillColor=#f4f7fb;strokeColor=#879bb5;fontColor=#243449;fontSize=18;align=left;verticalAlign=top;spacing=14;" vertex="1" parent="1">
+          <mxGeometry x="60" y="140" width="580" height="550" as="geometry" />
+        </mxCell>
+        <mxCell id="posts" value="posts&#10;&#10;PK id: uuid&#10;FK author_id -&gt; users.id&#10;FK place_id -&gt; places.id&#10;FK trip_id -&gt; trips.id (nullable)&#10;title: text; body: text&#10;media_url: text?; media_alt: text?&#10;estimated_cost: numeric(12,2)?; currency: char(3)?&#10;best_time_to_visit: text?&#10;status: draft | published | removed&#10;visibility: private | public&#10;created_at: timestamptz&#10;updated_at: timestamptz; published_at: timestamptz?" style="rounded=0;whiteSpace=wrap;html=0;fillColor=#f4f7fb;strokeColor=#879bb5;fontColor=#243449;fontSize=18;align=left;verticalAlign=top;spacing=14;" vertex="1" parent="1">
+          <mxGeometry x="720" y="140" width="580" height="550" as="geometry" />
+        </mxCell>
+        <mxCell id="post_reports" value="post_reports&#10;&#10;PK id: uuid; FK post_id -&gt; posts.id&#10;FK reporter_id -&gt; users.id&#10;UQ (post_id, reporter_id)&#10;reason: text; status: open | resolved | dismissed&#10;FK reviewed_by -&gt; users.id (nullable)&#10;resolution: text?; reviewed_at: timestamptz?&#10;created_at: timestamptz" style="rounded=0;whiteSpace=wrap;html=0;fillColor=#f4f7fb;strokeColor=#879bb5;fontColor=#243449;fontSize=18;align=left;verticalAlign=top;spacing=14;" vertex="1" parent="1">
+          <mxGeometry x="1380" y="140" width="580" height="550" as="geometry" />
+        </mxCell>
+        <mxCell id="participants" value="participants&#10;&#10;PK (trip_id, user_id)&#10;FK trip_id -&gt; trips.id&#10;FK user_id -&gt; users.id&#10;role: owner | editor&#10;UI: Organizer | Participant&#10;joined_at: timestamptz; left_at: timestamptz?" style="rounded=0;whiteSpace=wrap;html=0;fillColor=#f4f7fb;strokeColor=#879bb5;fontColor=#243449;fontSize=18;align=left;verticalAlign=top;spacing=14;" vertex="1" parent="1">
+          <mxGeometry x="60" y="890" width="580" height="550" as="geometry" />
+        </mxCell>
+        <mxCell id="chat_messages" value="chat_messages&#10;&#10;PK id: uuid&#10;FK trip_id -&gt; trips.id&#10;FK (trip_id, sender_id) -&gt; participants&#10;client_message_id: uuid&#10;UQ (trip_id, sender_id, client_message_id)&#10;body: text; created_at: timestamptz" style="rounded=0;whiteSpace=wrap;html=0;fillColor=#f4f7fb;strokeColor=#879bb5;fontColor=#243449;fontSize=18;align=left;verticalAlign=top;spacing=14;" vertex="1" parent="1">
+          <mxGeometry x="720" y="890" width="580" height="550" as="geometry" />
+        </mxCell>
+        <mxCell id="comments" value="comments&#10;&#10;PK id: uuid&#10;FK (trip_id, plan_item_id) -&gt; plan_items&#10;FK (trip_id, author_id) -&gt; participants&#10;body: text; created_at: timestamptz" style="rounded=0;whiteSpace=wrap;html=0;fillColor=#f4f7fb;strokeColor=#879bb5;fontColor=#243449;fontSize=18;align=left;verticalAlign=top;spacing=14;" vertex="1" parent="1">
+          <mxGeometry x="1380" y="890" width="580" height="550" as="geometry" />
+        </mxCell>
+        <mxCell id="note" value="Repeated tables are references to one shared schema. FK fields define all relationships.&#10;PK: primary key; UQ: unique; ?: nullable. Proposed design; see docs/database-design.md for rules." style="text;html=0;fontSize=18;align=left;" vertex="1" parent="1">
+          <mxGeometry x="60" y="1570" width="1880" height="100" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram name="AI Proposals" id="er-ai-proposals">
+    <mxGraphModel page="1" pageWidth="2020" pageHeight="1730">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="title" value="Database ER Diagram: AI Proposals" style="text;html=0;fontSize=32;align=left;" vertex="1" parent="1">
+          <mxGeometry x="60" y="30" width="1900" height="55" as="geometry" />
+        </mxCell>
+        <mxCell id="edge-0" source="trips" target="participants" edge="1" parent="1" style="edgeStyle=none;startArrow=ERone;endArrow=ERzeroToMany;strokeColor=#8294aa;exitX=0.5;exitY=1;entryX=0.5;entryY=1;">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="350" y="715" />
+              <mxPoint x="1010" y="715" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge-1" source="trips" target="ai_proposals" edge="1" parent="1" style="edgeStyle=none;startArrow=ERone;endArrow=ERzeroToMany;strokeColor=#8294aa;exitX=0.5;exitY=1;entryX=0.5;entryY=1;">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="350" y="727" />
+              <mxPoint x="1670" y="727" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge-2" source="participants" target="ai_proposals" edge="1" parent="1" style="edgeStyle=none;startArrow=ERone;endArrow=ERzeroToMany;strokeColor=#8294aa;exitX=0.5;exitY=1;entryX=0.5;entryY=1;">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1010" y="739" />
+              <mxPoint x="1670" y="739" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge-3" source="trips" target="plan_items" edge="1" parent="1" style="edgeStyle=none;startArrow=ERone;endArrow=ERzeroToMany;strokeColor=#8294aa;exitX=0.5;exitY=1;entryX=0.5;entryY=0;">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="350" y="751" />
+              <mxPoint x="350" y="751" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="trips" value="trips&#10;&#10;PK id: uuid&#10;title: text; destination: text&#10;start_date: date; end_date: date&#10;travelers_count: integer (&gt; 0)&#10;trip_type: text; trip_interests: text[]&#10;budget: numeric(12,2); currency: char(3)&#10;expenses_enabled: boolean&#10;time_zone: text (IANA)&#10;version: integer; created_at: timestamptz" style="rounded=0;whiteSpace=wrap;html=0;fillColor=#f4f7fb;strokeColor=#879bb5;fontColor=#243449;fontSize=18;align=left;verticalAlign=top;spacing=14;" vertex="1" parent="1">
+          <mxGeometry x="60" y="140" width="580" height="550" as="geometry" />
+        </mxCell>
+        <mxCell id="participants" value="participants&#10;&#10;PK (trip_id, user_id)&#10;FK trip_id -&gt; trips.id&#10;FK user_id -&gt; users.id&#10;role: owner | editor&#10;UI: Organizer | Participant&#10;joined_at: timestamptz; left_at: timestamptz?" style="rounded=0;whiteSpace=wrap;html=0;fillColor=#f4f7fb;strokeColor=#879bb5;fontColor=#243449;fontSize=18;align=left;verticalAlign=top;spacing=14;" vertex="1" parent="1">
+          <mxGeometry x="720" y="140" width="580" height="550" as="geometry" />
+        </mxCell>
+        <mxCell id="ai_proposals" value="ai_proposals&#10;&#10;PK id: uuid; FK trip_id -&gt; trips.id&#10;FK (trip_id, requested_by) -&gt; participants&#10;base_version: integer; request_key: uuid&#10;UQ (trip_id, requested_by, request_key)&#10;proposed_items: jsonb; cost_breakdown: jsonb&#10;validation_errors: jsonb&#10;status: pending | ready | invalid | failed&#10;        | confirmed | rejected | expired&#10;expires_at: timestamptz; created_at: timestamptz&#10;FK (trip_id, confirmed_by) -&gt; participants?&#10;confirmed_at: timestamptz?; applied_version: integer?" style="rounded=0;whiteSpace=wrap;html=0;fillColor=#f4f7fb;strokeColor=#879bb5;fontColor=#243449;fontSize=18;align=left;verticalAlign=top;spacing=14;" vertex="1" parent="1">
+          <mxGeometry x="1380" y="140" width="580" height="550" as="geometry" />
+        </mxCell>
+        <mxCell id="plan_items" value="plan_items&#10;&#10;PK id: uuid; UQ (trip_id, id)&#10;FK trip_id -&gt; trips.id&#10;FK place_id -&gt; places.id (nullable)&#10;FK event_id -&gt; events.id (nullable)&#10;FK (trip_id, added_by) -&gt; participants&#10;item_type: place | event | custom&#10;day_date: date; position: integer&#10;title: text; starts_at: timestamptz?&#10;duration_minutes: integer&#10;estimated_cost: numeric(12,2)&#10;cost_category: text; estimate_basis: jsonb&#10;version: integer" style="rounded=0;whiteSpace=wrap;html=0;fillColor=#f4f7fb;strokeColor=#879bb5;fontColor=#243449;fontSize=18;align=left;verticalAlign=top;spacing=14;" vertex="1" parent="1">
+          <mxGeometry x="60" y="890" width="580" height="550" as="geometry" />
+        </mxCell>
+        <mxCell id="note" value="Repeated tables are references to one shared schema. FK fields define all relationships.&#10;PK: primary key; UQ: unique; ?: nullable. Proposed design; see docs/database-design.md for rules." style="text;html=0;fontSize=18;align=left;" vertex="1" parent="1">
+          <mxGeometry x="60" y="1570" width="1880" height="100" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

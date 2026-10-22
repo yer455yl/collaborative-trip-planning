@@ -4,9 +4,9 @@ Prepared by Aman Yerassyl. Documentation checked on 20 October 2026.
 
 ## Purpose and proposed decision
 
-The project will provide web and mobile clients for collaborative trip planning. This document compares backend options and communication mechanisms. The proposed starting point is Supabase with PostgreSQL, Auth, REST data access and managed Realtime subscriptions. Protected server functions will handle AI requests and operations requiring trusted validation. This is a design recommendation pending team review and a small proof of concept; no backend has been deployed or benchmarked.
+The project will provide web and mobile clients for collaborative trip planning. This document compares backend options and communication mechanisms. The proposed starting point is Supabase with PostgreSQL, Auth, REST data access and managed Realtime subscriptions. Protected server functions will handle AI requests and operations requiring trusted validation. Supabase was selected by the team on 22 October 2026. The proof of concept remains an implementation verification task; no backend has been deployed or benchmarked.
 
-Wanderlog is a reference for user-facing planning workflows, not evidence of its internal technology. The original work plan specifies a mobile application; adding the web client must be reflected in the proposal and requirements.
+Wanderlog is a reference for user-facing planning workflows, not evidence of its internal technology. The updated proposal and requirements confirm Flutter mobile plus web using the same backend.
 
 ## Requirements used for comparison
 
