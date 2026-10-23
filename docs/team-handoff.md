@@ -17,7 +17,7 @@ All **15** table definitions and results of PR #8/#9 are retained. `trips.expens
 MVP invariants: owner = Organizer; editor = Participant; inactive members have no access. Both active roles edit/vote; only the owner administers invitations/membership. Initial generation uses the same trusted validation as manual editing. `plan_items.estimated_cost` is already normalized for the whole party. Never multiply it by traveler count again. Server-owned catalog prices, required categories and freshness policy must be checked independently of client totals. See the [proposed wire/transaction contract](mvp-server-contract.md) for errors, dates, units, confirmation and open questions.
 
 
-Updated 22 October 2026. Prepared by Aman Yerassyl. The repository contains design/research deliverables; there is no deployed backend or executed test report.
+Updated 22 October 2026. Prepared by Aman Yerassyl. The repository contains design/research deliverables and local deterministic budget/helper checks. There is no deployed backend or executed database/API test report.
 
 ## Confirmed Scope and Current Integration
 

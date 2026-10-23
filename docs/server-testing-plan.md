@@ -107,7 +107,7 @@ BUD-01/SAV-01/SYN-01 are **Not run** integration cases. Pure helper checks descr
 | AI-01–05 | FR-03/04/05/06 (FR-12 deferred), NFR-01/03/04/06/09/10/11 |
 | INV/CAT/EVT/AIP/FED/MOD | Per-case references in the revision table above |
 
-FR-10 comment subactions of ACC-02/03 are deferred. FR-07/16/18/19, SUS, layout, multilingual UI and cross-platform acceptance require the overall UAT/platform protocols. This server plan alone does not claim complete product acceptance coverage.
+FR-10 comment subactions of ACC-02/03 are deferred. FR-07 map acceptance, SUS, layout, multilingual UI and cross-platform acceptance require the overall MVP UAT/platform protocols. FR-16/18/19 remain deferred and are excluded from the MVP exit gate. This server plan alone does not claim complete product acceptance coverage.
 
 ## Measurement protocol
 
