@@ -1,6 +1,23 @@
 # Backend Contribution Handoff
 
-Updated 22 October 2026. Prepared by Aman Yerassyl. The repository contains design/research deliverables; there is no deployed backend or executed test report.
+## Five-function MVP boundary (23 October 2026)
+
+This revision follows the supervisor scope recorded in [PR #10](https://github.com/yer455yl/collaborative-trip-planning/pull/10) and the [proposed responsibility split](mvp-scope-and-responsibilities.md). Android, iOS and web remain planned. Detailed ownership and interface acceptance are pending teammate replies; this document does not approve PR #10.
+
+| Scope | Tables and responsibility |
+| --- | --- |
+| MVP support | `users`, `trips`, `participants`: authenticated trip creation and active owner/editor access |
+| MVP planning | `places`, `plan_items`: catalog identifiers, route/map data and whole-party planned costs |
+| MVP collaboration | `votes`, `invitations`: one current vote, owner-issued invitation and atomic acceptance |
+| MVP generation | `ai_proposals`: initial route draft, validation and explicit versioned confirmation; no conversational editor |
+| Deferred, retained | `events`, `comments`, `chat_messages`, `posts`, `post_reports`, `expenses`, `expense_splits` |
+
+All **15** table definitions and results of PR #8/#9 are retained. `trips.expenses_enabled`, `places.booking_url`, `plan_items.event_id` and `item_type=event` are future fields; retaining them does not enable those capabilities. Actual expenses/debts differ from planned estimates. Weather, offline access and booking integrations are deferred. Future text below describes retained design only wherever it concerns these domains.
+
+MVP invariants: owner = Organizer; editor = Participant; inactive members have no access. Both active roles edit/vote; only the owner administers invitations/membership. Initial generation uses the same trusted validation as manual editing. `plan_items.estimated_cost` is already normalized for the whole party. Never multiply it by traveler count again. Server-owned catalog prices, required categories and freshness policy must be checked independently of client totals. See the [proposed wire/transaction contract](mvp-server-contract.md) for errors, dates, units, confirmation and open questions.
+
+
+Updated 22 October 2026. Prepared by Aman Yerassyl. The repository contains design/research deliverables and local deterministic budget/helper checks. There is no deployed backend or executed database/API test report.
 
 ## Confirmed Scope and Current Integration
 
@@ -10,7 +27,7 @@ Updated 22 October 2026. Prepared by Aman Yerassyl. The repository contains desi
 - [Integrated literature](literature-review.md) includes all three contributions. Full-text reading limitations remain explicit; integration does not prove each member has read every paper.
 - [Requirements](requirements-specification.md), [overall architecture and Use Cases](architecture-and-use-cases.md), and [team evaluation](verification-and-evaluation-plan.md) are present. They still need review and implementation evidence.
 - [Schema alignment](schema-alignment.md) expands the initial model to 15 tables with trip preferences, catalog provenance, events, invitations, AI proposal lifecycle and minimal feed/report persistence.
-- [Server testing](server-testing-plan.md) maps 32 proposed cases to FR/NFR IDs. The earlier contribution had 25 cases; seven cases cover the schema revision. All are Not run.
+- [Server testing](server-testing-plan.md) maps 35 proposed cases (22 MVP, 13 deferred) to FR/NFR IDs. The earlier contribution had 25 cases; seven cases cover the schema revision. All are Not run.
 
 ## Materials and Review Actions
 

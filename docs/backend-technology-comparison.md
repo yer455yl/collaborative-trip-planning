@@ -1,5 +1,22 @@
 # Backend and Communication Technology Comparison
 
+## Five-function MVP boundary (23 October 2026)
+
+This revision follows the supervisor scope recorded in [PR #10](https://github.com/yer455yl/collaborative-trip-planning/pull/10) and the [proposed responsibility split](mvp-scope-and-responsibilities.md). Android, iOS and web remain planned. Detailed ownership and interface acceptance are pending teammate replies; this document does not approve PR #10.
+
+| Scope | Tables and responsibility |
+| --- | --- |
+| MVP support | `users`, `trips`, `participants`: authenticated trip creation and active owner/editor access |
+| MVP planning | `places`, `plan_items`: catalog identifiers, route/map data and whole-party planned costs |
+| MVP collaboration | `votes`, `invitations`: one current vote, owner-issued invitation and atomic acceptance |
+| MVP generation | `ai_proposals`: initial route draft, validation and explicit versioned confirmation; no conversational editor |
+| Deferred, retained | `events`, `comments`, `chat_messages`, `posts`, `post_reports`, `expenses`, `expense_splits` |
+
+All **15** table definitions and results of PR #8/#9 are retained. `trips.expenses_enabled`, `places.booking_url`, `plan_items.event_id` and `item_type=event` are future fields; retaining them does not enable those capabilities. Actual expenses/debts differ from planned estimates. Weather, offline access and booking integrations are deferred. Future text below describes retained design only wherever it concerns these domains.
+
+MVP invariants: owner = Organizer; editor = Participant; inactive members have no access. Both active roles edit/vote; only the owner administers invitations/membership. Initial generation uses the same trusted validation as manual editing. `plan_items.estimated_cost` is already normalized for the whole party. Never multiply it by traveler count again. Server-owned catalog prices, required categories and freshness policy must be checked independently of client totals. See the [proposed wire/transaction contract](mvp-server-contract.md) for errors, dates, units, confirmation and open questions.
+
+
 Prepared by Aman Yerassyl. Documentation checked on 20 October 2026.
 
 ## Purpose and proposed decision
@@ -10,7 +27,7 @@ Wanderlog is a reference for user-facing planning workflows, not evidence of its
 
 ## Requirements used for comparison
 
-Both clients need a shared source of truth for trips, participants, ordered itinerary items, votes, comments, messages, posts, expenses and places. Private trip data must be available only to authorized members. Expense totals and membership changes require consistent validation. AI-generated plans must be checked against stored places and budget rules before the user confirms changes. Chat and collaborative updates need timely delivery; permanent data must survive a disconnected client.
+MVP clients need a shared source of truth for trips, participants, itinerary items, votes, invitations, proposals and places. Comments, messages, posts and actual expenses remain future comparative considerations. Private trip data must be available only to authorized members. Expense totals and membership changes require consistent validation. AI-generated plans must be checked against stored places and budget rules before the user confirms changes. Collaborative itinerary/vote updates need timely delivery; permanent data must survive a disconnected client.
 
 The effort and suitability assessments below are engineering judgments for a three-person student team, not measured results. No assumptions are made about the team's existing framework expertise.
 
@@ -53,7 +70,7 @@ These options operate at different levels and can be combined. A real-time liste
 1. **Database: PostgreSQL through Supabase.** The domain has many connected records. Foreign keys and constraints support explicit relations and prevent some invalid states. This is a project-fit judgment, not a claim that Firestore cannot support the application.
 2. **Identity and access: Supabase Auth and trip-membership policies.** Web and mobile clients use the same identity system. Exposed tables require explicit access policies; privileged secrets stay on the server. RLS must be tested for owner, member, outsider and removed-member cases.
 3. **Data access: HTTPS REST and transactional database operations.** Use the generated data API for policy-protected ordinary operations. Use database functions or trusted server functions for membership changes, expense operations and itinerary updates requiring multiple atomic changes. A client-provided trip ID is never sufficient authorization.
-4. **Live collaboration: managed Realtime.** Persist chat messages before notifying other clients. Scope subscriptions to the relevant trip and enforce actual authorization. After reconnecting, fetch current records and deduplicate by record ID; refresh when access changes. Event filters are not a substitute for permissions.
+4. **Live collaboration: managed Realtime.** Persist MVP itinerary/vote changes before notifying other clients. Chat delivery is deferred. Scope subscriptions to the relevant trip and enforce actual authorization. After reconnecting, fetch current records and deduplicate by record ID; refresh when access changes. Event filters are not a substitute for permissions.
 5. **AI integration: trusted server execution.** The server checks membership, validates input and calls the external AI service. It validates proposed places, time and budget, then returns a draft. Saving requires user confirmation and validation against the latest itinerary version. The AI provider and execution limits remain undecided.
 6. **Custom Node.js service: reserve option.** Introduce a dedicated service if measured processing needs, integration requirements or function execution limits require it. A separate Node.js layer is not necessary solely to claim that the project has a backend.
 
@@ -63,9 +80,9 @@ Expense values should use an exact monetary representation and a defined currenc
 
 The following are planned checks, not completed test results:
 
-- Connect one web client and one mobile client to the same test trip; create a saved message and confirm both see it. Record end-to-end delay; the team must agree on an acceptance threshold.
+- Connect one web client and one mobile client to the same test trip; commit a versioned itinerary update and confirm both see it. Record end-to-end delay; the team must agree on an acceptance threshold.
 - Verify that an outsider cannot read, change or subscribe to private trip data; verify loss of access after membership removal.
-- Disconnect a client, create updates on the other, reconnect and confirm the complete saved state is restored without duplicate messages.
+- Disconnect a client, create updates on the other, reconnect and confirm the complete saved state is restored without duplicate itinerary items/votes.
 - Submit a vote twice and verify the agreed uniqueness rule; attempt a conflicting itinerary edit and verify explicit conflict handling.
 - Check monetary calculations and ensure an invalid or unconfirmed AI proposal cannot overwrite the saved itinerary.
 - Estimate usage against current quotas and pricing; confirm selected SDKs and server-function limits suit the chosen frameworks and AI workload.

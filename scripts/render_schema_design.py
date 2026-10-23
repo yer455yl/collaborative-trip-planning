@@ -66,14 +66,15 @@ for page in schema["pages"]:
         fields = schema["tables"][table]
         draw.rectangle((x,y,x+w,y+h),fill="#f4f7fb",outline="#879bb5",width=2)
         draw.rectangle((x,y,x+w,y+47),fill="#e0eaf6")
-        draw.text((x+14,y+10),table,font=heading,fill="#243449")
+        label = table + " [" + schema["mvp_scope"]["tables"][table].upper() + "]"
+        draw.text((x+14,y+10),label,font=heading,fill="#243449")
         for n,line in enumerate(fields):
             if draw.textlength(line,font=font) > w-28:
                 raise ValueError(f"Field too wide: {table}: {line}")
             draw.text((x+14,y+64+n*32),line,font=font,fill="#243449")
-        value = table+"\n\n"+"\n".join(fields)
+        value = label+"\n\n"+"\n".join(fields)
         text_cell(table,value,x,y,w,h,"rounded=0;whiteSpace=wrap;html=0;fillColor=#f4f7fb;strokeColor=#879bb5;fontColor=#243449;fontSize=18;align=left;verticalAlign=top;spacing=14;")
-    note = "Repeated tables are references to one shared schema. FK fields define all relationships.\nPK: primary key; UQ: unique; ?: nullable. Proposed design; see docs/database-design.md for rules."
+    note = "MVP / DEFERRED labels mark scope; all 15 tables retained. Repeated tables are references.\nPK: primary key; UQ: unique; ?: nullable. Proposed design; see docs/database-design.md for rules."
     draw.multiline_text((60,1570),note,font=font,fill="#52657c",spacing=10)
     text_cell("note",note,60,1570,1880,100,"text;html=0;fontSize=18;align=left;")
     image.save(ROOT / "diagrams" / (page["file"]+".png"))
