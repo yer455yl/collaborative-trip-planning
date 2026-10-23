@@ -48,7 +48,7 @@ export function validatePlanningSnapshot({ actorId, membership, trip, expectedVe
     if (!nonempty(line.source) || line.currency !== 'KZT' || line.price == null) fail('INCOMPLETE_ESTIMATE');
     if (typeof line.checkedAt !== 'string' || !/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{1,3})?Z$/.test(line.checkedAt)) fail('STALE_PRICE');
     const checked = Date.parse(line.checkedAt);
-    if (!Number.isFinite(checked) || checked > now || now - checked > maxPriceAgeMs) fail('STALE_PRICE');
+    if (!Number.isFinite(checked) || new Date(checked).toISOString().slice(0, 19) !== line.checkedAt.slice(0, 19) || checked > now || now - checked > maxPriceAgeMs) fail('STALE_PRICE');
     if (!['per_group', 'per_person', 'normalized_group'].includes(line.unit)) fail('INVALID_UNIT');
     if (line.unit === 'normalized_group' && line.quantity !== 1) fail('DOUBLE_NORMALIZATION');
     const factor = BigInt(line.quantity) * (line.unit === 'per_person' ? BigInt(trip.travelers) : 1n);

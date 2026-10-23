@@ -34,7 +34,12 @@ reject('DOUBLE_NORMALIZATION', function quantityOnNormalized(x) { Object.assign(
 reject('INCOMPLETE_ESTIMATE', function missingPrice(x) { x.lines[0].price = null; });
 reject('STALE_PRICE', function stalePrice(x) { x.lines[0].checkedAt = '2026-10-20T10:00:00Z'; });
 reject('STALE_PRICE', function futurePrice(x) { x.lines[0].checkedAt = '2026-10-24T10:00:00Z'; });
-reject('STALE_PRICE', function missingCheck(x) { x.lines[0].checkedAt = null; });
+test('missing or impossible quote timestamp rejected', () => {
+  for (const checkedAt of [null, '2026-02-30T10:00:00Z', '2026-10-22T24:00:00Z']) {
+    const x = fixture(); x.lines[0].checkedAt = checkedAt;
+    assert.throws(() => validate(x), e => e.code === 'STALE_PRICE');
+  }
+});
 reject('INVALID_PLACE', function inactivePlace(x) { x.lines[0].active = false; });
 reject('INVALID_PLACE', function foreignLine(x) { x.lines[0].tripId = 'trip-b'; });
 reject('INVALID_DATE', function impossibleDate(x) { x.lines[0].day = '2026-02-30'; });
