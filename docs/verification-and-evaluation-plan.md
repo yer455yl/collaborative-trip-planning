@@ -1,95 +1,58 @@
-# Verification and Evaluation Plan
+# MVP Verification and Evaluation Plan
 
-**Version:** 0.2 — 22 October 2026, proposed for review.  
-**Integration owner:** Zukhra; server verification contribution: Yerassyl; client/AI support: Sayakhat.  
-**Execution status:** Not run. No usable application, backend or measured study results are asserted.
+Revision: 23 October 2026. Integration owner: Zukhra; backend tests: Yerassyl; AI/map tests: Sayakhat. Five-function scope: [MVP decision](mvp-scope-and-responsibilities.md). A plan is not an executed application study.
 
-## 1. Evaluation Questions
+## Current execution evidence
 
-1. Can users create and jointly revise an itinerary that meets the entered constraints?
-2. Does the implementation enforce permissions, data integrity and explicit AI confirmation?
-3. Are generation and shared updates timely under recorded conditions?
-4. Can target users complete planning tasks, and how do they rate usability?
-5. How does planning time compare with manual planning using Google Maps and a group chat?
+The standalone Dart budget core has 34/34 deterministic checks passing and no analyzer issues on Dart 3.11.3 macOS arm64, 23 October 2026. Reproduce using [module instructions](planning-budget-module.md). These results cover exact arithmetic, unit normalization, completeness, invalid inputs, overflow and edit previews only. Flutter UI, database, authorization, generation/map providers, integration, load and SUS remain **Not run**.
 
-The [requirements specification](requirements-specification.md) defines the proposed baseline. The existing [server plan](server-testing-plan.md) supplies 32 cases (ACC-01–06, VOT-01–03, ITN-01–02, CHT-01–04, EXP-01–05, AI-01–05). They are incorporated by reference without renumbering or claiming they passed. Confirm decisions D-01–08 before judging affected cases.
+## Ownership and verification layers
 
-## 2. Test Layers and Ownership
-
-| Layer | Focus | Responsible contribution | Evidence |
-| --- | --- | --- | --- |
-| Review | Requirement coverage, diagrams, contracts and data model | Zukhra with all members | Actual review comments, resolutions, linked revision |
-| Unit | Budget units/rounding, date constraints, candidate validation, deduplication | Implementing member | Test code, fixture version, command, result |
-| Database/API | Permissions, constraints, transactions, concurrency, recovery | Yerassyl | Server cases, requests/results and redacted database evidence |
-| Client/integration | Complete mobile/web flows, map/list agreement, errors, AI preview | Zukhra and Sayakhat | Platform/build versions and case records |
-| Performance | Generation and cross-device update measurements | All, coordinated by Zukhra | Raw timestamps, success/error counts, method and summary |
-| User evaluation | Task completion, manual baseline, SUS, interviews | Zukhra | Consent procedure, pseudonymous study records, aggregated report |
-
-No automated command is specified before the implementation and test runner exist. Add executable instructions when those artifacts are committed.
-
-## 3. Environment and Fixtures
-
-Record commit/build, schema/policy version, Android/iOS device and OS, desktop browser/version and viewport, backend region/configuration, model/provider/version, prompt version, catalog revision, dates/time zone, network/latency, concurrency and test date. Separate deterministic provider stubs from live-provider runs. Use an isolated project and synthetic accounts; never use a privileged database session as an ordinary client.
-
-Reuse the server plan's users O/E/P/X/L (Organizer/two Participants/outsider/former member), Trips A/B and 30,000 KZT integrity fixture. That boundary fixture is synthetic and does not establish real Astana prices. Add a complete feasible itinerary fixture with declared per-person/group/night units, local transport, accommodation nights, opening hours, visit durations and travel times. Include an intentionally infeasible budget, unknown place, missing price, conflicting opening window, changed version, provider timeout and disconnected client.
-
-For each case preserve its initial state. Reset or isolate test data so a prior vote, expense or cached response cannot influence the next measurement. Declare cache/warm-start state and keep all failed attempts in the log.
-
-## 4. End-to-end Acceptance Cases
-
-All cases below are **Not run**. Should features become release gates when scheduled for that release. Chat, the minimal community feed and reporting are already in the confirmed product scope and are covered by Must requirements.
-
-| Case | Setup/action | Expected result | Requirement coverage |
-| --- | --- | --- | --- |
-| UAT-01 | Register/sign in; create a valid trip; try negative count, invalid date range and zero budget; sign out. | Valid trip has one owner; invalid inputs create no partial data; signed-out client loses protected access and cache. | FR-01/02, NFR-03/06 |
-| UAT-02 | Generate from a complete feasible fixture, inspect accommodation/day totals and confirm. Repeat with impossible budget, missing price, closed place and unknown provider ID. | Valid draft resolves to catalog places and correct estimate units; only explicit confirmation saves. Invalid/incomplete output is rejected or clearly incomplete. | FR-03/04/06, NFR-01/09/11; AI-01/02 |
-| UAT-03 | Add/remove/replace/reorder a place; change dates; have two editors confirm from the same base version. Switch between day list/map. | Totals/order stay consistent. Conflicting stale save is rejected; no silent lost update. Markers match the chosen day/place. | FR-05/06/07, NFR-04/10; ITN-01/02 |
-| UAT-04 | Invite a second user, repeat acceptance, vote/change/withdraw, add a comment and send chat. Disconnect/reconnect. Remove the member and try all exposed access paths. | Membership/votes/messages do not duplicate; history recovers; removed user cannot receive new private data. | FR-08–11, NFR-02/03/04; ACC/VOT/CHT groups |
-| UAT-05 | Ask “How much remains?”; request “Make Day 2 cheaper”; Cancel, then generate/Confirm; edit the trip or remove membership before confirming another draft. | Answers do not mutate state; preview shows cost impact; cancel preserves state; stale/unauthorized confirm fails; valid confirm commits once. | FR-12, NFR-09/10; AI-01–05 |
-| UAT-06 | Enable expenses; enter a known amount and exact shares; retry with invalid totals/currency/member; interrupt the operation midway. | Valid balances match exact shares. Invalid/failed transactions leave no partial records. Disabling the UI does not erase history. | FR-13, NFR-04; EXP-01–05 |
-| UAT-07 | Publish a place-related post; read it as an outsider to the associated trip; report it; attempt moderation as an ordinary user. | Only public fields are visible; report is stored under the approved workflow; only a designated reviewer can moderate. | FR-14/15, NFR-03; ACC-06, FED-01, MOD-01 |
-| UAT-08 | Supply rain forecast and dated events; then remove/stale the data and fail maps/provider requests. Open available/missing external links. | Known context can propose eligible changes; no unconfirmed replacement, invented event or confirmed booking appears; missing services are disclosed. | FR-16/17/19, NFR-10/11 |
-| UAT-09 | Load and cache a confirmed trip; disconnect; read the saved plan; attempt online actions; reconnect; sign out. | Read-only cache and last-sync state are visible; unavailable actions explain the need for connection; refresh is authoritative; sign-out clears private cache. | FR-18, NFR-03/10 |
-| UAT-10 | Execute core flow on recorded Android/iOS and desktop Chrome/Safari targets; test web → mobile and mobile → web saved changes; check 390 × 844 and 1280 × 800 layouts and keyboard access; repeat navigation/validation in all three intended languages. | Core flow passes across the targets and both update directions; primary controls fit; keyboard focus/labels work on web; language switch preserves data; missing translations/platform defects are recorded. | NFR-07/08/12 |
-
-Repeat affected acceptance and access/integrity regression cases after fixes. Evidence must distinguish a mock/stub pass from a live integration pass.
-
-## 5. Metrics and Measurement Conditions
-
-| Metric | Definition and procedure | Proposed acceptance/reporting |
+| Layer | Owner | Required evidence |
 | --- | --- | --- |
-| Usable generation time | Start at client Submit; stop when a validated draft is rendered. Run 10 consecutive live-provider requests after a declared warm-up. Record backend request time separately. | NFR-01: at least 9/10 under 30 seconds. Timeouts/errors are not removed. Report each run, median and success/error counts; no stable population p95 claim from 10 trials. |
-| Generation success | Valid usable drafts / all authorized, well-formed requests, including infeasible and provider-failure counts separately. | Report numerator/denominator per scenario. High rejection cannot be represented as good planning just because invalid plans were blocked. |
-| Estimated-budget compliance | Drafts labeled valid that satisfy complete code-checked cost limits / all drafts labeled valid. | 100% within the executed set; report unknown-price, infeasible/rejected and failed requests separately. Does not measure actual merchant prices. |
-| Grounding correctness | Eligible catalog place IDs / all place IDs returned in valid drafts. | 100% in the executed set; retain deliberate unknown-ID negative tests. |
-| Update delay | Sender Submit to peer render of the matching committed record using a coordinated clock/harness; measure 30 updates, then repeat at the approved concurrency. | Proposed NFR-02: p95 ≤3 seconds. Nearest-rank p95 is sorted observation 29/30. Failures are recorded as non-delivery, never dropped. Agree threshold before execution. |
-| Recovery/integrity | Compare committed IDs and recovered/rendered IDs; inspect post-transaction constraints. | No missing/duplicate recovered messages or invalid committed states in the approved executed cases. |
-| Task completion | Participants/groups that meet a predefined task-quality rubric / all that start, plus errors, assists and abandonment. | Report full counts and completion time. Success is not “pressed Generate”; the plan must meet the rubric. |
-| SUS | Standard 10-item questionnaire after using the app; calculate individual scores using the standard method. | At least 10 adult users; proposed mean ≥70/100. Report n, individual pseudonymous scores, mean, median, range/SD and limitations. This scale is not a percentage success rate. |
-| Planning-time comparison | Time to an acceptable plan with the app versus manual Google Maps + group chat, using matched task briefs. | Report paired group-level times and quality outcomes. No improvement percentage is asserted before the study. |
+| Trip/budget/editor units and client behavior | Zukhra | Code, synthetic fixtures, reproducible command/output; later form/editor and UI tests. |
+| Identity, invitations, RLS, versioned persistence, votes and peer updates | Yerassyl | Migrations/functions/policies; authorized/unauthorized API/database tests; concurrency and reconnect records. |
+| Generation, candidate IDs, map/list consistency and provider errors | Sayakhat | Typed adapter fixtures, malformed-output/timeouts, actual provider runs and map UI checks. |
+| Whole MVP and user evaluation | All; Zukhra coordinates protocol | Recorded environment, task rubric, raw timings, redacted evidence and findings. |
 
-For larger server benchmarks, preserve Yerassyl's proposed five warm-up and 30 measured runs at one/five concurrent simulated users. These server measurements complement the 10-run client acceptance check; they use different timer boundaries and must not be mixed in one distribution.
+The [server plan](server-testing-plan.md) is retained as Yerassyl's detailed contribution. Apply ACC/VOT/ITN and relevant generation/catalog/invitation/proposal cases to the MVP only after checking their actual descriptions. Exclude chat, expense, feed/moderation and event cases from the mandatory MVP denominator. Their earlier presence does not imply executed tests. Yerassyl must publish an explicit case-by-case MVP/deferred mapping; do not copy an obsolete total count.
 
-## 6. Manual-planning Baseline and User Study
+## MVP acceptance cases
 
-Recruit at least 10 consenting adults from the intended users, aiming for five pairs for the collaborative task. Record recruitment method and relevant travel experience without publishing identifying data. Five pairs yield five independent collaborative planning units, not ten independent group observations. Collect SUS individually. If group composition or sample size changes, update the design before measurement.
+All application cases are **Not run**. Historical UAT-05–09 cover optional features and are deferred; their IDs are preserved. New UAT-11 isolates map behavior.
 
-Prepare two comparable Astana trip briefs A/B with the same duration, budget difficulty and catalog size but different candidate sets. Supply identical price/opening-hour/context information to both conditions, use the same devices/network where practical, and allow the same calculator access. The manual condition uses Google Maps and a group chat, with the final agreed itinerary posted in the chat. No AI planner is allowed in that baseline.
+| ID | Action/fixture | Expected result | Coverage |
+| --- | --- | --- | --- |
+| UAT-01 | Sign in; create a trip; try reversed dates, invalid count and zero budget. | Valid inputs create trip+owner atomically; invalid values create no partial trip. | FR-01/02 |
+| UAT-02 | Generate a known feasible draft; then unknown IDs, missing/unsupported prices and impossible budget; confirm/cancel. | Valid sourced estimate; no false valid label or unconfirmed save; server revalidation before commit. | FR-03/04/06, NFR-01/09/11 |
+| UAT-03 | Add/remove/replace/reorder; compare daily/category totals; two editors confirm the same base version. | Exact recalculation; stale save rejected; cancel and failures preserve saved version. | FR-05/06, NFR-04/10 |
+| UAT-04 | Issue/accept/replay/revoke invitation; vote/change/withdraw; disconnect/reconnect and remove membership. | No duplicate membership/vote; correct tallies; authoritative refresh; outsider/removed user denied. No chat/comment requirement. | FR-08/09, NFR-02/03/04 |
+| UAT-10 | Run the agreed Android/iOS/web core build matrix and both peer-update directions; inspect form/editor/budget/map/vote layouts and keyboard navigation. | Same core permissions/data, usable controls and recorded platform defects. Build availability is not assumed. | NFR-07/12 |
+| UAT-11 | Switch days and list/map; inspect order/coordinates/version; provider timeout or no route. | List and map agree; missing route is disclosed and saved itinerary remains readable. | FR-07, NFR-10 |
 
-Counterbalance task/condition order across pairs and record the allocation; with five pairs the split will be 3/2, so disclose the imbalance. A short neutral orientation precedes both conditions. Avoid teaching participants the answer to either brief.
+Use organizer/two editors/outsider/former-member synthetic accounts, two trips and exact boundary fixtures. Add unknown prices, missing required category/provenance, duplicate economic charges, out-of-range dates, provider errors, stale versions and rejected permissions. A known arithmetic fixture does not establish current Astana prices. Reset state between runs; record cache/warm-start conditions.
 
-Start timing when the brief is revealed. Stop when the pair submits a plan meeting the predeclared rubric: all required days/categories covered, locations resolvable, dated opening windows feasible, travel time included, complete estimated total within budget, and both members' required constraints represented. Log invalid submissions, assists and abandonment. Set the time limit before recruitment and report censored/unfinished tasks separately rather than treating them as fast successes.
+## Metrics and measurement conditions
 
-After app tasks, administer SUS before debriefing. Then ask what confused users, whether they trusted explanations/costs and whose preferences were missed. Compute paired differences only for comparable completed tasks and report incomplete pairs. With five groups, findings are exploratory; do not claim representative population effects or causality beyond this small study.
+| Measure | Procedure | Target/reporting rule |
+| --- | --- | --- |
+| Generation | Start client Submit; stop when usable validated draft renders; ten consecutive live-provider requests after declared warm-up. | At least 9/10 under 30 seconds; include failures/timeouts, all run times, median and separate server timing. Do not infer stable population p95 from ten runs. |
+| Budget compliance | Complete code-checked estimates within budget / all drafts labeled valid. | 100% in executed set; disclose rejected/incomplete/unknown-data requests separately and report generation success as well. Not a real-world price guarantee. |
+| Catalog validity | Eligible catalog IDs / all IDs in valid drafts. | 100% within executed fixtures; retain unknown/stale data negative cases. |
+| Peer update | Sender Submit to peer render of same committed version; thirty coordinated-clock updates and declared concurrency/network. | Proposed p95 ≤3 seconds: nearest-rank observation 29/30. Failures/non-deliveries stay in results; confirm target with team. |
+| SUS | Standard ten-item questionnaire after actual core tasks; at least ten consenting adult users. | Proposed mean ≥70/100, with n, individual pseudonymous scores, mean/median/spread and limitations; not a percentage success rate. |
+| Planning time | Matched core planning briefs using app versus manual Google Maps + group chat. | Report comparable group-level time and quality outcomes, failed/assisted/incomplete tasks. No improvement claim before measurement. |
 
-SUS method: for odd items subtract 1 from the 1–5 response; for even items subtract the response from 5; sum the ten contributions and multiply by 2.5. Keep the standard questionnaire wording and polarity; select a documented language version rather than improvising translations. Source: Brooke (1996), *SUS: A “quick and dirty” usability scale*, in *Usability Evaluation in Industry*, pp. 189–194 ([publication record](https://verdi.cs.ucl.ac.uk/constructDB/publications/brooke-susa-1996.html)). Missing items require follow-up or explicit exclusion, not invented answers.
+Record commit/build/schema, OS/device/browser/viewport, region, catalog/check dates, model/provider/prompt version, time zone, network, concurrency and test date. Separate deterministic tests/stubs from live-provider measurements. Never use a privileged session as an ordinary client.
 
-## 7. Evidence Record and Exit Criteria
+## Manual baseline and study design
 
-For each executed case record ID, requirement, date, commit/build/schema, device/environment, actor, fixture, actions, expected/actual outcome, verdict, redacted evidence, defect/task and retest. Use Not run, Pass, Fail or Blocked honestly. Preserve raw timing rows and count every attempt.
+Propose ten adult participants in five pairs: five independent collaborative planning units, not ten independent group observations. Use matched Astana briefs A/B with equivalent duration, budget difficulty and identical information quality. Counterbalance app/manual order across pairs (3/2 split; disclose imbalance). Give neutral orientation and equal calculator access; manual planning uses Maps and group chat without an AI planner.
 
-For the first pre-defense, demonstrate this plan, requirements, diagrams and unresolved decisions. Do not claim application acceptance or study completion. Later release acceptance requires approved Must cases to pass, no unresolved access/integrity defect, measured targets/limitations disclosed, reviewed Android/iOS/web core flow and an actual user-evaluation report. The `pre-defense-1` tag follows a whole-team artifact review; this plan alone is not a release approval.
+Start timing when the brief appears. Stop when both participants submit an acceptable plan: required days/categories present, resolvable places, complete estimated total within budget, opening/travel/visit times feasible and both members' constraints represented. Predeclare time limits; log invalid submissions, assistance and abandonment. Collect SUS individually before debriefing. Small-sample findings remain exploratory.
 
-## 8. Research Versus Product Evaluation
+SUS scoring: odd item response minus 1; even item 5 minus response; sum and multiply by 2.5. Preserve standard wording/polarity and use a documented language version; do not invent missing answers. Method source: Brooke (1996), [publication record](https://verdi.cs.ucl.ac.uk/constructDB/publications/brooke-susa-1996.html).
 
-The [15-response resident survey](research/survey-results.md) is current relevance evidence. It is not a usability test of the unimplemented application and cannot establish SUS, latency, budget correctness or planning-time improvement. Interviews are not used as evidence in this submission. Future evaluation participants, runs, measured values and passes must be recorded only after they actually occur.
+## Evidence and exit conditions
+
+Record case/requirement ID, exact version/environment, setup/action, expected/actual result, verdict, redacted evidence, defect and retest. Preserve raw timings and failed attempts. An MVP release requires approved Must cases and access/integrity checks to pass on the agreed build matrix; documentation acceptance does not imply release acceptance. The 15-response relevance survey is not a SUS/product-performance study. Initial budget tests do not validate the other four product outcomes.
