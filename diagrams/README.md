@@ -1,5 +1,16 @@
 # Architecture Diagrams
 
+## MVP revision 23 October 2026
+
+The [Use Case source](use-case.drawio) now contains MVP core and budget/voting pages: [core PNG](use-case-core.png), [budget/voting PNG](use-case-collaboration.png), [combined PNG](use-case.png). The filename of the second preview is retained for existing links; its contents no longer promise community features.
+
+The [overall Component source](overall-components.drawio) and [PNG](overall-components.png) show explicit Zukhra/Yerassyl/Sayakhat ownership and the five-function scope. Generated PNG previews and editable XML share definitions; no native draw.io export is claimed.
+
+Existing backend/context/ER views below are retained as teammate design work and may still include deferred tables/features. Yerassyl must align their MVP/deferred labels before final submission. See [scope revision](../docs/mvp-scope-and-responsibilities.md), [architecture](../docs/architecture-and-use-cases.md) and [requirements](../docs/requirements-specification.md).
+
+## Earlier diagram contribution and verification record
+
+
 ## Integrated Views Added 22 October 2026
 
 - [Use Case source — two editable pages](use-case.drawio): [core PNG](use-case-core.png), [collaboration/community PNG](use-case-collaboration.png), [combined PNG](use-case.png).
