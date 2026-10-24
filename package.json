@@ -1,0 +1,15 @@
+{
+  "name": "collaborative-trip-planning-server-checks",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test tests/server/*.test.mjs"
+  },
+  "devDependencies": {
+    "@electric-sql/pglite": "0.5.11",
+    "pg": "8.23.1"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}
