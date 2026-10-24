@@ -54,3 +54,9 @@ See [database design](../docs/database-design.md) for keys, constraints, access 
 - [Responsibilities and workflows](../docs/backend-component-design.md)
 
 This is the backend/database contribution for the team's combined Component Diagram. Client internals and the map integration are included in the overall Component view; interface review and implementation remain pending. No deployment or runtime validation is implied.
+
+## MVP scope revision, 23 October 2026
+
+Backend/context and all four ER views now distinguish the five-function MVP from retained future design. All 15 tables remain; eight support MVP and seven are deferred. The generation proposal table supports initial drafts and explicit confirmation, not a conversational assistant. Android/iOS/web are retained. No diagram demonstrates deployment.
+
+Reproduce ER source/PNGs with `python3 scripts/render_schema_design.py`; reproduce context/backend PNGs from their native editable XML using `python3 scripts/render_architecture.py` (Pillow and system Arial font required). Team-owned overall Component/Use Case changes stay in PR #10. Review the [server contract proposal](../docs/mvp-server-contract.md) before integration.

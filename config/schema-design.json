@@ -288,5 +288,55 @@
         ]
       ]
     }
-  ]
+  ],
+  "mvp_scope": {
+    "revision": "2026-10-23; proposed alignment with PR #10; no deployment",
+    "outcomes": [
+      "trip creation",
+      "route generation",
+      "planned budget",
+      "map",
+      "collaborative editing and voting"
+    ],
+    "platforms": [
+      "Android",
+      "iOS",
+      "web"
+    ],
+    "tables": {
+      "users": "MVP",
+      "trips": "MVP",
+      "participants": "MVP",
+      "places": "MVP",
+      "events": "deferred",
+      "plan_items": "MVP",
+      "votes": "MVP",
+      "comments": "deferred",
+      "chat_messages": "deferred",
+      "posts": "deferred",
+      "post_reports": "deferred",
+      "expenses": "deferred",
+      "expense_splits": "deferred",
+      "invitations": "MVP",
+      "ai_proposals": "MVP"
+    },
+    "deferred_fields": {
+      "trips": [
+        "expenses_enabled"
+      ],
+      "places": [
+        "booking_url"
+      ],
+      "plan_items": [
+        "event_id",
+        "item_type=event"
+      ]
+    },
+    "rules": [
+      "Preserve all 15 tables from PR #8/#9; scope labels do not drop fields or historical artifacts.",
+      "ai_proposals supports initial generation and explicit confirmation in MVP; conversational editing is deferred.",
+      "plan_items.estimated_cost is normalized for the whole party; never multiply it by travelers again.",
+      "No SQL migrations, RLS deployment or live API is claimed."
+    ]
+  }
 }

@@ -1,5 +1,22 @@
 # Yerassyl's Contribution Checklist
 
+## Five-function MVP boundary (23 October 2026)
+
+This revision follows the supervisor scope recorded in [PR #10](https://github.com/yer455yl/collaborative-trip-planning/pull/10) and the [proposed responsibility split](mvp-scope-and-responsibilities.md). Android, iOS and web remain planned. Detailed ownership and interface acceptance are pending teammate replies; this document does not approve PR #10.
+
+| Scope | Tables and responsibility |
+| --- | --- |
+| MVP support | `users`, `trips`, `participants`: authenticated trip creation and active owner/editor access |
+| MVP planning | `places`, `plan_items`: catalog identifiers, route/map data and whole-party planned costs |
+| MVP collaboration | `votes`, `invitations`: one current vote, owner-issued invitation and atomic acceptance |
+| MVP generation | `ai_proposals`: initial route draft, validation and explicit versioned confirmation; no conversational editor |
+| Deferred, retained | `events`, `comments`, `chat_messages`, `posts`, `post_reports`, `expenses`, `expense_splits` |
+
+All **15** table definitions and results of PR #8/#9 are retained. `trips.expenses_enabled`, `places.booking_url`, `plan_items.event_id` and `item_type=event` are future fields; retaining them does not enable those capabilities. Actual expenses/debts differ from planned estimates. Weather, offline access and booking integrations are deferred. Future text below describes retained design only wherever it concerns these domains.
+
+MVP invariants: owner = Organizer; editor = Participant; inactive members have no access. Both active roles edit/vote; only the owner administers invitations/membership. Initial generation uses the same trusted validation as manual editing. `plan_items.estimated_cost` is already normalized for the whole party. Never multiply it by traveler count again. Server-owned catalog prices, required categories and freshness policy must be checked independently of client totals. See the [proposed wire/transaction contract](mvp-server-contract.md) for errors, dates, units, confirmation and open questions.
+
+
 Updated 22 October 2026 against current repository artifacts. Original work-plan deadlines were 15–20 October; this checklist does not claim on-time delivery. Checked items mean a deliverable exists, not that it is approved, implemented or tested.
 
 ## Repository and Collaboration
@@ -28,7 +45,7 @@ Updated 22 October 2026 against current repository artifacts. Original work-plan
 - [x] Revise the logical model with traveler count/type/interests, preferred language, catalog fields, item type, events, AI proposals, invitations and place-linked posts/reports.
 - [x] Align database/UI roles: owner = Organizer, editor = Participant; viewer deferred.
 - [x] Provide a reproducible field inventory and four-page editable ER source with PNG previews.
-- [x] Map server verification cases to FR/NFR IDs; extend 25 initial cases to 32 for the revised schema.
+- [x] Map server verification cases to FR/NFR IDs; retain all 32 prior cases with scope labels and add three MVP cases (35 planned total).
 - [x] Connect server checks to the overall evaluation plan, including client generation timing, budget, SUS and manual comparison protocols.
 - [ ] Obtain team review of detailed schema, media/moderation/freshness policies, AI/UX confirmation flow and metric targets.
 - [ ] Implement migrations, RLS, trusted commands and clients; execute the planned tests. No implementation is claimed here.

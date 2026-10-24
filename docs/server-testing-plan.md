@@ -4,7 +4,7 @@ Prepared contribution: Aman Yerassyl. Status: proposed server plan integrated by
 
 ## Purpose and scope
 
-Verify that the shared backend preserves private trip access, voting consistency, durable chat, balanced expenses and validated itinerary changes across web and mobile clients. The expected behavior follows the proposed [database design](database-design.md) and [backend component design](backend-component-design.md). Review role rules, voting semantics and evaluation thresholds with the team before execution; review the requirement mappings below.
+Verify that the shared backend preserves private trip access, voting consistency, validated itinerary changes and planned budgets. Chat and actual expenses remain deferred across web and mobile clients. The expected behavior follows the proposed [database design](database-design.md) and [backend component design](backend-component-design.md). Review role rules, voting semantics and evaluation thresholds with the team before execution; review the requirement mappings below.
 
 Usability (SUS) and comparison with manual planning belong to the team's broader evaluation. This contribution defines server checks and measurements and does not replace those studies.
 
@@ -12,77 +12,87 @@ Usability (SUS) and comparison with manual planning belong to the team's broader
 
 Use an isolated test project with the same migrations, access policies and server-function versions as the release candidate. Record the Git commit, schema version, service configuration, client versions, test date, region, network conditions and workload. Use synthetic users and places; keep service credentials outside the repository. An administrative connection may inspect outcomes but must not be used to simulate an ordinary client.
 
-Create users O (owner/Organizer), E and P (editors/Participants), X (outsider) and L (former member). Trip A includes O, E and P as active members; L has a historical membership with left_at set. Trip B belongs to X. Give both trips itinerary items, votes, comments, saved messages and expenses. Use a KZT budget of 30,000.00 for Trip A, known place IDs, known visit durations and opening hours, and a fixed trip time zone. AI tests use controlled provider responses by default; use a separate opt-in run for a real provider.
+Create users O (owner/Organizer), E and P (editors/Participants), X (outsider) and L (former member). Trip A includes O, E and P as active members; L has a historical membership with left_at set. Trip B belongs to X. Give both trips itinerary items and votes. Add comments, messages and expenses only for deferred suites. Use a KZT budget of 30,000.00 for Trip A, known place IDs, known visit durations and opening hours, and a fixed trip time zone. AI tests use controlled provider responses by default; use a separate opt-in run for a real provider.
 
-Proposed permission baseline: owners manage membership and ownership; owners and editors change itinerary and financial records; all active members may read private trip data. Chat, comments and votes are enabled for active owners/editors. The viewer role is deferred; attempts to create it must fail validation. The team must confirm or revise this baseline before tests can be judged. Platform-specific table privileges must match the approved policy.
+Proposed permission baseline: owners manage membership and ownership; owners and editors change itinerary and vote; financial-record writes are deferred; all active members may read private trip data. Votes are MVP; chat and comments are deferred. The viewer role is deferred; attempts to create it must fail validation. The team must confirm or revise this baseline before tests can be judged. Platform-specific table privileges must match the approved policy.
 
 Run unauthorized operations through every exposed path that can perform them: Data API, database RPC, server command and Realtime where applicable. Changing only the interface is not sufficient verification.
 
 ## Access and membership
 
-| ID | Setup and action | Expected result |
-|---|---|---|
-| ACC-01 | O, E and P read Trip A; X, L and a signed-out client request the same records | Active members receive permitted data. Others receive no private rows or payloads; the API may return denial or an empty policy-filtered result according to the agreed contract |
-| ACC-02 | X and L attempt itinerary, vote, comment, message and expense writes; E attempts ownership/member administration and attempts to issue a viewer invitation | All disallowed writes fail, with no database changes. O can perform approved administration; E can perform approved editing |
-| ACC-03 | E submits X's author/sender identity or Trip B's item ID in a Trip A command | Impersonation and cross-trip references are rejected. Legitimate actions record the authorized actor |
-| ACC-04 | E opens a subscription; O removes E, then E requests data, writes and receives a new test event | After the removal transaction completes, new requests and events reveal no private data. Server/subscription authorization must enforce revocation; client sign-out alone is insufficient |
-| ACC-05 | O attempts to remove or demote the last owner; concurrently transfer ownership in two requests | No committed state has zero or multiple active owners. Valid transfer is atomic; conflicting requests fail safely |
-| ACC-06 | Publish a post linked to a private trip, then read as X | Only explicitly published post fields are visible. Private itinerary, members, expenses and chat remain inaccessible |
+| ID | Setup and action | Expected result | Scope and rationale |
+|---|---|---| --- |
+| ACC-01 | O, E and P read Trip A; X, L and a signed-out client request the same records | Active members receive permitted data. Others receive no private rows or payloads; the API may return denial or an empty policy-filtered result according to the agreed contract | MVP: private trip reads |
+| ACC-02 | X and L attempt itinerary, vote, comment, message and expense writes; E attempts ownership/member administration and attempts to issue a viewer invitation | All disallowed writes fail, with no database changes. O can perform approved administration; E can perform approved editing | MVP: itinerary/vote/owner administration; comment/chat/expense subactions deferred |
+| ACC-03 | E submits X's author/sender identity or Trip B's item ID in a Trip A command | Impersonation and cross-trip references are rejected. Legitimate actions record the authorized actor | MVP: actor and trip integrity; sender/comment subactions deferred |
+| ACC-04 | E opens a subscription; O removes E, then E requests data, writes and receives a new test event | After the removal transaction completes, new requests and events reveal no private data. Server/subscription authorization must enforce revocation; client sign-out alone is insufficient | MVP: membership revocation and synchronization |
+| ACC-05 | O attempts to remove or demote the last owner; concurrently transfer ownership in two requests | No committed state has zero or multiple active owners. Valid transfer is atomic; conflicting requests fail safely | MVP: atomic ownership |
+| ACC-06 | Publish a post linked to a private trip, then read as X | Only explicitly published post fields are visible. Private itinerary, members, expenses and chat remain inaccessible | deferred: public feed |
 
 ## Voting and itinerary consistency
 
-| ID | Setup and action | Expected result |
-|---|---|---|
-| VOT-01 | E upvotes an item, repeats the request, then changes to a downvote | At most one current vote exists for that user/item. Retrying has the documented idempotent or conflict behavior; tally matches stored votes |
-| VOT-02 | Submit two conflicting votes concurrently for the same user/item | Uniqueness is preserved. Final value follows the documented concurrency contract; no double counting |
-| VOT-03 | Submit a vote as X or L, reference Trip B, or send value 0 or 2 | Invalid actor, relationship or value is rejected; existing votes remain unchanged |
-| ITN-01 | Two editors load version N and both update/reorder the itinerary | One valid update commits; a stale conflicting update is explicitly rejected or safely serialized under the agreed version contract. No changes are silently lost |
-| ITN-02 | Reorder entries; insert a duplicate position, negative duration or date outside the trip; shorten trip dates | Valid reordering succeeds atomically. Invalid states are rejected or handled through an explicit validated adjustment, never left partially committed |
+| ID | Setup and action | Expected result | Scope and rationale |
+|---|---|---| --- |
+| VOT-01 | E upvotes an item, repeats the request, then changes to a downvote | At most one current vote exists for that user/item. Retrying has the documented idempotent or conflict behavior; tally matches stored votes | MVP: one current authorized vote |
+| VOT-02 | Submit two conflicting votes concurrently for the same user/item | Uniqueness is preserved. Final value follows the documented concurrency contract; no double counting | MVP: one current authorized vote |
+| VOT-03 | Submit a vote as X or L, reference Trip B, or send value 0 or 2 | Invalid actor, relationship or value is rejected; existing votes remain unchanged | MVP: one current authorized vote |
+| ITN-01 | Two editors load version N and both update/reorder the itinerary | One valid update commits; a stale conflicting update is explicitly rejected or safely serialized under the agreed version contract. No changes are silently lost | MVP: versioned itinerary edits |
+| ITN-02 | Reorder entries; insert a duplicate position, negative duration or date outside the trip; shorten trip dates | Valid reordering succeeds atomically. Invalid states are rejected or handled through an explicit validated adjustment, never left partially committed | MVP: versioned itinerary edits |
 
 ## Chat and recovery
 
-| ID | Setup and action | Expected result |
-|---|---|---|
-| CHT-01 | E sends a message while O has an active web/mobile subscription | The authorized message is persisted once and becomes visible to O. Record the delivery timing separately from correctness |
-| CHT-02 | Drop the send response, then retry with the same client_message_id | Exactly one message remains for (trip_id, sender_id, client_message_id); retry returns the prior result or a documented duplicate outcome |
-| CHT-03 | Disconnect O, create several messages, reconnect and refresh history | All committed messages are recovered once after client deduplication, even if live events were missed. Order uses a documented stable tie-breaker such as (created_at, id) |
-| CHT-04 | X or L guesses a room/trip ID or connects without a valid session; send malformed or empty content | No private payload reaches an unauthorized client. Invalid content is rejected without a stored message |
+| ID | Setup and action | Expected result | Scope and rationale |
+|---|---|---| --- |
+| CHT-01 | E sends a message while O has an active web/mobile subscription | The authorized message is persisted once and becomes visible to O. Record the delivery timing separately from correctness | deferred: trip chat |
+| CHT-02 | Drop the send response, then retry with the same client_message_id | Exactly one message remains for (trip_id, sender_id, client_message_id); retry returns the prior result or a documented duplicate outcome | deferred: trip chat |
+| CHT-03 | Disconnect O, create several messages, reconnect and refresh history | All committed messages are recovered once after client deduplication, even if live events were missed. Order uses a documented stable tie-breaker such as (created_at, id) | deferred: trip chat |
+| CHT-04 | X or L guesses a room/trip ID or connects without a valid session; send malformed or empty content | No private payload reaches an unauthorized client. Invalid content is rejected without a stored message | deferred: trip chat |
 
 ## Expenses and shares
 
-| ID | Setup and action | Expected result |
-|---|---|---|
-| EXP-01 | E records a 9,000.00 KZT expense with three 3,000.00 shares for valid participants | One expense and its shares commit together. Sum of shares equals the expense exactly |
-| EXP-02 | Submit shares totaling 8,999.99 or 9,000.01; use negative shares, a nonpositive expense or a foreign-trip participant | The operation fails and no partial expense/share records remain |
-| EXP-03 | Split 10,000.00 three ways using 3,333.33, 3,333.33 and 3,333.34; attempt unsupported currency mixing | Exact KZT total is preserved. Unconverted catalog estimates or unsupported currencies cannot silently enter trip totals |
-| EXP-04 | Force a failure after the expense row but before all share rows are saved | The transaction rolls back completely; no unbalanced expense becomes visible |
-| EXP-05 | Two editors replace shares for the same expense concurrently | Updates serialize or one conflicts explicitly; the committed total always balances. Select the locking/version mechanism before implementing this case |
+| ID | Setup and action | Expected result | Scope and rationale |
+|---|---|---| --- |
+| EXP-01 | E records a 9,000.00 KZT expense with three 3,000.00 shares for valid participants | One expense and its shares commit together. Sum of shares equals the expense exactly | deferred: actual expenses and debts |
+| EXP-02 | Submit shares totaling 8,999.99 or 9,000.01; use negative shares, a nonpositive expense or a foreign-trip participant | The operation fails and no partial expense/share records remain | deferred: actual expenses and debts |
+| EXP-03 | Split 10,000.00 three ways using 3,333.33, 3,333.33 and 3,333.34; attempt unsupported currency mixing | Exact KZT total is preserved. Unconverted catalog estimates or unsupported currencies cannot silently enter trip totals | deferred: actual expenses and debts |
+| EXP-04 | Force a failure after the expense row but before all share rows are saved | The transaction rolls back completely; no unbalanced expense becomes visible | deferred: actual expenses and debts |
+| EXP-05 | Two editors replace shares for the same expense concurrently | Updates serialize or one conflicts explicitly; the committed total always balances. Select the locking/version mechanism before implementing this case | deferred: actual expenses and debts |
 
 ## AI proposal and confirmation
 
-| ID | Setup and action | Expected result |
-|---|---|---|
-| AI-01 | Provider stub returns known places, a feasible schedule and total estimated cost 29,000.00 KZT | Server returns a valid draft for preview. Saved itinerary is unchanged until confirmation; authorized confirmation saves atomically |
-| AI-02 | Return nonexistent place IDs, malformed fields, overlapping visits, a closed attraction or total estimated cost 30,000.01 KZT | The server rejects or explicitly repairs and revalidates the proposal before presenting it as valid. It never silently saves invalid content |
-| AI-03 | E receives a draft, O edits the itinerary, then E confirms the old draft; repeat after E is removed | Stale version or inactive membership prevents saving. The current itinerary remains intact |
-| AI-04 | Simulate provider timeout, service error and invalid output | The command reports a controlled failure, preserves existing data and does not expose credentials or provider internals |
-| AI-05 | Call AI commands as X or submit excessive/invalid request fields | Reject unauthorized/invalid requests before a provider call. Validate configured request limits and verify secrets do not appear in client responses |
+| ID | Setup and action | Expected result | Scope and rationale |
+|---|---|---| --- |
+| AI-01 | Provider stub returns known places, a feasible schedule and total estimated cost 29,000.00 KZT | Server returns a valid draft for preview. Saved itinerary is unchanged until confirmation; authorized confirmation saves atomically | MVP: initial generation and explicit confirmation; no conversational editor |
+| AI-02 | Return nonexistent place IDs, malformed fields, overlapping visits, a closed attraction or total estimated cost 30,000.01 KZT | The server rejects or explicitly repairs and revalidates the proposal before presenting it as valid. It never silently saves invalid content | MVP: initial generation and explicit confirmation; no conversational editor |
+| AI-03 | E receives a draft, O edits the itinerary, then E confirms the old draft; repeat after E is removed | Stale version or inactive membership prevents saving. The current itinerary remains intact | MVP: initial generation and explicit confirmation; no conversational editor |
+| AI-04 | Simulate provider timeout, service error and invalid output | The command reports a controlled failure, preserves existing data and does not expose credentials or provider internals | MVP: initial generation and explicit confirmation; no conversational editor |
+| AI-05 | Call AI commands as X or submit excessive/invalid request fields | Reject unauthorized/invalid requests before a provider call. Validate configured request limits and verify secrets do not appear in client responses | MVP: initial generation and explicit confirmation; no conversational editor |
 
 A budget check must use a documented estimate model: included cost categories, currency, missing costs, transport assumptions and per-person versus whole-trip amounts. If required cost or scheduling data is missing, mark the draft incomplete and prevent a false “valid within budget” result. The 30,000.00 boundary tests use complete synthetic inputs. Weather and event provider integrations remain staged. The new catalog/event cases below use synthetic inputs and do not imply a live provider.
 
 ## Schema Revision Cases
 
-All additional cases are **Not run**, like the original 25. The revised plan has **32 cases**.
+All additional cases are **Not run**, like the original 25. The retained plan has **32 original cases**: 19 MVP (mixed ACC subactions explicitly limited) and 13 deferred. Three additional MVP cases below bring the total to **35 planned cases: 22 MVP and 13 deferred**. All are Not run.
 
-| ID | Setup and action | Expected result | Requirements |
-| --- | --- | --- | --- |
-| INV-01 | Accept valid, expired and revoked invitations; race two different recipients for one token; retry the successful acceptance | Exactly one valid recipient obtains one active editor membership. Expired/revoked tokens and another recipient's replay fail; no raw token is stored/logged | FR-08, NFR-03/04/06 |
-| INV-02 | Editor/outsider issues or revokes an invite; owner attempts an unsupported role; restore a former member through valid acceptance | Administration is owner-only; viewer is rejected; reactivation preserves required historical references without duplicate membership | FR-08, NFR-03/04 |
-| CAT-01 | Enter zero traveler count, invalid language, unknown cost unit, missing source/price or insufficient accommodation capacity data | Invalid trip/profile data is rejected; incomplete catalog inputs cannot produce a valid-budget label; known fixture totals correctly reflect party size and nights | FR-02/04/06, NFR-08/09/11 |
-| EVT-01 | Propose an overlapping valid event, canceled event, out-of-trip event and event linked to a different place | Only eligible dated events are accepted; discriminator/references and time-zone checks reject conflicts without changing the saved plan | FR-05/17, NFR-04/09 |
-| AIP-01 | Retry a generation request key; confirm twice; cancel/expire a draft; force failure during itinerary/confirmation save | One proposal per request key; one atomic applied version; retry returns the prior outcome. Rejected/expired/failed drafts never alter the itinerary; rollback includes proposal status | FR-03/05/12, NFR-04/10 |
-| FED-01 | Publish place-linked content, submit arbitrary private trip fields and publish unapproved/private media URLs | Published payload follows the public allowlist; private trip data and unapproved media are not exposed; invalid place/reference is rejected | FR-14, NFR-03/06 |
-| MOD-01 | Report one post twice, impersonate another reporter and attempt moderation as an ordinary user; resolve using a provisioned reviewer | One report per reporter/post; identity is server-derived; ordinary users cannot set reviewer/disposition or inspect others' private reports; authorized resolution records actor/time | FR-15, NFR-03/04 |
+| ID | Setup and action | Expected result | Requirements | Scope and rationale |
+| --- | --- | --- | --- | --- |
+| INV-01 | Accept valid, expired and revoked invitations; race two different recipients for one token; retry the successful acceptance | Exactly one valid recipient obtains one active editor membership. Expired/revoked tokens and another recipient's replay fail; no raw token is stored/logged | FR-08, NFR-03/04/06 | MVP: invitation acceptance and retries |
+| INV-02 | Editor/outsider issues or revokes an invite; owner attempts an unsupported role; restore a former member through valid acceptance | Administration is owner-only; viewer is rejected; reactivation preserves required historical references without duplicate membership | FR-08, NFR-03/04 | MVP: owner-only invitations |
+| CAT-01 | Enter zero traveler count, invalid language, unknown cost unit, missing source/price or insufficient accommodation capacity data | Invalid trip/profile data is rejected; incomplete catalog inputs cannot produce a valid-budget label; known fixture totals correctly reflect party size and nights | FR-02/04/06, NFR-08/09/11 | MVP: trusted catalog and party inputs |
+| EVT-01 | Propose an overlapping valid event, canceled event, out-of-trip event and event linked to a different place | Only eligible dated events are accepted; discriminator/references and time-zone checks reject conflicts without changing the saved plan | FR-05/17, NFR-04/09 | deferred: dated events |
+| AIP-01 | Retry a generation request key; confirm twice; cancel/expire a draft; force failure during itinerary/confirmation save | One proposal per request key; one atomic applied version; retry returns the prior outcome. Rejected/expired/failed drafts never alter the itinerary; rollback includes proposal status | FR-03/05 (FR-12 conversational editing deferred), NFR-04/10 | MVP: initial draft lifecycle and atomic confirmation |
+| FED-01 | Publish place-linked content, submit arbitrary private trip fields and publish unapproved/private media URLs | Published payload follows the public allowlist; private trip data and unapproved media are not exposed; invalid place/reference is rejected | FR-14, NFR-03/06 | deferred: social feed |
+| MOD-01 | Report one post twice, impersonate another reporter and attempt moderation as an ordinary user; resolve using a provisioned reviewer | One report per reporter/post; identity is server-derived; ordinary users cannot set reviewer/disposition or inspect others' private reports; authorized resolution records actor/time | FR-15, NFR-03/04 | deferred: feed moderation |
+
+## Additional MVP transaction and budget cases
+
+| ID | Setup and action | Expected result | Requirements | Scope and rationale |
+| --- | --- | --- | --- | --- |
+| BUD-01 | Forge client totals, party count and price; use normalized group amounts for 1/3/100 travelers; stale/future/missing prices; omit a mandatory category | Server reloads trusted trip/catalog data, independently recomputes exact KZT amounts once; unknown/stale data cannot be called complete; equality accepted, one cent over rejected | FR-02/04/06, NFR-04/09/11 | MVP: independent planned-budget validation |
+| SAV-01 | Inject failure after replacing one item but before version/proposal status update; race removal with save | Entire transaction rolls back, including items/version/proposal/idempotency outcome. A removed actor cannot commit after revocation wins the lock | FR-05/08, NFR-03/04 | MVP: atomic authorized persistence |
+| SYN-01 | Disconnect an editor, commit edits/votes elsewhere, reconnect and retry a stale command | Reload authoritative version/items/votes; no lost updates or duplicate votes; stale write returns VERSION_CONFLICT and never silently merges | FR-05/09, NFR-02/04 | MVP: synchronized editing, not offline queued writes |
+
+BUD-01/SAV-01/SYN-01 are **Not run** integration cases. Pure helper checks described in the [PR review](reviews/pr-10-server-budget-review.md) do not execute these database/API cases. Server validation must check membership and version again inside the committing transaction. A caller-provided valid membership object is not authentication.
 
 ## Requirement Traceability
 
@@ -94,15 +104,17 @@ All additional cases are **Not run**, like the original 25. The revised plan has
 | ITN-01–02 | FR-05/06, NFR-04/10 |
 | CHT-01–04 | FR-11, NFR-02/03/04/10 |
 | EXP-01–05 | FR-13, NFR-03/04/11 |
-| AI-01–05 | FR-03/04/05/06/12, NFR-01/03/04/06/09/10/11 |
+| AI-01–05 | FR-03/04/05/06 (FR-12 deferred), NFR-01/03/04/06/09/10/11 |
 | INV/CAT/EVT/AIP/FED/MOD | Per-case references in the revision table above |
 
-FR-10 comment integrity is exercised by ACC-02/03; add client comment-flow evidence under UAT-04. FR-07/16/18/19, SUS, layout, multilingual UI and cross-platform acceptance require the overall UAT/platform protocols. This server plan alone does not claim complete product acceptance coverage.
+FR-10 comment subactions of ACC-02/03 are deferred. FR-07 map acceptance, SUS, layout, multilingual UI and cross-platform acceptance require the overall MVP UAT/platform protocols. FR-16/18/19 remain deferred and are excluded from the MVP exit gate. This server plan alone does not claim complete product acceptance coverage.
 
 ## Measurement protocol
 
+MVP measures apply to itinerary/vote synchronization and generation/budget correctness. Message recovery and expense counters below are retained future measures, excluded from MVP acceptance.
+
 | Measure | Definition and collection | Acceptance |
-|---|---|---|
+|---|---|---| --- |
 | Authorization correctness | Count denied unauthorized attempts and successful permitted controls; inspect actual rows and received event payloads | Every defined unauthorized case denies access; every permitted control works |
 | Integrity correctness | Count duplicate votes/messages, cross-trip links, unbalanced expenses and partially saved commands after completed tests | Zero invalid committed states in the executed test set |
 | Collaborative update delay | Start timer before the sender's write and stop when the receiver observes the matching saved record; use one coordinated test clock or instrumented harness | Record p50/p95 and failures; proposed NFR-02 target is p95 ≤3 seconds over 30 updates (at least 29/30 within target), subject to team review |
