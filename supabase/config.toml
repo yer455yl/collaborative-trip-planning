@@ -1,0 +1,4 @@
+project_id = "collaborative-trip-planning"
+
+[functions.planning-api]
+verify_jwt = true
