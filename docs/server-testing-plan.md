@@ -1,5 +1,10 @@
 # Server Verification and Evaluation Plan
 
+## Execution update — 24 October 2026
+
+Local SQL/RLS/RPC tests and HTTP handler checks now provide partial evidence, documented in [server-implementation-evidence.md](server-implementation-evidence.md). The original 35 acceptance cases below are not blanket executed: all hosted Data API/Auth/Realtime/provider and multi-session requirements remain Not run. Local checks do not turn mixed or concurrency cases into Pass. The “backend not yet implemented” introduction below is the historical design-stage baseline.
+
+
 Prepared contribution: Aman Yerassyl. Status: proposed server plan integrated by reference in the [team evaluation plan](verification-and-evaluation-plan.md). No cases below have been executed; the backend is not yet implemented. Case IDs are stable verification labels; the traceability table below maps them to requirement IDs.
 
 ## Purpose and scope
