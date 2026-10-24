@@ -1,10 +1,10 @@
 # Collaborative Trip Planning
 
-Diploma project: **Development of a Mobile Application for Collaborative Trip Planning**. Astana IT University, Software Engineering. Supervisor: **Aigerim Kydyrbekova**. First pre-defense: **24 October 2026**. Status revised **23 October 2026** after supervisor feedback.
+Diploma project: **Development of a Mobile Application for Collaborative Trip Planning**. Astana IT University, Software Engineering. Supervisor: **Aigerim Kydyrbekova**. First pre-defense: **24 October 2026**. Status revised **24 October 2026** after supervisor feedback.
 
-The proposed application helps groups plan a trip to Astana using a shared, budget-aware itinerary. The [five-function MVP revision](docs/mvp-scope-and-responsibilities.md) narrows earlier feature promises and gives all three members concrete implementation responsibilities. This branch is prepared for teammate review; it does not claim approval of every detailed role or platform decision.
+The proposed application helps groups plan a trip to Astana using a shared, budget-aware itinerary. The [five-function MVP revision](docs/mvp-scope-and-responsibilities.md) narrows earlier feature promises and gives all three members concrete implementation responsibilities. PR #12/#13 integrate backend and client-source revisions. Recorded role replies and remaining decisions are indexed in the [integration review](docs/reviews/submission-integration-24-october.md); detailed supervisor approval is not claimed.
 
-**Current state:** analysis/design documents and static wireframes, plus an initial standalone Dart budget-calculation module with executed deterministic checks. There is no complete runnable Flutter application, deployed backend or executed end-to-end, model-performance or SUS study. The initial module is not a completed itinerary planner.
+**Current state:** analysis/design documents and static wireframes, plus an initial standalone Dart budget module (34 local checks) and an independent trusted-snapshot guard (27 local checks). There is no complete runnable Flutter application, deployed backend or executed end-to-end, model-performance or SUS study. The initial module is not a completed itinerary planner.
 
 ## Problem, users and expected outcomes
 
@@ -36,7 +36,7 @@ Astana is the initial destination. In-app booking/payments, flights/intercity tr
 | **Aman Yerassyl**, SE-2401, [yer455yl](https://github.com/yer455yl) | Supabase, data schema/migrations, identity/RLS, invitations, server persistence and versioned commands, synchronization, voting integrity and backend tests. Existing schema/design work retains its authorship. |
 | **Shauzat Sayakhat Anarbekuly**, SE-2431, [shauzatov](https://github.com/shauzatov) | Flutter shell/navigation, AI generation/candidate integration, day-plan/map views and provider integration tests; client/proposal/UX/risk alignment and supervisor coordination. |
 
-Balance is judged by substantive engineering scope and evidence, not identical task/commit counts. The detailed split requires teammate review. Each member uses their own identifiable account; earlier contributions are never reassigned retroactively.
+Balance is judged by substantive engineering scope and evidence, not identical task/commit counts. Zukhra and Sayakhat have recorded their acceptance of their own module boundaries; remaining policy/interface details require team agreement. Each member uses their own identifiable account; earlier contributions are never reassigned retroactively.
 
 ## Technologies and decisions
 
@@ -51,7 +51,7 @@ Compared alternatives remain documented: React Native/native Kotlin+Swift; Fireb
 
 ## Documentation and scope alignment
 
-The reduced [MVP decision](docs/mvp-scope-and-responsibilities.md), [requirements](docs/requirements-specification.md), [overall architecture/use cases](docs/architecture-and-use-cases.md) and [evaluation](docs/verification-and-evaluation-plan.md) define this branch's core. Older Word source descriptions and backend views still need their owners' alignment; extra mockups/tables remain historical or deferred design, not mandatory product promises.
+The reduced [MVP decision](docs/mvp-scope-and-responsibilities.md), [requirements](docs/requirements-specification.md), [overall architecture/use cases](docs/architecture-and-use-cases.md) and [evaluation](docs/verification-and-evaluation-plan.md) define this branch's core. The backend and Word/UX source revisions are integrated through PR #12/#13. This branch corrects remaining editorial inconsistencies; extra mockups/tables are retained as deferred design. See the [review record](docs/reviews/submission-integration-24-october.md).
 
 | Material | Link |
 | --- | --- |
@@ -71,7 +71,9 @@ The reduced [MVP decision](docs/mvp-scope-and-responsibilities.md), [requirement
 ```text
 src/planning_core/       # Initial dependency-free Dart budget core
 examples/               # Synthetic executable budget example
-tests/planning_core/     # Deterministic core checks
+tests/planning_core/     # Deterministic Dart budget checks
+tests/server/            # Local trusted-snapshot guard checks
+supabase/functions/      # Pure helper; no deployed endpoint
 config/                 # Logical schema inventory; no deployed secret config
 docs/                   # Research, requirements, design, review and evaluation
 diagrams/               # Editable draw.io sources and generated PNG previews
@@ -91,6 +93,14 @@ dart run examples/budget_preview.dart
 ```
 
 Observed 23 October: analyzer clean; **34/34 deterministic checks passed**. Synthetic example: estimated 7,500 KZT, remaining 2,500 KZT. These checks cover the local arithmetic/preview contract, not actual prices, Flutter UI, database/RLS, model generation, map routing or whole-product acceptance. Test counts are execution evidence, not a claimed amount of individual effort.
+
+Run the dependency-free trusted-snapshot helper checks with Node.js (tested with Node 26):
+
+```sh
+node --test tests/server/planning-guard.test.mjs
+```
+
+These 27 local checks do not establish JWT/RLS, SQL transaction or API behavior. See the [server contract](docs/mvp-server-contract.md).
 
 ## Tracking and submission
 

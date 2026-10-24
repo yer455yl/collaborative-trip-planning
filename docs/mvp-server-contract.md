@@ -60,3 +60,7 @@ An HTTP caller must never supply the helper's membership, trip, prices, category
 | Platform acceptance and revised report/release version | All three | Android/iOS/web retained; release version not agreed |
 
 No interface has been newly accepted by another participant during preparation of this document. Review requests and later replies must be linked as evidence; a proposed table is not agreement.
+
+## Recorded follow-up 24 October 2026
+
+The original proposal/open-question table above retains its 23 October context. [Zukhra’s reply](https://github.com/yer455yl/collaborative-trip-planning/pull/10#issuecomment-6381297635) accepts her client field/date/money/version/confirmation baseline and DIP-30/client-budget responsibilities. [Sayakhat’s reply](https://github.com/yer455yl/collaborative-trip-planning/pull/10#issuecomment-6381384816) accepts his shell/generation/map responsibilities and the split, while proposing adapter/category/charge-key details. This is partial role/interface evidence, not approval of every policy or deployed API. Price age/category policy, expansion/charge identity, complete payload validation and demonstration matrix remain open. See [integration review](reviews/submission-integration-24-october.md).
