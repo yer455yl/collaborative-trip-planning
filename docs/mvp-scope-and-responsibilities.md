@@ -1,6 +1,6 @@
 # Five Function MVP and Technical Responsibilities
 
-Revision prepared by Kabysheva Zukhra, 23 October 2026, following the supervisor feedback supplied by the team. This branch applies the reduced scope for review; it does not claim that every detailed assignment or platform choice has been approved by all members. It supersedes earlier broad feature promises in the requirements and integrated architecture. Sayakhat must align the proposal, topic report, UX and risk source documents; Yerassyl must align the backend/schema views. Original authorship and submitted tags remain unchanged.
+Revision prepared by Kabysheva Zukhra, 23 October 2026, following the supervisor feedback supplied by the team. This branch applies the reduced scope for review; it does not claim that every detailed assignment or platform choice has been approved by all members. It supersedes earlier broad feature promises in the requirements and integrated architecture. Backend and client-source alignment is integrated through PR #12/#13; see the [24 October integration review](reviews/submission-integration-24-october.md) for corrections and role replies. Original authorship and submitted tags remain unchanged.
 
 ## Mandatory product outcomes
 
@@ -24,13 +24,13 @@ Chat, item comments, community posts/moderation, a conversational AI editor, act
 | Aman Yerassyl, SE-2401 | Supabase setup, schema/migrations, authentication integration, RLS; invitations, versioned persistence, voting and peer synchronization; server revalidation and API/database tests. | Recompute/revalidate before commit independently of the client. Client budget code is not a security boundary. Show migrations, commands/policies and executed tests when available. |
 | Shauzat Sayakhat Anarbekuly, SE-2431 | Flutter shell/shared navigation and visual composition; AI generation/candidate selection adapter; day-plan and map integration; provider-error behavior and AI/map integration tests. | Produce catalog IDs and typed drafts, not invented costs. Integrate Zukhra's trip/editor/budget modules without claiming their authorship. Coordinate proposal/UX/risk updates. |
 
-Work is balanced by scope, engineering difficulty, integration responsibility and evidence, not equal task counts. Each member reviews another member's PR. Requirements/research/report coordination remain Zukhra's additional work, not a substitute for development. Team acceptance is still required; do not reattribute earlier commits.
+Work is balanced by scope, engineering difficulty, integration responsibility and evidence, not equal task counts. Each member reviews another member's PR. Requirements/research/report coordination remain Zukhra's additional work, not a substitute for development. Zukhra and Sayakhat recorded their own role acceptance in PR #10; remaining policy details and supervisor approval are still open. Do not reattribute earlier commits.
 
 ## Current work versus planned work
 
 - Prepared now: revised requirements, evaluation scope, overall/use-case diagrams, this ownership decision and the real supervisor-feedback record.
 - Implemented initial core in this branch: standalone Dart estimate arithmetic and pure edit preview in [budget.dart](../src/planning_core/budget.dart), tracked by [DIP-42](https://dip-trip-planner.youtrack.cloud/issue/DIP-42). This is not a Flutter form/editor or a server implementation. See [module contract](planning-budget-module.md).
-- Still planned for Zukhra: Flutter trip form, editor/voting controls, catalog/date/time feasibility beyond arithmetic, API integration and UI tests. Existing [DIP-34](https://dip-trip-planner.youtrack.cloud/issue/DIP-34) concerns collaboration. Split new tasks using real IDs and estimate implementation dates with the team; do not assign tomorrow's submission deadline to the entire product.
+- Still planned for Zukhra: Flutter trip form, editor/voting controls, catalog/date/time feasibility beyond arithmetic, API integration and UI tests. Existing [DIP-34](https://dip-trip-planner.youtrack.cloud/issue/DIP-34) concerns collaboration. Split new tasks using real IDs and estimate implementation dates with the team; do not assign the materials submission deadline to the entire product.
 - Task mapping needs team action: DIP-30 currently belongs to Sayakhat but the proposed trip-form ownership is Zukhra; DIP-32 must distinguish Sayakhat's generation from Zukhra's budget validation; DIP-35–40 become optional backlog. DIP-36 is actual expense splitting, not this budget engine. Preserve its meaning.
 
 ## Platforms and delivery
@@ -40,7 +40,7 @@ The prior baseline specifies Flutter Android/iOS and web with shared Supabase. T
 ## Before the 24 October submission
 
 1. Review this branch and the technical ownership split with the team.
-2. Sayakhat aligns proposal/topic/client-AI/UX/risk sources; Yerassyl aligns schema/backend/test scopes. Do these on current main/task branches after integrating this revision, avoiding concurrent edits of Zukhra-owned files.
+2. PR #12/#13 integrate the backend and client sources. Review the final editorial corrections and reconcile task evidence, including DIP-30 status and the DIP-43/DIP-50 mismatch.
 3. Record actual follow-up decisions under [supervisor feedback](supervisor-feedback.md); prepared changes are not proof of advisor acceptance or completed software.
 4. Regenerate the eleven-section report and task screenshot PDF from the final reviewed repository version. Previous PDFs and `prob-period-1` still describe the older commit. Never move or replace an existing submitted tag; agree the final version with the supervisor if the submission must be updated.
 5. The supplied supervisor message confirms 24 October 2026, 18:00 for the form. The user submits it; this work does not submit the form.
