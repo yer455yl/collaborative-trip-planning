@@ -1,5 +1,10 @@
 # Schema Alignment for Mobile and Web
 
+## Implementation update — 24 October 2026
+
+A reviewable local MVP implementation now exists: [migration/RLS/RPCs and deployment guide](../supabase/README.md), [HTTP/Edge adapter](../supabase/functions/planning-api/handler.mjs) and [execution evidence](server-implementation-evidence.md). Eight MVP tables are implemented; all 15 logical definitions remain retained. Local PostgreSQL/HTTP tests are separate from hosted acceptance. No Supabase project, real Auth/provider/Realtime deployment or complete Flutter application is claimed. Remaining text describes the earlier design baseline; earlier “not implemented” statements refer to that revision, not the new local code. Detailed interface/policy approval remains open.
+
+
 ## Five-function MVP boundary (23 October 2026)
 
 This revision follows the supervisor scope recorded in [PR #10](https://github.com/yer455yl/collaborative-trip-planning/pull/10) and the [proposed responsibility split](mvp-scope-and-responsibilities.md). Android, iOS and web remain planned. Detailed ownership and interface acceptance are pending teammate replies; this document does not approve PR #10.

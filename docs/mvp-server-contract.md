@@ -1,5 +1,10 @@
 # Proposed MVP Server and Client Contract
 
+## Implementation update — 24 October 2026
+
+A reviewable local MVP implementation now exists: [migration/RLS/RPCs and deployment guide](../supabase/README.md), [HTTP/Edge adapter](../supabase/functions/planning-api/handler.mjs) and [execution evidence](server-implementation-evidence.md). Eight MVP tables are implemented; all 15 logical definitions remain retained. Local PostgreSQL/HTTP tests are separate from hosted acceptance. No Supabase project, real Auth/provider/Realtime deployment or complete Flutter application is claimed. Remaining text describes the earlier design baseline; earlier “not implemented” statements refer to that revision, not the new local code. Detailed interface/policy approval remains open.
+
+
 Author: Aman Yerassyl. Revision: 23 October 2026. Dependency: PR #10, head `5c18b07`. **Proposed, not accepted by teammates and not a deployed API.** This contract supports trip creation, initial route generation, planned budgeting, map display and collaborative editing/voting on Android/iOS/web. Deferred features remain in the retained schema.
 
 ## Data boundary

@@ -6,6 +6,10 @@ The proposed application helps groups plan a trip to Astana using a shared, budg
 
 **Current state:** analysis/design documents and static wireframes, plus an initial standalone Dart budget-calculation module with executed deterministic checks. There is no complete runnable Flutter application, deployed backend or executed end-to-end, model-performance or SUS study. The initial module is not a completed itinerary planner.
 
+## Server implementation update — 24 October 2026
+
+Yerassyl has added an executable local [Supabase migration/RLS/RPC and Edge-handler increment](supabase/README.md), with [verification evidence and remaining hosted checks](docs/server-implementation-evidence.md). A real Supabase project has not yet been created; local checks are not deployment or end-to-end product acceptance. All platforms and the five-function scope remain unchanged. Earlier status paragraphs describe the preceding design baseline.
+
 ## Problem, users and expected outcomes
 
 Group trip planning spreads dates, place choices, costs and decisions across maps, sites and conversations. The project investigates whether a shared itinerary with explicit budget estimates and voting can support that workflow. The initial users are friends, families, couples and budget-conscious travelers visiting Astana. Business travelers are an additional proposed group, not validated by the small survey.
