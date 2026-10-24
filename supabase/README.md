@@ -21,7 +21,7 @@ npm test
 dart tests/planning_core/budget_test.dart
 ```
 
-PGlite 0.5.11 runs the actual PostgreSQL migration and PL/pgSQL/RLS tests. Its harness creates minimal `auth.users` and `auth.uid()` stand-ins, then switches to `authenticated`/`anon` roles. **Never copy those stubs into Supabase.** Supabase provides its real Auth schema. A single embedded connection cannot establish multi-session race correctness, managed Auth/JWT verification, PostgREST behavior or WebSocket delivery. Handler tests inject synthetic RPC/provider responses and are separate from SQL tests.
+PGlite 0.5.11 runs the actual PostgreSQL migration and PL/pgSQL/RLS tests. Its harness creates minimal `auth.users` and `auth.uid()` stand-ins, then switches to `authenticated`/`anon` roles. **Never copy those stubs into Supabase.** Supabase provides its real Auth schema. A single embedded connection cannot establish multi-session race correctness, managed Auth/JWT verification, PostgREST behavior or WebSocket delivery. A separate disposable PostgreSQL 16 CI job now runs three competing-connection cases; see the linked evidence for the verified commit and remaining gaps. Handler tests inject synthetic RPC/provider responses and are separate from SQL tests.
 
 ## Deploy to an isolated test project
 

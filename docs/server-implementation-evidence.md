@@ -48,6 +48,18 @@ dart tests/planning_core/budget_test.dart
 
 The [35-case plan](server-testing-plan.md) remains the product/server acceptance specification. These local results provide **partial evidence**, not a blanket Pass for every mapped case. The migration and test harness use PostgreSQL semantics, but PGlite has a single connection; it cannot prove multi-session races or managed Supabase services. The Auth stub supplies a synthetic current subject, not JWT verification.
 
+## Native PostgreSQL CI evidence
+
+[CI run 40083922891](https://github.com/yer455yl/collaborative-trip-planning/actions/runs/40083922891) completed successfully on code commit `9f63355b673ab3e589443fcf5c21669f9f70049f`:
+
+- Node 22 job: all 72 runner tests passed.
+- PostgreSQL 16 job: the same 31 SQL subcases plus their parent passed against a disposable native database.
+- Three additional independent-connection cases passed: competing editors at one version (one commits, stale one conflicts), two invitation recipients (one succeeds), and removal winning the trip lock before an editor save (save denied).
+
+The first CI attempt exposed a wire mismatch: native PostgreSQL JSON emitted UTC timestamps as `+00:00` while the validator accepted only `Z`. The validator now accepts both UTC formats, and a regression input covers this behavior. This defect and rerun are disclosed rather than treating the first run as successful.
+
+These three races now have native PostgreSQL evidence, narrowing the limits in the earlier local matrix. Conflicting vote/ownership-transfer races, hosted Auth/Data API/Realtime behavior and device integration are still not established. Auth remains a synthetic test subject even in the native PostgreSQL job. Do not count the repeated SQL run as additional independent product acceptance scenarios.
+
 ## Required hosted completion checklist
 
 - [ ] Account owner creates a clean test Supabase project and records region/version.
