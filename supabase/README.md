@@ -38,7 +38,7 @@ No paid resources or new access permissions are created by the repository change
 
 ## Price and schedule contract
 
-RPC callers send candidate item UUID, canonical place UUID, calendar day, position (0–199) and UTC start timestamp. Client costs/titles/durations are ignored: the server loads them from an active catalog row. Price is normalized once using persisted party size and `per_group`/`per_person` unit. Unknown/stale/future prices, missing required categories, duplicate place/day charges, unknown hours, overlap and insufficient configured transfer buffer block saving.
+RPC callers send candidate item UUID, canonical place UUID, calendar day, position (0–199) and UTC start timestamp (`Z` or PostgreSQL’s `+00:00` JSON format). Client costs/titles/durations are ignored: the server loads them from an active catalog row. Price is normalized once using persisted party size and `per_group`/`per_person` unit. Unknown/stale/future prices, missing required categories, duplicate place/day charges, unknown hours, overlap and insufficient configured transfer buffer block saving.
 
 Catalog opening hours use ISO weekday keys `1`–`7`, each containing windows such as `[{"open":"09:00","close":"18:00"}]` in the catalog/trip IANA zone. Overnight visits, events, custom unsourced entries, room-capacity/night expansion and road-derived travel times are **not supported** by this increment. The fixed transfer buffer is a reviewed planning assumption, not proof of actual routing feasibility. Do not approve a whole-trip budget policy unless every mandatory economic cost is represented correctly; a visits-only fixture is not a complete real trip.
 

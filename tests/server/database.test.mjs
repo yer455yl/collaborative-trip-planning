@@ -88,7 +88,7 @@ await test('PostgreSQL migration, RLS and transaction suite (Auth stub; no Supab
   const snapshot=await rpc('get_trip_snapshot',[trip]);assert.equal(snapshot.trip.version,1);assert.equal(snapshot.items[0].version,1);assert.equal(snapshot.participants.length,2);assert.equal(snapshot.votes.length,0);
  });
  await t.test('whole-group source price is not multiplied again',async()=>{
-  await actor(E);const result=await rpc('save_plan',[trip,1,JSON.stringify(items(initialItems[0].id,groupPlace)),randomUUID()]);assert.equal(result.budget.total,'7500.00');
+  await actor(E);const result=await rpc('save_plan',[trip,1,JSON.stringify([{...items(initialItems[0].id,groupPlace)[0],starts_at:'2026-10-24T05:00:00+00:00'}]),randomUUID()]);assert.equal(result.budget.total,'7500.00');
  });
  await t.test('stale version rejects without losing current state',async()=>{
   await denied(()=>rpc('save_plan',[trip,1,JSON.stringify(initialItems),randomUUID()]),'VERSION_CONFLICT');assert.equal((await db.query('select version from public.trips where id=$1',[trip])).rows[0].version,2);

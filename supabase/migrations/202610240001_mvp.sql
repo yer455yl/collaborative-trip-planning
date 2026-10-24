@@ -186,7 +186,7 @@ begin
   if place.checked_at>now() or now()-place.checked_at>policy.max_price_age then raise exception 'STALE_PRICE'; end if;
   if place.duration_minutes is null then raise exception 'INCOMPLETE_SCHEDULE'; end if;
   if place.time_zone<>t.time_zone then raise exception 'TIME_ZONE_MISMATCH'; end if;
-  if item->>'starts_at' !~ '^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d{1,3})?Z$' then raise exception 'INVALID_TIME'; end if;
+  if item->>'starts_at' !~ '^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d{1,3})?(Z|\+00:00)$' then raise exception 'INVALID_TIME'; end if;
   start_time:=(item->>'starts_at')::timestamptz;
   if start_time is null then raise exception 'INVALID_TIME'; end if;
   finish_time:=start_time+make_interval(mins=>place.duration_minutes);
